@@ -81,10 +81,10 @@
     <ClInclude Include="src\Parser.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\teste.yaf" />
+    <Xml Include="demograph.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="bin\demograph.xml" />
+    <None Include="teste.yaf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
