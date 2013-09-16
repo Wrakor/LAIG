@@ -1,0 +1,57 @@
+<yaf> 
+
+    <globals background="ff ff ff ff" drawmode="ss" shading="ss" cullface="ss" cullorder="ss" /> 
+     
+    <cameras initial="ss" > 
+        <ortho id="1" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" /> 
+    </cameras> 
+   
+    <lighting doublesided="tt" local="tt" enabled="tt" ambient="ff ff ff ff"> 
+            <omni id="1" enabled="tt" 
+                location="ff ff ff" 
+                ambient="ff ff ff ff" 
+                diffuse="ff ff ff ff" 
+                specular="ff ff ff ff"
+			/>
+    </lighting> 
+
+    <textures>        
+          <texture id="1" file="ss" />
+    </textures> 
+
+    <appearances> 
+        <appearance id="1" 
+            emissive="ff ff ff ff" 
+            ambient="ff ff ff ff" 
+            diffuse="ff ff ff ff" 
+            specular="ff ff ff ff" 
+            shininess="ff" 
+            textureref="ss" 
+            texlength_s="ff" 
+            texlength_t="ff" 
+        /> 
+    </appearances> 
+
+    <graph rootid="1"> 
+        <node id="1"> 
+            <transforms> 
+                <translate to="ff ff ff" /> 
+                <rotate axis="ee" angle="ff" /> 
+                <scale factor="ff ff ff" /> 
+            </transforms>
+			
+            <appearanceref id="1" /> 
+                               
+            <children> 
+        
+                <rectangle xy1="ff ff" xy2="ff ff" /> 
+                <triangle xyz1="ff ff ff" xyz2="ff ff ff" xyz3="ff ff ff" /> 
+                <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+                <sphere radius="ff" slices="ii" stacks="ii" /> 
+                <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+				
+            </children> 
+        </node> 
+    </graph>
+	
+</yaf> 

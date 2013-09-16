@@ -1,0 +1,79 @@
+<dgx>
+  <Init>
+	  <frustum near="0.1" far="0.2" />
+	  <axis length="1" />
+	  <ambient r="0.5" g="0.5" b="0.7" a="0.5" />
+	  <!-- (alternativas)
+		  <ambient rgba="0.5 0.5 0.7 0.5" />
+		  <ambient value="0.5 0.5 0.7 0.5" />
+	  -->
+	  <!-- outras configs de forma semelhante -->
+
+	  <translate xyz="1 -1 2" />
+  </Init>
+
+  <Lights>
+	  <Light id="1">
+		  <ambient  r="0.5" g="0.5" b="0.7" a="0.5" />
+		  <!-- etc... -->
+	  </Light>
+	  <Light id="principal">  
+		  <ambient  r="0.5" g="0.5" b="0.7" a="0.5" />
+		  <!-- etc... -->
+	  </Light>
+  </Lights>
+
+  <Materials>
+	  <Material id="branco">
+		  <shininess value="1.0" />
+	  </Material>
+	  <Material id="azul">
+		  <shininess value="1.0" />
+	  </Material>
+  </Materials>
+
+  <Leaves>
+	  <Leaf id="cilindro" type="cylinder" pars="3 3 3 0 1" />
+	  <Leaf id="quad" type="rectangle" pars="1 1 2 2" />
+  </Leaves>
+
+
+  <Nodes>
+	  <Node id="1">
+		  <material id="branco" />
+		  <texture id="madeira" />
+		  <rotate axiz="x" degrees="56" />
+	  </Node>
+
+
+	  <Node id="2">
+		  <material id="azul" />
+		  <texture id="metal" />
+		  <rotate axiz="y" degrees="56" />
+
+	  </Node>
+
+
+	  <Node id="3">
+		  <material id="verde" />
+		  <texture id="vidro" />
+		  <rotate axiz="z" degrees="56" />
+	  </Node>
+
+
+  </Nodes>
+
+
+  <Graph>
+	  <Node id="1">
+		  <Leaf id="cilindro" />
+		  <Node id="2" />
+	  </Node>
+	  <Node id="2">
+		  <Node id="3" />
+	  </Node>
+	  <Node id="3">
+		  <Leaf id="quad" />
+	  </Node>
+  </Graph>
+</dgx>
