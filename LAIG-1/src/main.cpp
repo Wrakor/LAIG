@@ -1,8 +1,3 @@
-/* 
- * G0_Base: projeto inicial de CGra
- * 
- */
-
 #include <iostream>
 #include <exception>
 
