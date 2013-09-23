@@ -10,7 +10,7 @@ using std::exception;
 
 
 int main(int argc, char* argv[]) {
-	//assdasdasdada
+
 	/*CGFapplication app = CGFapplication();
 
 	try {
