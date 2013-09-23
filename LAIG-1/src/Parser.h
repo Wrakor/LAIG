@@ -2,6 +2,7 @@
 #define _PARSER_H_
 
 #include "tinyxml.h"
+#include <stdexcept>
 
 class Parser
 {
@@ -15,6 +16,13 @@ protected:
 
 	TiXmlDocument* doc;
 	TiXmlElement* globalsElement;
+	TiXmlElement* camerasElement;
+	TiXmlElement* lightingElement;
+	TiXmlElement* texturesElement;
+	TiXmlElement* appearancesElement;
+	TiXmlElement* graphElement;
 };
+
+bool to_bool(std::string str);
 
 #endif

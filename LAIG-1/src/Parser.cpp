@@ -1,4 +1,8 @@
+#include <sstream>
 #include <string>
+#include <iomanip>
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include "Parser.h"
 
@@ -27,6 +31,8 @@ Parser::Parser(char *filename)
 	}
 
 	globalsElement = yafElement->FirstChildElement( "globals" );
+	if(!globalsElement)
+		throw "Error parsing globals";
 	string background, drawmode, shading, cullface, cullorder;
 	background = globalsElement->Attribute("background");
 	drawmode = globalsElement->Attribute("drawmode");
@@ -34,18 +40,69 @@ Parser::Parser(char *filename)
 	cullface = globalsElement->Attribute("cullface");
 	cullorder = globalsElement->Attribute("cullorder");
 	if(background.empty() || drawmode.empty() || shading.empty() || cullface.empty() || cullorder.empty())
-		cout << "Error parsing globals!";
-	else
-	{
+		throw "Error parsing globals attributes";
 	//print globals attributes
-		cout << "Globals" << endl;
-		cout << "\tBackground: " << background << endl;
-		cout << "\tDrawmode: " << drawmode << endl;
-		cout << "\tShading: " << shading << endl;
-		cout << "\tCullface: " << cullface << endl;
-		cout << "\tCullorder: " << cullorder << endl;
-	}
+	cout << "Globals" << endl;
+	cout << "\tBackground: " << background << endl;
+	cout << "\tDrawmode: " << drawmode << endl;
+	cout << "\tShading: " << shading << endl;
+	cout << "\tCullface: " << cullface << endl;
+	cout << "\tCullorder: " << cullorder << endl;
 
+
+	camerasElement = yafElement->FirstChildElement( "cameras" );
+	if(!camerasElement)
+		throw "Error parsing cameras";
+	string initialCamera = camerasElement->Attribute("initial");
+	if(initialCamera.empty())
+		throw "Error parsing initial camera";
+	TiXmlElement* camera = findChildByAttribute(camerasElement, "id", initialCamera.c_str());
+	if(!camera)
+		throw "Initial camera not declared";
+	cout << "Cameras" << endl;
+	cout << "\tInitial: " << initialCamera << endl;
+	//TODO: more than one camera
+
+
+	lightingElement = yafElement->FirstChildElement( "lighting" );
+	if(!lightingElement)
+		throw "Error parsing lighting";
+	bool doublesided, local, enabled;
+	string ambient;
+	doublesided = to_bool(lightingElement->Attribute("doublesided"));
+	local = to_bool(lightingElement->Attribute("local"));
+	enabled = to_bool(lightingElement->Attribute("enabled"));
+	ambient= lightingElement->Attribute("ambient");
+	if(ambient.empty())
+		throw "Error parsing lighting attributes";
+	cout << "Lighting" << endl;
+	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
+	cout << "\tLocal: " << boolalpha << local << endl;
+	cout << "\tEnabled: " << boolalpha << enabled << endl;
+	cout << "\tAmbient: " << ambient << endl;
+
+
+	texturesElement = yafElement->FirstChildElement( "textures" );
+	if(!texturesElement)
+		throw "Error parsing textures";
+	cout << "Textures" << endl;
+
+
+	appearancesElement = yafElement->FirstChildElement( "appearances" );
+	if(!appearancesElement)
+		throw "Error parsing appearances";
+	cout << "Appearances" << endl;
+
+
+	graphElement = yafElement->FirstChildElement( "graph" );
+	if(!graphElement)
+		throw "Error parsing graph";
+	string rootid;
+	rootid = graphElement->Attribute("rootid");
+	if(rootid.empty())
+		throw "Error parsing graph attributes";
+	cout << "Graph" << endl;
+	cout << "\tRoot ID" << rootid << endl;
 }
 /*	// Init
 	// An example of well-known, required nodes
@@ -181,4 +238,10 @@ TiXmlElement *Parser::findChildByAttribute(TiXmlElement *parent,const char * att
 	return child;
 }
 
-
+bool to_bool(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    std::istringstream is(str);
+    bool b;
+    is >> std::boolalpha >> b;
+    return b;
+}

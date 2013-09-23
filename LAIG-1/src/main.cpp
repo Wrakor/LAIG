@@ -30,7 +30,13 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}*/
 
-	Parser *parser = new Parser("teste.yaf");
+	try
+	{
+		Parser *parser = new Parser("teste.yaf");
+	}
+	catch (const char* msg) {
+		cout << "EXCEPTION: " << msg;
+	}
 	cin.get();
 
 	return 0;
