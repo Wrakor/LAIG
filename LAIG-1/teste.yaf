@@ -1,57 +1,47 @@
-<yaf> 
+<yaf>
+ <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CW" /> 
 
-    <globals background="ff ff ff ff" drawmode="ss" shading="ss" cullface="ss" cullorder="ss" /> 
-     
-    <cameras initial="ss" > 
-        <ortho id="1" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" /> 
-    </cameras> 
-   
-    <lighting doublesided="tt" local="tt" enabled="tt" ambient="ff ff ff ff"> 
-            <omni id="1" enabled="tt" 
-                location="ff ff ff" 
-                ambient="ff ff ff ff" 
-                diffuse="ff ff ff ff" 
-                specular="ff ff ff ff"
-			/>
-    </lighting> 
+ <cameras initial="default">
+ 	< perspective id ="n1" near ="0" far="1" left="1" right="0" top="1" bottom="0" />
+ </cameras>
 
-    <textures>        
-          <texture id="1" file="ss" />
-    </textures> 
+ <lighting doublesided="false" local="true" enabled="true" ambient="0 0 0 0" > 
+  <omni id="l1" enabled="true"
+                location="5 5 5"
+                ambient="1 1 1 1"
+                diffuse="1 0 1 0"
+                specular="0 1 0 1"
+            /> 
+ </lighting>
 
-    <appearances> 
-        <appearance id="1" 
-            emissive="ff ff ff ff" 
-            ambient="ff ff ff ff" 
-            diffuse="ff ff ff ff" 
-            specular="ff ff ff ff" 
-            shininess="ff" 
-            textureref="ss" 
-            texlength_s="ff" 
-            texlength_t="ff" 
-        /> 
-    </appearances> 
+ <textures>       
+          
+ </textures> 
 
-    <graph rootid="1"> 
-        <node id="1"> 
-            <transforms> 
-                <translate to="ff ff ff" /> 
-                <rotate axis="ee" angle="ff" /> 
-                <scale factor="ff ff ff" /> 
-            </transforms>
-			
-            <appearanceref id="1" /> 
-                               
-            <children> 
-        
-                <rectangle xy1="ff ff" xy2="ff ff" /> 
-                <triangle xyz1="ff ff ff" xyz2="ff ff ff" xyz3="ff ff ff" /> 
-                <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-                <sphere radius="ff" slices="ii" stacks="ii" /> 
-                <torus inner="ff" outer="ff" slices="ii" loops="ii" />
-				
-            </children> 
-        </node> 
-    </graph>
-	
-</yaf> 
+ <appearances>
+  <appearance id ="a1"
+  			  emissive="0 0 0 0"
+  			  ambient="0 0 0 0"
+  			  diffuse="0 0 0 0"
+  			  specular="0 0 0 0"
+  			  shininess="5" />
+ </appearances>
+
+  <graph rootid="graph0">
+
+        <node id="n1">
+           
+            <transforms>
+                <translate to="5 5 5" />
+            </transforms> 
+
+ 		<appearanceref id="ar1" />
+
+ 		<children>
+
+  		<rectangle xy1="5 5" xy2="0 0" />  
+  		<noderef id="noderef1" />
+ 		</children>
+ 		</node>
+  </graph>
+</yaf>
