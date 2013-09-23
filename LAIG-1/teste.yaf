@@ -1,8 +1,8 @@
 <yaf>
  <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CW" /> 
 
- <cameras initial="default">
- 	< perspective id ="n1" near ="0" far="1" left="1" right="0" top="1" bottom="0" />
+ <cameras initial="initial">
+ 	< perspective id ="initial" near ="0" far="1" left="1" right="0" top="1" bottom="0" />
  </cameras>
 
  <lighting doublesided="false" local="true" enabled="true" ambient="0 0 0 0" > 
