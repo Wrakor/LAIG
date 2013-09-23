@@ -23,4 +23,6 @@ protected:
 	TiXmlElement* graphElement;
 };
 
+bool to_bool(std::string str);
+
 #endif
