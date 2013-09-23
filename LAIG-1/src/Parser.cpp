@@ -1,4 +1,8 @@
+#include <sstream>
 #include <string>
+#include <iomanip>
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include "Parser.h"
 
@@ -65,16 +69,16 @@ Parser::Parser(char *filename)
 		throw "Error parsing lighting";
 	bool doublesided, local, enabled;
 	string ambient;
-	doublesided = lightingElement->Attribute("doublesided");
-	local = lightingElement->Attribute("local");
-	enabled = lightingElement->Attribute("enabled");
+	doublesided = to_bool(lightingElement->Attribute("doublesided"));
+	local = to_bool(lightingElement->Attribute("local"));
+	enabled = to_bool(lightingElement->Attribute("enabled"));
 	ambient= lightingElement->Attribute("ambient");
 	if(ambient.empty())
 		throw "Error parsing lighting attributes";
 	cout << "Lighting" << endl;
-	cout << "\tDoublesided: " << BoolToString(doublesided) << endl;
-	cout << "\tLocal: " << BoolToString(local) << endl;
-	cout << "\tEnabled: " << BoolToString(enabled) << endl;
+	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
+	cout << "\tLocal: " << boolalpha << local << endl;
+	cout << "\tEnabled: " << boolalpha << enabled << endl;
 	cout << "\tAmbient: " << ambient << endl;
 
 
@@ -234,7 +238,10 @@ TiXmlElement *Parser::findChildByAttribute(TiXmlElement *parent,const char * att
 	return child;
 }
 
-inline const char * const BoolToString(bool b)
-{
-  return b ? "True" : "False";
+bool to_bool(std::string str) {
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    std::istringstream is(str);
+    bool b;
+    is >> std::boolalpha >> b;
+    return b;
 }
