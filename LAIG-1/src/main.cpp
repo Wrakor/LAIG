@@ -1,10 +1,11 @@
 #include <iostream>
 #include <exception>
 
-#include "CGFapplication.h"
-#include "DemoScene.h"
+/*#include "CGFapplication.h"
+#include "DemoScene.h"*/
 #include "Parser.h"
 
+using std::cin;
 using std::cout;
 using std::exception;
 
