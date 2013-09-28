@@ -5,7 +5,7 @@
  	<perspective id ="initial" near ="0" far="1" left="1" right="0" top="1" bottom="0" />
  </cameras>
 
- <lighting doublesided="false" local="true" enabled="true" ambient="0 0 0 0" > 
+ <lighting doublesided="false" local="true" enabled="true" ambient="1 1 1 1" > 
   <omni id="l1" enabled="true"
                 location="5 5 5"
                 ambient="1 1 1 1"
@@ -14,34 +14,133 @@
             /> 
  </lighting>
 
- <textures>       
-          
+ <textures>   
+  <texture id="chao" file="chao.bmp" />   
+  <texture id="cubo" file="cubo.bmp" />   
  </textures> 
 
  <appearances>
-  <appearance id ="a1"
-  			  emissive="0 0 0 0"
-  			  ambient="0 0 0 0"
-  			  diffuse="0 0 0 0"
-  			  specular="0 0 0 0"
-  			  shininess="5" />
+  <appearance id="chao"
+    emissive="0 0 0 1"
+    ambient="0 0 0 1" 
+    diffuse="1 0.25 0 1" 
+    specular="0.3 0.3 0.3 1" 
+    shininess="90"
+    textureref="chao" 
+    texlength_s="1" 
+    texlength_t="1" /> 
+
+  <appearance id="cubo" 
+    emissive="0.3 0.3 0.05 1" 
+    ambient="0 0 0 1" 
+    diffuse="0 0 0 1" 
+    specular="0.3 0.3 0.3 1" 
+    shininess="0"
+    textureref="cubo" 
+    texlength_s="5" 
+    texlength_t="5" /> 
  </appearances>
 
   <graph rootid="graph0">
 
-        <node id="n1">
-           
-            <transforms>
-                <translate to="5 5 5" />
-            </transforms> 
+    <node id="cena">
+      <transforms>
+      </transforms>
+      <children>
+        <noderef id="cubo" />
+        <noderef id="chao" />
+      </children>
+    </node>
 
- 		<appearanceref id="ar1" />
+    <node id="cubo">           
+      <transforms>
+        <translate to="5 0 5" />
+      </transforms> 
 
- 		<children>
-
-  		<rectangle xy1="5 5" xy2="0 0" />  
-  		<noderef id="noderef1" />
- 		</children>
+      <appearanceref id="cubo" />
+   		<children>
+    		<noderef id="face1"/>
+        <noderef id="face2"/>
+        <noderef id="face3"/>
+        <noderef id="face4"/>
+        <noderef id="face5"/>
+        <noderef id="face6"/>    		
+   		</children>
  		</node>
+
+
+
+    <node id="face1">
+      <transforms>
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+     <node id="face2">
+      <transforms>
+        <translate to="0 5 0" />
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+    <node id="face3">
+      <transforms>
+        <rotate axis="zz" angle="90" />
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+    <node id="face4">
+      <transforms>
+        <rotate axis="zz" angle="90" />
+        <translate to="5 0 0" />
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+    <node id="face5">
+      <transforms>
+        <rotate axis="xx" angle="-90" />
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+      <node id="face6">
+      <transforms>
+        <rotate axis="xx" angle="-90" />
+        <translate to="0 0 5" />
+      </transforms> 
+
+      <children>
+        <rectangle xy1="0 0" xy2="5 5" />          
+      </children>
+    </node>
+
+    <node id="chao">
+      <transforms>
+        <scale factor="15 0 15" />
+      </transforms>
+
+      <appearanceref id="chao" />
+
+      <children>
+        <rectangle xy1="0 0" xy2="1 1" />
+      </children>
+    </node>
   </graph>
 </yaf>

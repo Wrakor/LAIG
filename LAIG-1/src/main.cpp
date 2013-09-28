@@ -1,8 +1,8 @@
 #include <iostream>
 #include <exception>
 
-/*#include "CGFapplication.h"
-#include "DemoScene.h"*/
+#include "CGFapplication.h"
+#include "DemoScene.h"
 #include "Parser.h"
 
 using std::cin;
@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
 	catch (const char* msg) {
 		cout << "EXCEPTION: " << msg;
 	}
+	cin.get();
 	cin.get();
 
 	return 0;
