@@ -15,8 +15,8 @@
  </lighting>
 
  <textures>   
-  <texture id="chao" file="chao.bmp" />   
-  <texture id="cubo" file="cubo.bmp" />   
+  <texture id="chao" file="chao.png" />   
+  <texture id="cubo" file="cubo.png" />   
  </textures> 
 
  <appearances>
@@ -49,12 +49,13 @@
       <children>
         <noderef id="cubo" />
         <noderef id="chao" />
+        <noderef id="mesa" />
       </children>
     </node>
 
     <node id="cubo">           
       <transforms>
-        <translate to="5 0 5" />
+        <translate to="5 0.5 8" />
       </transforms> 
 
       <appearanceref id="cubo" />
@@ -68,14 +69,13 @@
    		</children>
  		</node>
 
-
-
+  
     <node id="face1">
       <transforms>
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
@@ -85,55 +85,55 @@
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
     <node id="face3">
       <transforms>
-        <rotate axis="zz" angle="90" />
+        <rotate axis="z" angle="90" />
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
     <node id="face4">
       <transforms>
-        <rotate axis="zz" angle="90" />
+        <rotate axis="z" angle="90" />
         <translate to="5 0 0" />
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
     <node id="face5">
       <transforms>
-        <rotate axis="xx" angle="-90" />
+        <rotate axis="x" angle="-90" />
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
       <node id="face6">
       <transforms>
-        <rotate axis="xx" angle="-90" />
+        <rotate axis="x" angle="-90" />
         <translate to="0 0 5" />
       </transforms> 
 
       <children>
-        <rectangle xy1="0 0" xy2="5 5" />          
+        <rectangle xy1="0 0" xy2="1 1" />          
       </children>
     </node>
 
     <node id="chao">
       <transforms>
-        <scale factor="15 0 15" />
+        <scale factor="10 1 10" />
       </transforms>
 
       <appearanceref id="chao" />
@@ -142,5 +142,84 @@
         <rectangle xy1="0 0" xy2="1 1" />
       </children>
     </node>
+
+    <node id="mesa"> 
+      <transforms> 
+        <translate to="6 4.2 6" /> 
+        <rotate axis="x" angle="-90" /> 
+      </transforms> 
+      
+      <appearanceref id="cubo" />
+          
+      <children> 
+        <noderef id="tampo" /> 
+        <noderef id="perna1" /> 
+        <noderef id="perna2" /> 
+        <noderef id="perna3" /> 
+        <noderef id="perna4" /> 
+      </children> 
+      </node>   
+
+
+      <node id="perna1"> 
+        <transforms>      
+        </transforms> 
+                     
+        <children> 
+        <noderef id="perna" /> 
+        </children> 
+      </node> 
+
+        <node id="perna2"> 
+            <transforms>  
+                <translate to="9.5 0 0" />    
+            </transforms> 
+                     
+        <children> 
+        <noderef id="perna" /> 
+        </children> 
+        </node> 
+
+        <node id="perna3"> 
+            <transforms>  
+                <translate to="0 4.5 0" />    
+            </transforms> 
+                     
+            <children> 
+              <noderef id="perna" /> 
+            </children> 
+        </node> 
+
+        <node id="perna4"> 
+            <transforms>  
+                <translate to="9.5 4.5 0" />    
+            </transforms> 
+                     
+         <children> 
+          <noderef id="perna" /> 
+         </children> 
+        </node> 
+    
+        <node id="perna"> 
+          <transforms>  
+            <rotate axis="y" angle="90" /> 
+            <scale factor="2 0.5 0.5" /> 
+          </transforms> 
+                     
+          <children> 
+            <noderef id="cubo" /> 
+          </children> 
+        </node> 
+
+        <node id="tampo"> 
+            <transforms>  
+                <scale factor="5 0.5 5" /> 
+            </transforms> 
+                     
+         <children> 
+            <noderef id="cubo" /> 
+          </children> 
+        </node> 
+
   </graph>
 </yaf>
