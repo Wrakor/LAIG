@@ -133,20 +133,20 @@
 
     <node id="chao">
       <transforms>
-        <scale factor="10 1 10" />
+        <scale factor="10 0.5 10" />
+        <translate to="5 0 5" />
       </transforms>
 
       <appearanceref id="chao" />
 
       <children>
-        <rectangle xy1="0 0" xy2="1 1" />
+       <noderef id="cubo" />
       </children>
     </node>
 
     <node id="mesa"> 
       <transforms> 
-        <translate to="6 4.2 6" /> 
-        <rotate axis="x" angle="-90" /> 
+        <translate to="6 0 6" /> 
       </transforms> 
       
       <appearanceref id="cubo" />
@@ -162,64 +162,59 @@
 
 
       <node id="perna1"> 
-        <transforms>      
+        <transforms>     
+          <scale factor="0.3 3.5 0.3" />
+          <translate to="2.3 0 1.3" />          
         </transforms> 
                      
         <children> 
-        <noderef id="perna" /> 
+        <noderef id="cubo" /> 
         </children> 
       </node> 
 
-        <node id="perna2"> 
-            <transforms>  
-                <translate to="9.5 0 0" />    
-            </transforms> 
+      <node id="perna2"> 
+        <transforms>  
+            <scale factor="0.3 3.5 0.3" />
+            <translate to="2.3 0 -1.3" />     
+        </transforms> 
                      
         <children> 
-        <noderef id="perna" /> 
+        <noderef id="cubo" /> 
         </children> 
-        </node> 
+      </node> 
 
-        <node id="perna3"> 
-            <transforms>  
-                <translate to="0 4.5 0" />    
-            </transforms> 
+      <node id="perna3"> 
+          <transforms>  
+            <scale factor="0.3 3.5 0.3" />
+            <translate to="-2.3 0 1.3" />    
+          </transforms> 
                      
-            <children> 
-              <noderef id="perna" /> 
-            </children> 
-        </node> 
+          <children> 
+             <noderef id="cubo" /> 
+           </children> 
+       </node> 
 
-        <node id="perna4"> 
-            <transforms>  
-                <translate to="9.5 4.5 0" />    
-            </transforms> 
+      <node id="perna4"> 
+          <transforms>  
+            <scale factor="0.3 3.5 0.3" />
+            <translate to="2.3 0 -1.3" />     
+          </transforms> 
                      
          <children> 
           <noderef id="perna" /> 
          </children> 
-        </node> 
+      </node> 
     
-        <node id="perna"> 
-          <transforms>  
-            <rotate axis="y" angle="90" /> 
-            <scale factor="2 0.5 0.5" /> 
-          </transforms> 
+      <node id="tampo"> 
+        <transforms>  
+          <scale factor="5 0 3.3" />
+          <translate to="0 3.5 0" />  
+        </transforms> 
                      
-          <children> 
-            <noderef id="cubo" /> 
-          </children> 
-        </node> 
-
-        <node id="tampo"> 
-            <transforms>  
-                <scale factor="5 0.5 5" /> 
-            </transforms> 
-                     
-         <children> 
-            <noderef id="cubo" /> 
-          </children> 
-        </node> 
+        <children> 
+          <noderef id="cubo" /> 
+        </children> 
+      </node> 
 
   </graph>
 </yaf>
