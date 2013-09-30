@@ -27,8 +27,8 @@ void DemoScene::init()
 
 	obj=new ExampleObject();
 	materialAppearance=new CGFappearance();
-	textureAppearance=new CGFappearance("../data/pyramid.jpg",GL_REPEAT, GL_REPEAT);
-	shader=new CGFshader("../data/texshader.vert","../data/texshader.frag");
+	textureAppearance=new CGFappearance("data/pyramid.jpg",GL_REPEAT, GL_REPEAT);
+	shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
 	setUpdatePeriod(30);
 }
