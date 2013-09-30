@@ -74,11 +74,14 @@
     <ClCompile Include="src\ExampleObject.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\Primitiva.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoScene.h" />
     <ClInclude Include="src\ExampleObject.h" />
+    <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\Primitiva.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="demograph.xml" />
