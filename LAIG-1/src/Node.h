@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include "Primitiva.h"
+
 using namespace std;
 
 class Node {
