@@ -28,9 +28,9 @@ void DemoScene::init()
 	obj=new ExampleObject();
 	materialAppearance=new CGFappearance();
 	textureAppearance=new CGFappearance("data/pyramid.jpg",GL_REPEAT, GL_REPEAT);
-	shader=new CGFshader("data/texshader.vert","data/texshader.frag");
+	//shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
-	setUpdatePeriod(30);
+	//setUpdatePeriod(30);
 }
 
 void DemoScene::update(unsigned long t)
@@ -80,10 +80,10 @@ void DemoScene::display()
 
 	// shader object
 
-	glTranslatef(0,4,0);
+	/*glTranslatef(0,4,0);
 	shader->bind();
 	obj->draw();
-	shader->unbind();
+	shader->unbind();*/
 
 
 	// ---- END feature demos

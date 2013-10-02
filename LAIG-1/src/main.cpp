@@ -11,7 +11,7 @@ using std::exception;
 
 
 int main(int argc, char* argv[]) {
-	/*CGFapplication app = CGFapplication();
+	CGFapplication app = CGFapplication();
 
 	try {
 		app.init(&argc, argv);
@@ -28,9 +28,9 @@ int main(int argc, char* argv[]) {
 	catch(exception& ex) {
 		cout << "Unexpected error: " << ex.what();
 		return -1;
-	}*/
+	}
 
-	try
+	/*try
 	{
 		Parser *parser = new Parser("teste.yaf");
 	}
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 		cout << "EXCEPTION: " << msg;
 	}
 	cin.get();
-	cin.get();
+	cin.get();*/
 
 	return 0;
 }
