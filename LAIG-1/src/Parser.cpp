@@ -21,7 +21,7 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 
 	for (int i = 0; i < n; i++)
 	{
-		int j;
+		float j;
 		text_ss >> j;
 		elements.push_back(j);
 	}
@@ -153,13 +153,12 @@ Parser::Parser(char *filename)
 		throw "Error parsing lighting";
 
 	bool doublesided, local, enabled;
-
-	string ambient;
+	vector<float> ambient;
 
 	doublesided = to_bool(lightingElement->Attribute("doublesided"));
 	local = to_bool(lightingElement->Attribute("local"));
 	enabled = to_bool(lightingElement->Attribute("enabled"));
-	ambient= lightingElement->Attribute("ambient");
+	extractElementsFromString(ambient, lightingElement->Attribute("ambient"), 4);
 
 	if(ambient.empty())
 		throw "Error parsing lighting attributes";
@@ -170,7 +169,50 @@ Parser::Parser(char *filename)
 	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
 	cout << "\tLocal: " << boolalpha << local << endl;
 	cout << "\tEnabled: " << boolalpha << enabled << endl;
-	cout << "\tAmbient: " << ambient << endl;
+	cout << "\tAmbient: ";
+	for (int i = 0; i < ambient.size(); i++)
+		cout << ambient[i] << " ";
+	
+	string id, type;
+	vector<float> location, diffuse, specular, direction;
+	ambient.clear(); //limpar o conteudo do vector ambient visto que esta a ser reusado e tinha conteudo adicionado previamente
+	float angle, exponent;
+
+	if(!child)
+		throw "Error parsing lighting";
+	else
+		while(child)
+	{
+		type = child->Value();
+		id = child->Attribute("id");
+		enabled = to_bool(child->Attribute("enabled"));
+		extractElementsFromString(location, child->Attribute("location"), 3);
+		extractElementsFromString(ambient, child->Attribute("ambient"), 4);
+		extractElementsFromString(diffuse, child->Attribute("diffuse"), 4);
+		extractElementsFromString(specular, child->Attribute("specular"), 4);
+
+		cout << "\n\n\t- ID: " << id << endl;
+		cout << "\tType: " << type << endl;
+		cout << "\tLocation: ";
+		for (int i = 0; i < location.size(); i++)
+			cout << location[i] << " ";
+		cout << "\n\tAmbient: ";
+		for (int i = 0; i < ambient.size(); i++)
+			cout << ambient[i] << " ";
+		cout << "\n\tDiffuse: ";
+		for (int i = 0; i < diffuse.size(); i++)
+			cout << diffuse[i] << " ";
+		cout << "\n\tSpecular: ";
+		for (int i = 0; i < specular.size(); i++)
+			cout << specular[i] << " ";
+
+
+
+		child = child->NextSiblingElement();
+	}
+
+	
+
 
 	/////////////////////////////////////////////////////////////// Textures ///////////////////////////////////////////////////////////////
 
@@ -179,8 +221,8 @@ Parser::Parser(char *filename)
 	if(!texturesElement)
 		throw "Error parsing textures";
 
-	string id, file_name;
-	cout << "Textures" << endl;
+	string file_name;
+	cout << "\nTextures" << endl;
 
 	/////////////////////////////////////////////////////////////// Appearances ////////////////////////////////////////////////////////////
 
