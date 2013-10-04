@@ -9,6 +9,11 @@
 
 using namespace std;
 
+
+/*Recebe:
+* string text - com varios numeros,
+* int n - o numero de numeros a tirar da string,
+* vector elements - onde sao guardados os numeros */ 
 void extractElementsFromString(vector<float> &elements, string text, int n)
 {
 	stringstream text_ss;
@@ -16,7 +21,7 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 
 	for (int i = 0; i < n; i++)
 	{
-		int j;
+		float j;
 		text_ss >> j;
 		elements.push_back(j);
 	}
@@ -47,17 +52,30 @@ Parser::Parser(char *filename)
 		exit(1);
 	}
 
+	/////////////////////////////////////////////////////////////// Globals ///////////////////////////////////////////////////////////////
+
 	globalsElement = yafElement->FirstChildElement( "globals" );
 	if(!globalsElement)
 		throw "Error parsing globals";
+
 	string background, drawmode, shading, cullface, cullorder;
+
 	background = globalsElement->Attribute("background");
 	drawmode = globalsElement->Attribute("drawmode");
 	shading = globalsElement->Attribute("shading");
 	cullface = globalsElement->Attribute("cullface");
 	cullorder = globalsElement->Attribute("cullorder");
+
 	if(background.empty() || drawmode.empty() || shading.empty() || cullface.empty() || cullorder.empty())
 		throw "Error parsing globals attributes";
+
+	//print globals attributes
+	cout << "Globals" << endl;
+	cout << "\tBackground: " << background << endl;
+	cout << "\tDrawmode: " << drawmode << endl;
+	cout << "\tShading: " << shading << endl;
+	cout << "\tCullface: " << cullface << endl;
+	cout << "\tCullorder: " << cullorder << endl;
 
 	if(drawmode == "fill")
 		this->scene.drawMode = GL_FILL;
@@ -96,9 +114,12 @@ Parser::Parser(char *filename)
 	else
 		throw "Invalid cullorder";
 
+	/////////////////////////////////////////////////////////////// Cameras ///////////////////////////////////////////////////////////////
+
 	camerasElement = yafElement->FirstChildElement( "cameras" );
 	if(!camerasElement)
 		throw "Error parsing cameras";
+
 	string initialCameraID = camerasElement->Attribute("initial");
 	if(initialCameraID.empty())
 		throw "Error parsing initial camera";
@@ -107,22 +128,25 @@ Parser::Parser(char *filename)
 	if(!initialCamera)
 		throw "Initial camera not declared";
 	cout << "Cameras" << endl;
+
 	cout << "\t Initial: " << initialCameraID << endl;
 	TiXmlElement* camera = camerasElement->FirstChildElement();
+
 
 	while(camera)
 	{
 		float near, far, left, right, top, bottom, angle, pos_x, pos_y, pos_z, target;
+
 		string id = camera->Attribute("id"),type = camera->Value(), pos;		
 		vector<float> pos_vector;// = {0,0,0};
 
 		camera->QueryFloatAttribute("near", &near);
 		camera->QueryFloatAttribute("far", &far);
 
-		cout << endl << "\t ID: " << id << endl;
-		cout << "\t Type: " << type << endl;
-		cout << "\t Near: " << near << endl;
-		cout << "\t Far: " << far << endl;
+		cout << endl << "\tID: " << id << endl;
+		cout << "\tType: " << type << endl;
+		cout << "\tNear: " << near << endl;
+		cout << "\tFar: " << far << endl;
 
 		if (type == "perspective")
 		{
@@ -130,19 +154,17 @@ Parser::Parser(char *filename)
 			pos = camera->Attribute("pos");
 
 			extractElementsFromString(pos_vector, pos, 3);
-			/*stringstream pos_ss;
-			pos_ss << pos;
-			pos_ss >> pos_x >> pos_y >> pos_z;*/
 			camera->QueryFloatAttribute("target", &target);
 
 			//print camera attributes
-			cout << "\t Angle: " << angle << endl;
-			cout << "\t Pos: ";
+			cout << "\tAngle: " << angle << endl;
+			cout << "\tPos: ";
 			
 			for (int i = 0; i < pos_vector.size(); i++)
 				cout << pos_vector[i] << " ";
+
 			cout << endl;
-			cout << "\t Target: " << target << endl;
+			cout << "\tTarget: " << target << endl;
 			
 		}
 		else if (type == "ortho")
@@ -153,59 +175,117 @@ Parser::Parser(char *filename)
 			camera->QueryFloatAttribute("bottom", &bottom);
 
 			//print camera attributes
-			cout << "\t Left: " << left << endl;
-			cout << "\t Right: " << right << endl;
-			cout << "\t Top: " << top << endl;
-			cout << "\t Bottom: " << bottom << endl;
+			cout << "\tLeft: " << left << endl;
+			cout << "\tRight: " << right << endl;
+			cout << "\tTop: " << top << endl;
+			cout << "\tBottom: " << bottom << endl;
 		}
 
 
 		camera = camera->NextSiblingElement();
 	}
 
-
-	//TODO: more than one camera
-
+	/////////////////////////////////////////////////////////////// Lighting ///////////////////////////////////////////////////////////////
 
 	lightingElement = yafElement->FirstChildElement( "lighting" );
 	if(!lightingElement)
 		throw "Error parsing lighting";
+
 	bool doublesided, local, enabled;
-	string ambient;
+	vector<float> ambient;
+
 	doublesided = to_bool(lightingElement->Attribute("doublesided"));
 	local = to_bool(lightingElement->Attribute("local"));
 	enabled = to_bool(lightingElement->Attribute("enabled"));
-	ambient= lightingElement->Attribute("ambient");
+	extractElementsFromString(ambient, lightingElement->Attribute("ambient"), 4);
+
 	if(ambient.empty())
 		throw "Error parsing lighting attributes";
+
 	TiXmlElement *child = lightingElement->FirstChildElement();
+
 	cout << "Lighting" << endl;
 	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
 	cout << "\tLocal: " << boolalpha << local << endl;
 	cout << "\tEnabled: " << boolalpha << enabled << endl;
-	cout << "\tAmbient: " << ambient << endl;
+	cout << "\tAmbient: ";
+	for (int i = 0; i < ambient.size(); i++)
+		cout << ambient[i] << " ";
+	
+	string id, type;
+	vector<float> location, diffuse, specular, direction;
+	ambient.clear(); //limpar o conteudo do vector ambient visto que esta a ser reusado e tinha conteudo adicionado previamente
+	float angle, exponent;
 
+	if(!child)
+		throw "Error parsing lighting";
+	else
+		while(child)
+	{
+		type = child->Value();
+		id = child->Attribute("id");
+		enabled = to_bool(child->Attribute("enabled"));
+		extractElementsFromString(location, child->Attribute("location"), 3);
+		extractElementsFromString(ambient, child->Attribute("ambient"), 4);
+		extractElementsFromString(diffuse, child->Attribute("diffuse"), 4);
+		extractElementsFromString(specular, child->Attribute("specular"), 4);
+
+		cout << "\n\n\t- ID: " << id << endl;
+		cout << "\tType: " << type << endl;
+		cout << "\tLocation: ";
+		for (int i = 0; i < location.size(); i++)
+			cout << location[i] << " ";
+		cout << "\n\tAmbient: ";
+		for (int i = 0; i < ambient.size(); i++)
+			cout << ambient[i] << " ";
+		cout << "\n\tDiffuse: ";
+		for (int i = 0; i < diffuse.size(); i++)
+			cout << diffuse[i] << " ";
+		cout << "\n\tSpecular: ";
+		for (int i = 0; i < specular.size(); i++)
+			cout << specular[i] << " ";
+
+
+
+		child = child->NextSiblingElement();
+	}
+
+	
+
+
+	/////////////////////////////////////////////////////////////// Textures ///////////////////////////////////////////////////////////////
 
 	texturesElement = yafElement->FirstChildElement( "textures" );
+
 	if(!texturesElement)
 		throw "Error parsing textures";
-	string id, file_name;
-	cout << "Textures" << endl;
 
+	string file_name;
+	cout << "\nTextures" << endl;
+
+	/////////////////////////////////////////////////////////////// Appearances ////////////////////////////////////////////////////////////
 
 	appearancesElement = yafElement->FirstChildElement( "appearances" );
+
 	if(!appearancesElement)
 		throw "Error parsing appearances";
+
 	cout << "Appearances" << endl;
 
+	/////////////////////////////////////////////////////////////// Graph //////////////////////////////////////////////////////////////////
 
 	graphElement = yafElement->FirstChildElement( "graph" );
+
 	if(!graphElement)
 		throw "Error parsing graph";
+
 	string rootid;
+
 	rootid = graphElement->Attribute("rootid");
+
 	if(rootid.empty())
 		throw "Error parsing graph attributes";
+
 	cout << "Graph" << endl;
 	cout << "\tRoot ID" << rootid << endl;
 }
