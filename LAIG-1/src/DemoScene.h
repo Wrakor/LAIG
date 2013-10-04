@@ -10,13 +10,18 @@ public:
 	void init();
 	void display();
 	void update(unsigned long t);
-	~DemoScene();
+	//~DemoScene();
+	GLenum drawMode;
+	GLenum shadeModel;
+	bool cullface;
+	GLenum cullfaceMode;
+	GLenum cullorder;
 private:
 	CGFlight* light0;
 	CGFobject* obj;
 	CGFappearance* materialAppearance;
 	CGFappearance* textureAppearance;
-	CGFshader* shader;
+	//CGFshader* shader;
 };
 
 #endif

@@ -16,6 +16,22 @@ void DemoScene::init()
 	// Sets up some lighting parameters
 	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, CGFlight::background_ambient);  // Define ambient light
+
+	//Define drawmode
+	glPolygonMode(GL_FRONT_AND_BACK, this->drawMode);
+
+	//Define shading
+	glShadeModel(this->shadeModel);
+
+	//Define cullface
+	if(this->cullface)
+	{
+		glEnable(GL_CULL_FACE);
+		glCullFace(this->cullfaceMode);
+	}
+
+	//Define cullorder
+	glFrontFace(this->cullorder);
 	
 	// Declares and enables a light
 	float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
@@ -35,9 +51,9 @@ void DemoScene::init()
 
 void DemoScene::update(unsigned long t)
 {
-	shader->bind();
-	shader->update(t/400.0);
-	shader->unbind();
+	//shader->bind();
+	//shader->update(t/400.0);
+	//shader->unbind();
 	
 }
 	
@@ -94,11 +110,11 @@ void DemoScene::display()
 	glutSwapBuffers();
 }
 
-DemoScene::~DemoScene()
+/*DemoScene::~DemoScene()
 {
 	delete(shader);
 	delete(textureAppearance);
 	delete(materialAppearance);
 	delete(obj);
 	delete(light0);
-}
+} commented since values may not exist (parse failed)*/

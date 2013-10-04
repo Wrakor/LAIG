@@ -13,32 +13,33 @@ using std::exception;
 int main(int argc, char* argv[]) {
 	CGFapplication app = CGFapplication();
 
-	try {
-		app.init(&argc, argv);
-
-		app.setScene(new DemoScene());
-		app.setInterface(new CGFinterface());
-		
-		app.run();
-	}
-	catch(GLexception& ex) {
-		cout << "Error: " << ex.what();
-		return -1;
-	}
-	catch(exception& ex) {
-		cout << "Unexpected error: " << ex.what();
-		return -1;
-	}
-
-	/*try
+	try
 	{
 		Parser *parser = new Parser("teste.yaf");
+		try {
+			app.init(&argc, argv);
+
+			app.setScene(&parser->scene);
+			app.setInterface(new CGFinterface());
+		
+			app.run();
+		}
+		catch(GLexception& ex) {
+			cout << "Error: " << ex.what();
+			return -1;
+		}
+		catch(exception& ex) {
+			cout << "Unexpected error: " << ex.what();
+			return -1;
+		}
 	}
-	catch (const char* msg) {
+	catch (const char* msg) { //parse exception
 		cout << "EXCEPTION: " << msg;
+		exit(1);
 	}
-	cin.get();
-	cin.get();*/
+
+	
+
 
 	return 0;
 }

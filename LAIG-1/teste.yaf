@@ -1,5 +1,5 @@
 <yaf>
- <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CW" /> 
+ <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW" /> 
 
  <cameras initial="initial">
  	<perspective id="initial" near="0" far="1" angle="45" pos="10 10 10" target="0 0 0" />

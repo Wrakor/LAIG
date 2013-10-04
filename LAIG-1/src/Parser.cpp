@@ -25,6 +25,9 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 Parser::Parser(char *filename)
 {
 
+	//INIT Scene
+	this->scene = * new DemoScene();
+
 	// Read XML from file
 
 	doc=new TiXmlDocument( filename );
@@ -55,14 +58,43 @@ Parser::Parser(char *filename)
 	cullorder = globalsElement->Attribute("cullorder");
 	if(background.empty() || drawmode.empty() || shading.empty() || cullface.empty() || cullorder.empty())
 		throw "Error parsing globals attributes";
-	//print globals attributes
-	cout << "Globals" << endl;
-	cout << "\tBackground: " << background << endl;
-	cout << "\tDrawmode: " << drawmode << endl;
-	cout << "\tShading: " << shading << endl;
-	cout << "\tCullface: " << cullface << endl;
-	cout << "\tCullorder: " << cullorder << endl;
 
+	if(drawmode == "fill")
+		this->scene.drawMode = GL_FILL;
+	else if(drawmode == "line")
+		this->scene.drawMode = GL_LINE;
+	else if(drawmode == "point")
+		this->scene.drawMode = GL_POINT;
+	else
+		throw "Invalid drawmode";
+
+	if(shading == "flat")
+		this->scene.shadeModel = GL_FLAT;
+	else if(shading == "gouraud")
+		this->scene.shadeModel = GL_SMOOTH;
+	else
+		throw "Invalid shading";
+
+	if(cullface == "none")
+		this->scene.cullface = false;
+	else {
+		this->scene.cullface = true;
+		if(cullface=="back")
+			this->scene.cullfaceMode = GL_BACK;
+		else if(cullface=="front")
+			this->scene.cullfaceMode = GL_FRONT;
+		else if(cullface=="both")
+			this->scene.cullfaceMode = GL_FRONT_AND_BACK;
+		else
+			throw "Invalid cullface";
+	}
+
+	if(cullorder == "CCW")
+		this->scene.cullorder = GL_CCW;
+	else if(cullorder == "CW")
+		this->scene.cullorder = GL_CW;
+	else
+		throw "Invalid cullorder";
 
 	camerasElement = yafElement->FirstChildElement( "cameras" );
 	if(!camerasElement)

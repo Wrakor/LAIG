@@ -2,6 +2,7 @@
 #define _PARSER_H_
 
 #include "tinyxml.h"
+#include "DemoScene.h"
 #include <stdexcept>
 
 class Parser
@@ -11,6 +12,7 @@ public:
 	~Parser();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
+	DemoScene scene;
 	
 protected:
 
