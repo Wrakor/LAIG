@@ -99,16 +99,16 @@ Parser::Parser(char *filename)
 	camerasElement = yafElement->FirstChildElement( "cameras" );
 	if(!camerasElement)
 		throw "Error parsing cameras";
-	string initialCamera = camerasElement->Attribute("initial");
-	if(initialCamera.empty())
+	string initialCameraID = camerasElement->Attribute("initial");
+	if(initialCameraID.empty())
 		throw "Error parsing initial camera";
-	TiXmlElement* camera = findChildByAttribute(camerasElement, "id", initialCamera.c_str());
+	TiXmlElement* initialCamera = findChildByAttribute(camerasElement, "id", initialCameraID.c_str());
 
-	if(!camera)
+	if(!initialCamera)
 		throw "Initial camera not declared";
 	cout << "Cameras" << endl;
-	cout << "\t Initial: " << initialCamera << endl;
-	camera = camerasElement->FirstChildElement();
+	cout << "\t Initial: " << initialCameraID << endl;
+	TiXmlElement* camera = camerasElement->FirstChildElement();
 
 	while(camera)
 	{

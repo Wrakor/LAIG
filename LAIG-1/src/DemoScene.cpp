@@ -32,7 +32,7 @@ void DemoScene::init()
 
 	//Define cullorder
 	glFrontFace(this->cullorder);
-	
+
 	// Declares and enables a light
 	float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
