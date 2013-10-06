@@ -277,18 +277,18 @@ Parser::Parser(char *filename)
 
 		TiXmlElement *textures = texturesElement->FirstChildElement("texture");
 
-		
+
 		while (textures)
 		{
 			id = textures->Attribute("id");
 			file_name = textures->Attribute("file");
-			
+
 			cout << "\tID: " << id << endl;
 			cout << "\tFile: " << file_name << endl << endl;
 
 			textures = textures->NextSiblingElement();
 		}
-		
+
 
 		/////////////////////////////////////////////////////////////// Appearances ////////////////////////////////////////////////////////////
 
@@ -297,7 +297,7 @@ Parser::Parser(char *filename)
 		if(!appearancesElement)
 			throw "Error parsing appearances";
 
-		
+
 
 		cout << "Appearances" << endl;
 
@@ -313,7 +313,7 @@ Parser::Parser(char *filename)
 			ambient.clear();
 			diffuse.clear();
 			specular.clear();
-			
+
 			id = appearances->Attribute("id");
 			extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
 			extractElementsFromString(ambient, appearances->Attribute("ambient"), 4);
@@ -350,7 +350,7 @@ Parser::Parser(char *filename)
 			{
 				cout << "\n\ttexlength_t: " << texlength_t;
 			}
-			
+
 			appearances = appearances->NextSiblingElement();
 		}
 
@@ -370,9 +370,104 @@ Parser::Parser(char *filename)
 		if(rootid.empty())
 			throw "Error parsing graph attributes";
 
-		cout << "Graph" << endl;
-		cout << "\tRoot ID" << rootid << endl;
+		cout << "\nGraph" << endl;
+		cout << "\tRoot ID: " << rootid << endl;
+
+		TiXmlElement *node = graphElement->FirstChildElement("node");
+
+		if (!node)
+			throw "Error parsing nodes!";
+		else
+			while (node)
+			{
+				id = node->Attribute("id");
+				cout << "\n\t-ID: " << id << endl;
+
+				TiXmlElement *transforms = node->FirstChildElement("transforms");
+				TiXmlElement *translate = transforms->FirstChildElement("translate");
+				TiXmlElement *rotate = transforms->FirstChildElement("rotate");
+				TiXmlElement *transformsElement = transforms->FirstChildElement();
+
+				/*if (!transforms)
+				throw "Error parsing transforms";
+				else
+				while (transforms)
+				{
+				vector<float> transforms_components, scale;
+				float angle;
+				string axis;
+
+				while (translate)
+				{
+				extractElementsFromString(transforms_components, translate->Attribute("to"), 3);
+
+				cout << "\tTranslate to: ";
+				for (int i = 0; i < transforms_components.size(); i++)						
+				cout << transforms_components[i] << " ";
+				cout << endl;
+
+				transforms_components.clear();
+				translate = translate->NextSiblingElement("translate");
+				}
+
+				while (rotate)
+				{
+				axis = rotate->Attribute("axis");
+
+				if (rotate->QueryFloatAttribute("angle", &angle) == 0)
+				{
+				cout << "pilas";
+				}
+
+				cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
+
+
+				rotate = rotate->NextSiblingElement("rotate");
+				}
+
+				transforms = transforms->NextSiblingElement();
+				}*/
+
+				if (!transforms)
+					throw "Error parsing transforms";
+				else
+					while (transformsElement)
+					{						
+						vector<float> transforms_components, scale;
+						float angle;
+						string axis;
+						string value = transformsElement->Value();
+
+						if (value  == "translate")
+						{
+							extractElementsFromString(transforms_components, translate->Attribute("to"), 3);
+
+							cout << "\tTranslate to: ";
+							for (int i = 0; i < transforms_components.size(); i++)						
+								cout << transforms_components[i] << " ";
+							cout << endl;
+
+							transforms_components.clear();
+						}
+						else if (value == "rotate")
+						{
+							axis = rotate->Attribute("axis");
+
+							if (rotate->QueryFloatAttribute("angle", &angle) == 0)
+							{}
+
+							cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
+						}
+
+
+						transformsElement = transformsElement->NextSiblingElement();
+					}
+
+					node = node->NextSiblingElement();
+			}
 }
+
+
 /*	// Init
 // An example of well-known, required nodes
 

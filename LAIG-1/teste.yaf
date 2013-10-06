@@ -41,7 +41,7 @@
     texlength_t="5" /> 
  </appearances>
 
-  <graph rootid="graph0">
+  <graph rootid="cena">
 
     <node id="cena">
       <transforms>
