@@ -7,6 +7,7 @@
 #include <vector>
 #include "Parser.h"
 #include "PerspectiveCamera.h"
+#include "OrthoCamera.h"
 
 using namespace std;
 
@@ -188,7 +189,6 @@ Parser::Parser(char *filename)
 			c->setTargetZ(target_vector[2]);
 
 			cameraVectorIndex = this->scene.addCamera(c);
-			//this->scene.activateCamera();
 
 			//c->setRotation(CG_CGFcamera_AXIS_Y, angle); Qual ângulo?
 		}
@@ -204,6 +204,10 @@ Parser::Parser(char *filename)
 			cout << "\tRight: " << right << endl;
 			cout << "\tTop: " << top << endl;
 			cout << "\tBottom: " << bottom << endl;
+
+			OrthoCamera *c = new OrthoCamera(near, far, left, right, top, bottom);
+
+			cameraVectorIndex = this->scene.addCamera(c);
 		}
 
 		if(camera == initialCamera)

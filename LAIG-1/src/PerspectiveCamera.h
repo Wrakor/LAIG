@@ -4,7 +4,7 @@
 class PerspectiveCamera : public CGFcamera
 {
 private:
-	float angle;
+	float angle; //whats this?
 	GLdouble near, far;
 public:
 	PerspectiveCamera(GLdouble near, GLdouble far, float angle);
