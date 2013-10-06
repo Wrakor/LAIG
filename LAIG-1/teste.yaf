@@ -2,7 +2,7 @@
  <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW" /> 
 
  <cameras initial="initial">
- 	<perspective id="initial" near="0" far="1" angle="45" pos="10 10 10" target="0 0 0" />
+ 	<perspective id="initial" near="0.1" far="500" angle="45" pos="10 0 10" target="0 0 0" />
  </cameras>
 
  <lighting doublesided="false" local="true" enabled="true" ambient="1 1 1 1" > 

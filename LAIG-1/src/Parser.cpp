@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "Parser.h"
+#include "PerspectiveCamera.h"
 
 using namespace std;
 
@@ -135,10 +136,12 @@ Parser::Parser(char *filename)
 
 	while(camera)
 	{
-		float near, far, left, right, top, bottom, angle, pos_x, pos_y, pos_z, target;
+		float near, far, left, right, top, bottom, angle, pos_x, pos_y, pos_z;
+		int cameraVectorIndex = 0;
 
-		string id = camera->Attribute("id"),type = camera->Value(), pos;		
+		string id = camera->Attribute("id"),type = camera->Value(), pos, target;		
 		vector<float> pos_vector;// = {0,0,0};
+		vector<float> target_vector;
 
 		camera->QueryFloatAttribute("near", &near);
 		camera->QueryFloatAttribute("far", &far);
@@ -152,9 +155,10 @@ Parser::Parser(char *filename)
 		{
 			camera->QueryFloatAttribute("angle", &angle);
 			pos = camera->Attribute("pos");
-
 			extractElementsFromString(pos_vector, pos, 3);
-			camera->QueryFloatAttribute("target", &target);
+
+			target = camera->Attribute("target");
+			extractElementsFromString(target_vector, target, 3);
 
 			//print camera attributes
 			cout << "\tAngle: " << angle << endl;
@@ -164,8 +168,27 @@ Parser::Parser(char *filename)
 				cout << pos_vector[i] << " ";
 
 			cout << endl;
-			cout << "\tTarget: " << target << endl;
 			
+			cout << "\tTarget: ";
+			
+			for (int i = 0; i < target_vector.size(); i++)
+				cout << target_vector[i] << " ";
+
+			cout << endl;
+			
+			PerspectiveCamera *c = new PerspectiveCamera(near, far, angle);
+			c->setX(pos_vector[0]);
+			c->setY(pos_vector[1]);
+			c->setZ(pos_vector[2]);
+			
+			c->setTargetX(target_vector[0]);
+			c->setTargetY(target_vector[1]);
+			c->setTargetZ(target_vector[2]);
+
+			cameraVectorIndex = this->scene.addCamera(c);
+			//this->scene.activateCamera();
+
+			//c->setRotation(CG_CGFcamera_AXIS_Y, angle); Qual ângulo?
 		}
 		else if (type == "ortho")
 		{
@@ -181,6 +204,8 @@ Parser::Parser(char *filename)
 			cout << "\tBottom: " << bottom << endl;
 		}
 
+		if(camera == initialCamera)
+			this->scene.activateCamera(cameraVectorIndex);
 
 		camera = camera->NextSiblingElement();
 	}
