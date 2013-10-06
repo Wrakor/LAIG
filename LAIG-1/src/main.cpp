@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
 	}
 	catch (const char* msg) { //parse exception
 		cout << "EXCEPTION: " << msg;
+		cin.get();
 		exit(1);
 	}
 
