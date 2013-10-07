@@ -7,6 +7,7 @@
 class DemoScene : public CGFscene
 {
 public:
+	DemoScene();
 	void init();
 	void display();
 	void update(unsigned long t);
@@ -17,6 +18,7 @@ public:
 	GLenum cullfaceMode;
 	GLenum cullorder;
 	int addCamera(CGFcamera *c);
+	void initCameras();
 private:
 	CGFlight* light0;
 	CGFobject* obj;

@@ -149,26 +149,24 @@ void Parser::parseCameras()
 				cout << pos_vector[i] << " ";
 
 			cout << endl;
-
+			
 			cout << "\tTarget: ";
-
+			
 			for (int i = 0; i < target_vector.size(); i++)
 				cout << target_vector[i] << " ";
 
 			cout << endl;
-
+			
 			PerspectiveCamera *c = new PerspectiveCamera(near, far, angle);
 			c->setX(pos_vector[0]);
 			c->setY(pos_vector[1]);
 			c->setZ(pos_vector[2]);
-
+			
 			c->setTargetX(target_vector[0]);
 			c->setTargetY(target_vector[1]);
 			c->setTargetZ(target_vector[2]);
 
 			cameraVectorIndex = this->scene.addCamera(c);
-
-			//c->setRotation(CG_CGFcamera_AXIS_Y, angle); Qual ângulo?
 		}
 		else if (type == "ortho")
 		{
@@ -274,250 +272,250 @@ void Parser::parseLighting()
 void Parser::parseTextures()
 {
 	string id;
-	texturesElement = yafElement->FirstChildElement( "textures" );
+		texturesElement = yafElement->FirstChildElement( "textures" );
 
-	if(!texturesElement)
-		throw "Error parsing textures";
+		if(!texturesElement)
+			throw "Error parsing textures";
 
-	string file_name;
-	cout << "\nTextures" << endl;
+		string file_name;
+		cout << "\nTextures" << endl;
 
-	TiXmlElement *textures = texturesElement->FirstChildElement("texture");
+		TiXmlElement *textures = texturesElement->FirstChildElement("texture");
 
-	while (textures)
-	{
-		id = textures->Attribute("id");
-		file_name = textures->Attribute("file");
+		while (textures)
+		{
+			id = textures->Attribute("id");
+			file_name = textures->Attribute("file");
 
-		cout << "\tID: " << id << endl;
-		cout << "\tFile: " << file_name << endl << endl;
+			cout << "\tID: " << id << endl;
+			cout << "\tFile: " << file_name << endl << endl;
 
-		textures = textures->NextSiblingElement();
-	}
+			textures = textures->NextSiblingElement();
+		}
 }
 
 void Parser::parseAppearances()
 {
-	appearancesElement = yafElement->FirstChildElement( "appearances" );
+		appearancesElement = yafElement->FirstChildElement( "appearances" );
 	string id;
 	vector<float> ambient, diffuse, specular;
-	if(!appearancesElement)
-		throw "Error parsing appearances";
+		if(!appearancesElement)
+			throw "Error parsing appearances";
 
-	cout << "Appearances" << endl;
+		cout << "Appearances" << endl;
 
-	TiXmlElement *appearances = appearancesElement->FirstChildElement("appearance");
+		TiXmlElement *appearances = appearancesElement->FirstChildElement("appearance");
 
-	if (!appearances)
-		throw "Error parsing appearances";
-	while (appearances)
-	{
-		vector<float> emissive;
-		float shininess,  texlength_s,  texlength_t;
-		string textureref;
-		ambient.clear();
-		diffuse.clear();
-		specular.clear();
-
-		id = appearances->Attribute("id");
-		extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
-		extractElementsFromString(ambient, appearances->Attribute("ambient"), 4);
-		extractElementsFromString(diffuse, appearances->Attribute("diffuse"), 4);
-		extractElementsFromString(specular, appearances->Attribute("specular"), 4);
-		appearances->QueryFloatAttribute("shininess", &shininess);
-
-		cout << "\n\t- ID: " << id << endl;
-		cout << "\temissive: ";
-		for (int i = 0; i < emissive.size(); i++)
-			cout << emissive[i] << " ";
-		cout << "\n\tambient: ";
-		for (int i = 0; i < ambient.size(); i++)
-			cout << ambient[i] << " ";
-		cout << "\n\tdiffuse: ";
-		for (int i = 0; i < diffuse.size(); i++)
-			cout << diffuse[i] << " ";
-		cout << "\n\tspecular: ";
-		for (int i = 0; i < specular.size(); i++)
-			cout << specular[i] << " ";
-		cout << "\n\tshininess: " << shininess;
-
-		//textureref, textlength_s e textlength_t sao opcionais   ||NAO APAGAR OS IF's||
-		if (appearances->Attribute("textureref") != NULL) 
+		if (!appearances)
+			throw "Error parsing appearances";
+		while (appearances)
 		{
-			textureref = appearances->Attribute("textureref");		
-			cout << "\n\ttextureref: " << textureref;
-		}
-		if (appearances->QueryFloatAttribute("texlength_s", &texlength_s) == 0)
-		{
-			cout << "\n\ttexlength_s: " << texlength_s;
-		}
-		if (appearances->QueryFloatAttribute("texlength_t", &texlength_t) == 0)
-		{
-			cout << "\n\ttexlength_t: " << texlength_t;
-		}
+			vector<float> emissive;
+			float shininess,  texlength_s,  texlength_t;
+			string textureref;
+			ambient.clear();
+			diffuse.clear();
+			specular.clear();
 
-		appearances = appearances->NextSiblingElement();
-	}
+			id = appearances->Attribute("id");
+			extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
+			extractElementsFromString(ambient, appearances->Attribute("ambient"), 4);
+			extractElementsFromString(diffuse, appearances->Attribute("diffuse"), 4);
+			extractElementsFromString(specular, appearances->Attribute("specular"), 4);
+			appearances->QueryFloatAttribute("shininess", &shininess);
+
+			cout << "\n\t- ID: " << id << endl;
+			cout << "\temissive: ";
+			for (int i = 0; i < emissive.size(); i++)
+				cout << emissive[i] << " ";
+			cout << "\n\tambient: ";
+			for (int i = 0; i < ambient.size(); i++)
+				cout << ambient[i] << " ";
+			cout << "\n\tdiffuse: ";
+			for (int i = 0; i < diffuse.size(); i++)
+				cout << diffuse[i] << " ";
+			cout << "\n\tspecular: ";
+			for (int i = 0; i < specular.size(); i++)
+				cout << specular[i] << " ";
+			cout << "\n\tshininess: " << shininess;
+
+			//textureref, textlength_s e textlength_t sao opcionais   ||NAO APAGAR OS IF's||
+			if (appearances->Attribute("textureref") != NULL) 
+			{
+				textureref = appearances->Attribute("textureref");		
+				cout << "\n\ttextureref: " << textureref;
+			}
+			if (appearances->QueryFloatAttribute("texlength_s", &texlength_s) == 0)
+			{
+				cout << "\n\ttexlength_s: " << texlength_s;
+			}
+			if (appearances->QueryFloatAttribute("texlength_t", &texlength_t) == 0)
+			{
+				cout << "\n\ttexlength_t: " << texlength_t;
+			}
+
+			appearances = appearances->NextSiblingElement();
+		}
 }
 
 void Parser::parseGraph()
 {
 
-	graphElement = yafElement->FirstChildElement( "graph" );
+		graphElement = yafElement->FirstChildElement( "graph" );
 
-	if(!graphElement)
-		throw "Error parsing graph";
+		if(!graphElement)
+			throw "Error parsing graph";
 
 	string rootid, id;
 
-	rootid = graphElement->Attribute("rootid");
+		rootid = graphElement->Attribute("rootid");
 
-	if(rootid.empty())
-		throw "Error parsing graph attributes";
+		if(rootid.empty())
+			throw "Error parsing graph attributes";
 
-	cout << "\nGraph" << endl;
-	cout << "\tRoot ID: " << rootid << endl;
+		cout << "\nGraph" << endl;
+		cout << "\tRoot ID: " << rootid << endl;
 
-	TiXmlElement *node = graphElement->FirstChildElement("node");
+		TiXmlElement *node = graphElement->FirstChildElement("node");
 
-	if (!node)
-		throw "Error parsing nodes!";
-	else
-		while (node)
-		{
-			id = node->Attribute("id");
-			cout << "\n\t-ID: " << id << endl;
+		if (!node)
+			throw "Error parsing nodes!";
+		else
+			while (node)
+			{
+				id = node->Attribute("id");
+				cout << "\n\t-ID: " << id << endl;
 
-			TiXmlElement *transforms = node->FirstChildElement("transforms");
-			TiXmlElement *transformsElement = transforms->FirstChildElement();
+				TiXmlElement *transforms = node->FirstChildElement("transforms");
+				TiXmlElement *transformsElement = transforms->FirstChildElement();
 
-			cout << "\t-Transforms" << endl;
+				cout << "\t-Transforms" << endl;
 
-			if (!transforms)
-				throw "Error parsing transforms";
-			else
-				while (transformsElement)
-				{						
-					vector<float> transforms_components, scale;
-					float angle;
-					string axis, value = transformsElement->Value();
-
-					if (value  == "translate")
-					{
-						extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
-
-						cout << "\tTranslate to: ";
-						for (int i = 0; i < transforms_components.size(); i++)						
-							cout << transforms_components[i] << " ";
-						cout << endl;
-
-						transforms_components.clear();
-					}
-					else if (value == "rotate")
-					{
-						axis = transformsElement->Attribute("axis");
-
-						if (transformsElement->QueryFloatAttribute("angle", &angle) == 0)
-						{}
-
-						cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
-					}
-					else if (value == "scale")
-					{
-						extractElementsFromString(transforms_components, transformsElement->Attribute("factor"), 3);
-
-						cout << "\tScale factor: ";
-						for (int i = 0; i < transforms_components.size(); i++)
+				if (!transforms)
+					throw "Error parsing transforms";
+				else
+					while (transformsElement)
+					{						
+						vector<float> transforms_components, scale;
+						float angle;
+						string axis, value = transformsElement->Value();
+						
+						if (value  == "translate")
 						{
-							cout << transforms_components[i] << " ";
-						}
-						cout << endl;
-					}
+							extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
 
-					transformsElement = transformsElement->NextSiblingElement();
-				}
-
-				string appearanceref, value;
-				TiXmlElement * children = transforms->NextSiblingElement(); //pode ser children ou appearanceref
-				value = children->Value();
-
-				if (value == "appearanceref")
-				{
-					appearanceref = children->Attribute("id");
-					cout << "\t-Appearanceref ID: " << appearanceref << endl;
-				}
-				else if (value == "children")
-				{
-					TiXmlElement *childrenElement = children->FirstChildElement();
-
-					cout << "\t-Children:" << endl;
-					while (childrenElement)
-					{
-						value = childrenElement->Value();
-
-						if (value == "rectangle")
-						{
-							vector<float> xy1, xy2;
-
-							extractElementsFromString(xy1, childrenElement->Attribute("xy1"), 2);
-							extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
-
-							cout << "\tRectangle: ";
-							for (int i = 0; i < xy1.size(); i++)
-								cout << xy1[i] << " ";
+							cout << "\tTranslate to: ";
+							for (int i = 0; i < transforms_components.size(); i++)						
+								cout << transforms_components[i] << " ";
 							cout << endl;
 
+							transforms_components.clear();
 						}
-						else if (value == "triangle")
+						else if (value == "rotate")
 						{
-							vector<float> xyz1, xyz2, xyz3;
+							axis = transformsElement->Attribute("axis");
 
-							extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
-							extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
-							extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
+							if (transformsElement->QueryFloatAttribute("angle", &angle) == 0)
+							{}
+
+							cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
 						}
-						else if (value == "cylinder")
+						else if (value == "scale")
 						{
-							float base, top, height;
-							int slices, stacks;
+							extractElementsFromString(transforms_components, transformsElement->Attribute("factor"), 3);
 
-							childrenElement->QueryFloatAttribute("base", &base);
-							childrenElement->QueryFloatAttribute("top", &top);
-							childrenElement->QueryFloatAttribute("height", &height);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("stacks", &stacks);
-						}
-						else if (value == "sphere")
-						{
-							float radius;
-							int slices, stacks;
-
-							childrenElement->QueryFloatAttribute("radius", &radius);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("stacks", &stacks);
-						}
-						else if (value == "torus")
-						{
-							float inner, outer;
-							int slices, loops;
-
-							childrenElement->QueryFloatAttribute("inner", &inner);
-							childrenElement->QueryFloatAttribute("outer", &outer);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("loops", &loops);
-						}
-						else if (value == "noderef")
-						{
-							int id;
-
-							childrenElement->QueryIntAttribute("id", &id);
+							cout << "\tScale factor: ";
+							for (int i = 0; i < transforms_components.size(); i++)
+							{
+								cout << transforms_components[i] << " ";
+							}
+							cout << endl;
 						}
 
-						childrenElement = childrenElement->NextSiblingElement();
+						transformsElement = transformsElement->NextSiblingElement();
 					}
-				}			
-				node = node->NextSiblingElement();
-		}
+
+					string appearanceref, value;
+					TiXmlElement * children = transforms->NextSiblingElement(); //pode ser children ou appearanceref
+					value = children->Value();
+					
+					if (value == "appearanceref")
+					{
+						appearanceref = children->Attribute("id");
+						cout << "\t-Appearanceref ID: " << appearanceref << endl;
+					}
+					else if (value == "children")
+					{
+						TiXmlElement *childrenElement = children->FirstChildElement();
+
+						cout << "\t-Children:" << endl;
+						while (childrenElement)
+						{
+							value = childrenElement->Value();
+
+							if (value == "rectangle")
+							{
+								vector<float> xy1, xy2;
+
+								extractElementsFromString(xy1, childrenElement->Attribute("xy1"), 2);
+								extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
+
+								cout << "\tRectangle: ";
+								for (int i = 0; i < xy1.size(); i++)
+									cout << xy1[i] << " ";
+								cout << endl;
+
+							}
+							else if (value == "triangle")
+							{
+								vector<float> xyz1, xyz2, xyz3;
+
+								extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
+								extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
+								extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
+							}
+							else if (value == "cylinder")
+							{
+								float base, top, height;
+								int slices, stacks;
+
+								childrenElement->QueryFloatAttribute("base", &base);
+								childrenElement->QueryFloatAttribute("top", &top);
+								childrenElement->QueryFloatAttribute("height", &height);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("stacks", &stacks);
+							}
+							else if (value == "sphere")
+							{
+								float radius;
+								int slices, stacks;
+
+								childrenElement->QueryFloatAttribute("radius", &radius);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("stacks", &stacks);
+							}
+							else if (value == "torus")
+							{
+								float inner, outer;
+								int slices, loops;
+
+								childrenElement->QueryFloatAttribute("inner", &inner);
+								childrenElement->QueryFloatAttribute("outer", &outer);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("loops", &loops);
+							}
+							else if (value == "noderef")
+							{
+								int id;
+
+								childrenElement->QueryIntAttribute("id", &id);
+							}
+							
+							childrenElement = childrenElement->NextSiblingElement();
+						}
+					}					
+					node = node->NextSiblingElement();
+			}
 }
 Parser::Parser(char *filename)
 {
@@ -531,19 +529,19 @@ Parser::Parser(char *filename)
 	bool loadOkay = doc->LoadFile();
 
 	if ( !loadOkay )
-	{
+{
 		printf( "Could not load file '%s'. Error='%s'. Exiting.\n", filename, doc->ErrorDesc() );
 		exit( 1 );
-	}
+}
 
 	yafElement = doc->FirstChildElement( "yaf" );
 
 
 	if (yafElement == NULL)
-	{
+{
 		printf("Main yaf block element not found! Exiting!\n");
 		exit(1);
-	}
+}
 
 	parseGlobals();
 	parseCameras();
