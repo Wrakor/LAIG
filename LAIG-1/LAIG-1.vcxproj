@@ -73,21 +73,27 @@
     <ClCompile Include="src\DemoScene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\OrthoCamera.cpp" />
     <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\PerspectiveCamera.cpp" />
     <ClCompile Include="src\Primitiva.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DemoScene.h" />
     <ClInclude Include="src\ExampleObject.h" />
     <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\OrthoCamera.h" />
     <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\PerspectiveCamera.h" />
     <ClInclude Include="src\Primitiva.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="demograph.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="teste.yaf" />
+    <None Include="teste.yaf">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

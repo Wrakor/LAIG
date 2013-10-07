@@ -16,6 +16,7 @@ public:
 	bool cullface;
 	GLenum cullfaceMode;
 	GLenum cullorder;
+	int addCamera(CGFcamera *c);
 private:
 	CGFlight* light0;
 	CGFobject* obj;

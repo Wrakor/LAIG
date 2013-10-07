@@ -1,8 +1,9 @@
 <yaf>
  <globals background="0 0 1 1" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW" /> 
 
- <cameras initial="initial">
- 	<perspective id="initial" near="0" far="1" angle="45" pos="10 10 10" target="0 0 0" />
+ <cameras initial="persp">
+ 	<perspective id="persp" near="0.1" far="500" angle="45" pos="10 10 10" target="0 0 0" />
+  <ortho id="ortho" near="-100" far="100" left="-2" right="10" top="10" bottom="-2" />
  </cameras>
 
  <lighting doublesided="false" local="true" enabled="true" ambient="1 1 1 1" > 

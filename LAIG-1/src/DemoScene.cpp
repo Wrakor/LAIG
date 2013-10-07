@@ -5,6 +5,9 @@
 #include "ExampleObject.h"
 
 #include <math.h>
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 #include "CGFappearance.h"
 
@@ -32,6 +35,13 @@ void DemoScene::init()
 
 	//Define cullorder
 	glFrontFace(this->cullorder);
+
+	for(int i = 0;i<this->scene_cameras.size();i++)
+	{
+		cout << i << endl;
+	}
+
+	//this->activateCamera(0);
 
 	// Declares and enables a light
 	float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
@@ -108,6 +118,7 @@ void DemoScene::display()
 	// while the graphics card is showing the contents of another buffer - the front buffer
 	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 	glutSwapBuffers();
+	std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
 
 /*DemoScene::~DemoScene()
@@ -118,3 +129,10 @@ void DemoScene::display()
 	delete(obj);
 	delete(light0);
 } commented since values may not exist (parse failed)*/
+
+int DemoScene::addCamera(CGFcamera *c){
+	//this->scene_cameras.insert(scene_cameras.begin(), c);
+	int id = this->scene_cameras.size();
+	this->scene_cameras.push_back(c);
+	return id;
+}
