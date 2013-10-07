@@ -260,14 +260,7 @@ void Parser::parseLighting()
 			for (int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
-			Light *l = new Light(i, locationarray);
-			l->setAmbient(ambientarray);
-			l->setDiffuse(diffusearray);
-			l->setSpecular(speculararray);
-			if(enabled)
-				l->enable();
-			else
-				l->disable();//not needed?
+			Light *l = new Light(GL_LIGHT0+i, locationarray);
 
 			if (type == "spot")
 			{
@@ -283,17 +276,17 @@ void Parser::parseLighting()
 					cout << "\tdirection:" << direction[i] << endl;
 
 				//got to create again to set direction
-				Light *l = new Light(i, locationarray, directionarray);
-				l->setAmbient(ambientarray);
-				l->setDiffuse(diffusearray);
-				l->setSpecular(speculararray);
-				if(enabled)
-					l->enable();
-				else
-					l->disable();//not needed?
+				Light *l = new Light(GL_LIGHT0+i, locationarray, directionarray);
 				l->setAngle(angle);
 				//set expoente
 			}
+			l->setAmbient(ambientarray);
+			l->setDiffuse(diffusearray);
+			l->setSpecular(speculararray);
+			if(enabled)
+				l->enable();
+			else
+				l->disable();
 			this->scene.addLight(l);
 			i++;
 			lighting = lighting->NextSiblingElement();
