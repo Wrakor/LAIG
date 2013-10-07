@@ -8,6 +8,7 @@ public:
 	int getID();
 	void update();
 	void draw();
+	bool isEnabled();
 private:
 	GLfloat exp;
 	bool spot;

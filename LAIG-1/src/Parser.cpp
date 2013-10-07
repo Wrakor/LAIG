@@ -20,7 +20,7 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 {
 	stringstream text_ss;
 	text_ss << text;
-
+	elements.clear();
 	for (int i = 0; i < n; i++)
 	{
 		float j;
@@ -226,7 +226,6 @@ void Parser::parseLighting()
 
 	string id, type;
 	vector<float> location, diffuse, specular, direction;
-	ambient.clear(); //limpar o conteudo do vector ambient visto que esta a ser reusado e tinha conteudo adicionado previamente
 	float angle, exponent;
 	int i=0;
 	if(!lighting)
@@ -277,8 +276,8 @@ void Parser::parseLighting()
 				for (int i = 0; i < direction.size(); i++)
 					cout << "\tdirection:" << direction[i] << endl;
 
-				//got to create again to set direction
-				Light *l = new Light(true, GL_LIGHT0+i, locationarray, directionarray, exponent);
+				//got to create again to set direction and exponent
+				l = new Light(true, GL_LIGHT0+i, locationarray, directionarray, exponent);
 				l->setAngle(angle);
 			}
 			l->setAmbient(ambientarray);
@@ -338,9 +337,6 @@ void Parser::parseAppearances()
 			vector<float> emissive;
 			float shininess,  texlength_s,  texlength_t;
 			string textureref;
-			ambient.clear();
-			diffuse.clear();
-			specular.clear();
 
 			id = appearances->Attribute("id");
 			extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
@@ -434,7 +430,6 @@ void Parser::parseGraph()
 								cout << transforms_components[i] << " ";
 							cout << endl;
 
-							transforms_components.clear();
 						}
 						else if (value == "rotate")
 						{

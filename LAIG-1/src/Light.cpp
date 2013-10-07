@@ -21,12 +21,16 @@ void Light::update() {
 	else
 		glDisable(id);
 
+	//is this needed?
+	glLightfv(id, GL_AMBIENT, ambient);
+	glLightfv(id, GL_DIFFUSE, diffuse);
+	glLightfv(id, GL_SPECULAR, specular);
 	glLightfv(id, GL_POSITION, position);
 	if(spot)
 	{
 		glLightfv(id, GL_SPOT_DIRECTION, direction);
 		glLightf(id, GL_SPOT_EXPONENT, exp);
-	}	
+	}
 }
 
 void Light::draw() {
@@ -37,4 +41,9 @@ void Light::draw() {
 		glTranslatef(position[0],position[1],position[2]);
 		gluSphere(glu_quadric, CG_GLIGHT_DEFAULT_RADIUS, CG_GLIGHT_DEFAULT_SLICES, CG_GLIGHT_DEFAULT_STACKS);
 	glPopMatrix();
+}
+
+bool Light::isEnabled()
+{
+	return enabled;
 }

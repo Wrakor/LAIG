@@ -52,7 +52,9 @@ void DemoScene::init()
 	cout << "LIGHTS: " << endl;
 	std::list<CGFlight *>::iterator it = scene_lights.begin();
 	for(;it!=scene_lights.end();++it)
+	{
 		cout << ((Light *)(*it))->getID() << endl;
+	}
 
 
 	// Declares and enables a light
@@ -97,7 +99,9 @@ void DemoScene::display()
 	// Draw (and update) light
 	std::list<CGFlight *>::iterator it = scene_lights.begin();
 	for(;it!=scene_lights.end();++it)
+	{
 		((Light *)(*it))->draw();
+	}
 
 	// Draw axis
 	axis.draw();
@@ -156,5 +160,5 @@ void DemoScene::addLight(Light *l){
 }
 
 void DemoScene::initCameras(){
-	cout << "INITIATING CAMERAS" << endl; //isto não é chamado porquê?
+	cout << "INITIATING CAMERAS" << endl; //isto não é chamado porquê? porque não dei overload ao constructor
 }

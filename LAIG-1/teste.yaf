@@ -6,7 +6,7 @@
   <ortho id="ortho" near="-100" far="100" left="-2" right="10" top="10" bottom="-2" />
  </cameras>
 
- <lighting doublesided="true" local="false" enabled="true" ambient="0.2 0.2 0.2 1" > 
+ <lighting doublesided="true" local="false" enabled="true" ambient="0.4 0.4 0.4 1" > 
    <omni id="l1" enabled="false"
                 location="4 5 2"
                 ambient="1 1 1 1"
@@ -15,12 +15,12 @@
             />
    <spot id="l2" enabled="true" 
                 location="5 5 5" 
-                ambient="1 1 1 1" 
+                ambient="0 0 0 0" 
                 diffuse="1 1 1 1" 
                 specular="1 1 1 1"
-                angle="90" 
+                angle="45" 
                 exponent="128" 
-                direction="4 10 0" 
+                direction="-1 0 -1" 
             /> 
  
  </lighting>
