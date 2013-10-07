@@ -28,6 +28,7 @@ public:
 	void addAppearance(Appearance* appearance);
 	Texture* getTextureByID(string nodeID);
 	Appearance* getAppearanceByID(string nodeID);
+	void loadTextures();
 private:
 	//CGFlight* light0;
 	CGFobject* obj;

@@ -56,17 +56,13 @@ void Scene::init()
 		cout << ((Light *)(*it))->getID() << endl;
 	}
 
-
-	// Declares and enables a light
-	/*float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
-	light0 = new CGFlight(GL_LIGHT0, light0_pos);
-	light0->enable();*/
-
 	// Defines a default normal
 	glNormal3f(0,0,1);
 
 	obj=new ExampleObject();
 	//shader=new CGFshader("data/texshader.vert","data/texshader.frag");
+
+	loadTextures(); //got to load textures after initing scene
 
 	setUpdatePeriod(0);
 }
@@ -147,7 +143,6 @@ void Scene::display()
 } commented since values may not exist (parse failed)*/
 
 int Scene::addCamera(CGFcamera *c){
-	//this->scene_cameras.insert(scene_cameras.begin(), c);
 	int id = this->scene_cameras.size();
 	this->scene_cameras.push_back(c);
 	return id;
@@ -184,5 +179,11 @@ Appearance* Scene::getAppearanceByID(string nodeID)
 	for(int i=0;i<appearances.size();i++)
 		if(appearances[i]->nodeID == nodeID)
 			return appearances[i];
-	throw "Appearance not found"; //if texture isn't found, throw error
+	throw "Appearance not found"; //if appearance isn't found, throw error
+}
+
+void Scene::loadTextures()
+{
+	for(int i = 0; i<textures.size();i++)
+		textures[i]->load();
 }

@@ -5,10 +5,9 @@
 class Texture : public CGFtexture
 {
 public:
-	Texture(string nodeID, string tex):CGFtexture(tex){
-		this->nodeID = nodeID;
-	}
+	Texture(string nodeID, string fileName);
 	string nodeID;
+	void load();
 };
 
 #endif

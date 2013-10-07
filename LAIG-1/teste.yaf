@@ -28,6 +28,7 @@
  <textures>
   <!--<texture id="chao" file="chao.png" />
   <texture id="cubo" file="cubo.png" />-->
+   <texture id="pyramid" file="data/pyramid.jpg" />
  </textures>
 
  <appearances>
@@ -36,7 +37,11 @@
     ambient="0 0 0 1" 
     diffuse="1 0.25 0 1" 
     specular="0.3 0.3 0.3 1" 
-    shininess="90" /> 
+    shininess="90"
+    textureref="pyramid" 
+    texlength_s="10497"
+    texlength_t="10497 "/>
+   <!-- 10497 = valor do GL_REPEAT (falta implementar o que é pedido)-->
    <!--textureref="chao" 
     texlength_s="1" 
     texlength_t="1"-->

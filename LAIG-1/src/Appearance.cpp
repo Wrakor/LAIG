@@ -20,7 +20,7 @@ void Appearance::apply()
 	if (texture!=NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
-		texture->apply();	       
+		texture->apply();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, sWrap);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tWrap);
 	}

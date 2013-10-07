@@ -15,7 +15,7 @@ public:
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
 	Scene scene;
 	
-protected:
+private:
 
 	TiXmlDocument* doc;
 	TiXmlElement* yafElement;

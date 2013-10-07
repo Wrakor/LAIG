@@ -18,7 +18,6 @@ int main(int argc, char* argv[]) {
 		Parser *parser = new Parser("teste.yaf");
 		try {
 			app.init(&argc, argv);
-
 			app.setScene(&parser->scene);
 			app.setInterface(new CGFinterface());
 		
