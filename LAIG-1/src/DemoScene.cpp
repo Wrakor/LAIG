@@ -11,6 +11,10 @@
 
 #include "CGFappearance.h"
 
+DemoScene::DemoScene(){
+	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
+}
+
 void DemoScene::init() 
 {
 	// Enables lighting computations
@@ -56,7 +60,7 @@ void DemoScene::init()
 	textureAppearance=new CGFappearance("data/pyramid.jpg",GL_REPEAT, GL_REPEAT);
 	//shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
-	//setUpdatePeriod(30);
+	setUpdatePeriod(0);
 }
 
 void DemoScene::update(unsigned long t)
@@ -135,4 +139,8 @@ int DemoScene::addCamera(CGFcamera *c){
 	int id = this->scene_cameras.size();
 	this->scene_cameras.push_back(c);
 	return id;
+}
+
+void DemoScene::initCameras(){
+	cout << "INITIATING CAMERAS" << endl; //isto não é chamado porquê?
 }

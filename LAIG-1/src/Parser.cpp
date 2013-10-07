@@ -32,9 +32,6 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 Parser::Parser(char *filename)
 {
 
-	//INIT Scene
-	this->scene = * new DemoScene();
-
 	// Read XML from file
 
 	doc=new TiXmlDocument( filename );
@@ -189,8 +186,6 @@ Parser::Parser(char *filename)
 			c->setTargetZ(target_vector[2]);
 
 			cameraVectorIndex = this->scene.addCamera(c);
-
-			//c->setRotation(CG_CGFcamera_AXIS_Y, angle); Qual ângulo?
 		}
 		else if (type == "ortho")
 		{
