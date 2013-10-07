@@ -384,8 +384,6 @@ Parser::Parser(char *filename)
 				cout << "\n\t-ID: " << id << endl;
 
 				TiXmlElement *transforms = node->FirstChildElement("transforms");
-				TiXmlElement *translate = transforms->FirstChildElement("translate");
-				TiXmlElement *rotate = transforms->FirstChildElement("rotate");
 				TiXmlElement *transformsElement = transforms->FirstChildElement();
 
 				/*if (!transforms)
@@ -428,6 +426,8 @@ Parser::Parser(char *filename)
 				transforms = transforms->NextSiblingElement();
 				}*/
 
+				cout << "\t-Transforms" << endl;
+
 				if (!transforms)
 					throw "Error parsing transforms";
 				else
@@ -435,12 +435,11 @@ Parser::Parser(char *filename)
 					{						
 						vector<float> transforms_components, scale;
 						float angle;
-						string axis;
-						string value = transformsElement->Value();
-
+						string axis, value = transformsElement->Value();
+						
 						if (value  == "translate")
 						{
-							extractElementsFromString(transforms_components, translate->Attribute("to"), 3);
+							extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
 
 							cout << "\tTranslate to: ";
 							for (int i = 0; i < transforms_components.size(); i++)						
@@ -451,17 +450,67 @@ Parser::Parser(char *filename)
 						}
 						else if (value == "rotate")
 						{
-							axis = rotate->Attribute("axis");
+							axis = transformsElement->Attribute("axis");
 
-							if (rotate->QueryFloatAttribute("angle", &angle) == 0)
+							if (transformsElement->QueryFloatAttribute("angle", &angle) == 0)
 							{}
 
 							cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
 						}
+						else if (value == "scale")
+						{
+							extractElementsFromString(transforms_components, transformsElement->Attribute("factor"), 3);
 
+							cout << "\tScale factor: ";
+							for (int i = 0; i < transforms_components.size(); i++)
+							{
+								cout << transforms_components[i] << " ";
+							}
+							cout << endl;
+						}
 
 						transformsElement = transformsElement->NextSiblingElement();
 					}
+
+
+					string appearanceref, value;
+					TiXmlElement * children = transforms->NextSiblingElement(); //pode ser children ou appearanceref
+					value = children->Value();
+					
+					if (value == "appearanceref")
+					{
+						appearanceref = children->Attribute("id");
+						cout << "\t-Appearanceref ID: " << appearanceref << endl;
+					}
+					else if (value == "children")
+					{
+						TiXmlElement *childrenElement = children->FirstChildElement();
+
+						cout << "\t-Children:" << endl;
+						while (childrenElement)
+						{
+							value = childrenElement->Value();
+
+							if (value == "rectangle")
+							{
+								vector<float> xy1, xy2;
+
+								extractElementsFromString(xy1, childrenElement->Attribute("xy1"), 2);
+								extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
+
+								cout << "\tRectangle: ";
+								for (int i = 0; i < xy1.size(); i++)
+									cout << xy1[i] << " ";
+								cout << endl;
+
+							}
+
+							childrenElement = childrenElement->NextSiblingElement();
+						}
+					}
+
+
+					
 
 					node = node->NextSiblingElement();
 			}
