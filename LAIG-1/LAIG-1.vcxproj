@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClCompile Include="src\DemoScene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
+    <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OrthoCamera.cpp" />
     <ClCompile Include="src\Parser.cpp" />
@@ -81,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="src\DemoScene.h" />
     <ClInclude Include="src\ExampleObject.h" />
+    <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\OrthoCamera.h" />
     <ClInclude Include="src\Parser.h" />

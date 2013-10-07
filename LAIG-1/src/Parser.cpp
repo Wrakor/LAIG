@@ -208,7 +208,11 @@ void Parser::parseLighting()
 	if(ambient.empty())
 		throw "Error parsing lighting attributes";
 
-	TiXmlElement *lighting = lightingElement->FirstChildElement();
+	this->scene.lightingDoubleSided = doublesided;
+	this->scene.lightingLocal = local;
+	this->scene.lightingEnabled = enabled;
+	float *background_ambient = &ambient[0]; //convert vector to array
+	memcpy(Light::background_ambient,background_ambient,4); //copy array to static value CGFlight::background_ambient
 
 	cout << "Lighting" << endl;
 	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
@@ -218,11 +222,13 @@ void Parser::parseLighting()
 	for (int i = 0; i < ambient.size(); i++)
 		cout << ambient[i] << " ";
 
+	TiXmlElement *lighting = lightingElement->FirstChildElement();
+
 	string id, type;
 	vector<float> location, diffuse, specular, direction;
 	ambient.clear(); //limpar o conteudo do vector ambient visto que esta a ser reusado e tinha conteudo adicionado previamente
 	float angle, exponent;
-
+	int i=0;
 	if(!lighting)
 		throw "Error parsing lighting";
 	else
@@ -236,8 +242,11 @@ void Parser::parseLighting()
 			extractElementsFromString(diffuse, lighting->Attribute("diffuse"), 4);
 			extractElementsFromString(specular, lighting->Attribute("specular"), 4);
 
+			float *locationarray = &location[0], *ambientarray = &ambient[0], *diffusearray = &diffuse[0], *speculararray = &specular[0];
+
 			cout << "\n\n\t- ID: " << id << endl;
 			cout << "\tType: " << type << endl;
+			cout << "\tEnabled: " << boolalpha << enabled << endl;
 			cout << "\tLocation: ";
 			for (int i = 0; i < location.size(); i++)
 				cout << location[i] << " ";
@@ -251,18 +260,42 @@ void Parser::parseLighting()
 			for (int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
+			Light *l = new Light(i, locationarray);
+			l->setAmbient(ambientarray);
+			l->setDiffuse(diffusearray);
+			l->setSpecular(speculararray);
+			if(enabled)
+				l->enable();
+			else
+				l->disable();//not needed?
+
 			if (type == "spot")
 			{
 				lighting->QueryFloatAttribute("angle", &angle);
 				lighting->QueryFloatAttribute("exponent", &exponent);
 				extractElementsFromString(direction, lighting->Attribute("direction"), 3);
 
+				float *directionarray= &direction[0];
+
 				cout << "\tangle:" << angle << endl;
 				cout << "\texponent:" << exponent << endl;
 				for (int i = 0; i < direction.size(); i++)
 					cout << "\tdirection:" << direction[i] << endl;
-			}
 
+				//got to create again to set direction
+				Light *l = new Light(i, locationarray, directionarray);
+				l->setAmbient(ambientarray);
+				l->setDiffuse(diffusearray);
+				l->setSpecular(speculararray);
+				if(enabled)
+					l->enable();
+				else
+					l->disable();//not needed?
+				l->setAngle(angle);
+				//set expoente
+			}
+			this->scene.addLight(l);
+			i++;
 			lighting = lighting->NextSiblingElement();
 		}
 }

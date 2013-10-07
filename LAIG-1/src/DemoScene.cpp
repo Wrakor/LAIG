@@ -18,11 +18,13 @@ DemoScene::DemoScene(){
 void DemoScene::init() 
 {
 	// Enables lighting computations
-	glEnable(GL_LIGHTING);
+	if(this->lightingEnabled)
+		glEnable(GL_LIGHTING);
 
 	// Sets up some lighting parameters
-	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, CGFlight::background_ambient);  // Define ambient light
+	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, this->lightingDoubleSided);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, this->lightingLocal);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, Light::background_ambient);  // Define ambient light
 
 	//Define drawmode
 	glPolygonMode(GL_FRONT_AND_BACK, this->drawMode);
@@ -40,17 +42,23 @@ void DemoScene::init()
 	//Define cullorder
 	glFrontFace(this->cullorder);
 
+	cout << "CAMERAS: " << endl;
 	for(int i = 0;i<this->scene_cameras.size();i++)
-	{
 		cout << i << endl;
-	}
 
 	//this->activateCamera(0);
 
+	// cout lights
+	cout << "LIGHTS: " << endl;
+	std::list<CGFlight *>::iterator it = scene_lights.begin();
+	for(;it!=scene_lights.end();++it)
+		cout << ((Light *)(*it))->getID() << endl;
+
+
 	// Declares and enables a light
-	float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
+	/*float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
-	light0->enable();
+	light0->enable();*/
 
 	// Defines a default normal
 	glNormal3f(0,0,1);
@@ -87,7 +95,9 @@ void DemoScene::display()
 	CGFscene::activeCamera->applyView();
 
 	// Draw (and update) light
-	light0->draw();
+	std::list<CGFlight *>::iterator it = scene_lights.begin();
+	for(;it!=scene_lights.end();++it)
+		(*it)->draw();
 
 	// Draw axis
 	axis.draw();
@@ -139,6 +149,10 @@ int DemoScene::addCamera(CGFcamera *c){
 	int id = this->scene_cameras.size();
 	this->scene_cameras.push_back(c);
 	return id;
+}
+
+void DemoScene::addLight(Light *l){
+	this->scene_lights.push_back(l);
 }
 
 void DemoScene::initCameras(){

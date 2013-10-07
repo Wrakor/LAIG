@@ -2,6 +2,7 @@
 #define _PARSER_H_
 
 #include "tinyxml.h"
+#include "Light.h"
 #include "DemoScene.h"
 #include <stdexcept>
 
