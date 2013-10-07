@@ -528,14 +528,55 @@ Parser::Parser(char *filename)
 								cout << endl;
 
 							}
+							else if (value == "triangle")
+							{
+								vector<float> xyz1, xyz2, xyz3;
 
+								extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
+								extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
+								extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
+							}
+							else if (value == "cylinder")
+							{
+								float base, top, height;
+								int slices, stacks;
+
+								childrenElement->QueryFloatAttribute("base", &base);
+								childrenElement->QueryFloatAttribute("top", &top);
+								childrenElement->QueryFloatAttribute("height", &height);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("stacks", &stacks);
+
+							}
+							else if (value == "sphere")
+							{
+								float radius;
+								int slices, stacks;
+
+								childrenElement->QueryFloatAttribute("radius", &radius);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("stacks", &stacks);
+							}
+							else if (value == "torus")
+							{
+								float inner, outer;
+								int slices, loops;
+
+								childrenElement->QueryFloatAttribute("inner", &inner);
+								childrenElement->QueryFloatAttribute("outer", &outer);
+								childrenElement->QueryIntAttribute("slices", &slices);
+								childrenElement->QueryIntAttribute("loops", &loops);
+							}
+							else if (value == "noderef")
+							{
+								int id;
+
+								childrenElement->QueryIntAttribute("id", &id);
+							}
+							
 							childrenElement = childrenElement->NextSiblingElement();
 						}
-					}
-
-
-					
-
+					}					
 					node = node->NextSiblingElement();
 			}
 }
