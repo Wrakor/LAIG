@@ -4,8 +4,13 @@
 
 class Light : public CGFlight {
 public:
-	Light(unsigned int lightid, float *pos, float *dir=NULL);
+	Light(bool spot, unsigned int lightid, float *pos, float *dir=NULL, GLfloat exp=0);
 	int getID();
+	void update();
+	void draw();
+private:
+	GLfloat exp;
+	bool spot;
 };
 
 #endif

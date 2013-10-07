@@ -211,8 +211,8 @@ void Parser::parseLighting()
 	this->scene.lightingDoubleSided = doublesided;
 	this->scene.lightingLocal = local;
 	this->scene.lightingEnabled = enabled;
-	float *background_ambient = &ambient[0]; //convert vector to array
-	memcpy(Light::background_ambient,background_ambient,4); //copy array to static value CGFlight::background_ambient
+	for(int i=0;i<ambient.size();i++)
+		Light::background_ambient[i]=ambient[i];
 
 	cout << "Lighting" << endl;
 	cout << "\tDoublesided: " << boolalpha << doublesided << endl;
@@ -242,6 +242,8 @@ void Parser::parseLighting()
 			extractElementsFromString(diffuse, lighting->Attribute("diffuse"), 4);
 			extractElementsFromString(specular, lighting->Attribute("specular"), 4);
 
+			location.push_back(1);
+
 			float *locationarray = &location[0], *ambientarray = &ambient[0], *diffusearray = &diffuse[0], *speculararray = &specular[0];
 
 			cout << "\n\n\t- ID: " << id << endl;
@@ -260,7 +262,7 @@ void Parser::parseLighting()
 			for (int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
-			Light *l = new Light(GL_LIGHT0+i, locationarray);
+			Light *l = new Light(false, GL_LIGHT0+i, locationarray);
 
 			if (type == "spot")
 			{
@@ -276,9 +278,8 @@ void Parser::parseLighting()
 					cout << "\tdirection:" << direction[i] << endl;
 
 				//got to create again to set direction
-				Light *l = new Light(GL_LIGHT0+i, locationarray, directionarray);
+				Light *l = new Light(true, GL_LIGHT0+i, locationarray, directionarray, exponent);
 				l->setAngle(angle);
-				//set expoente
 			}
 			l->setAmbient(ambientarray);
 			l->setDiffuse(diffusearray);

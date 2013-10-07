@@ -7,12 +7,22 @@
  </cameras>
 
  <lighting doublesided="true" local="false" enabled="true" ambient="0.2 0.2 0.2 1" > 
-  <omni id="l1" enabled="true"
-                location="1 1 1"
-                ambient="0 0 0 0"
-                diffuse="0 0 0 0"
+   <omni id="l1" enabled="false"
+                location="4 5 2"
+                ambient="1 1 1 1"
+                diffuse="1 1 1 1"
                 specular="1 1 1 1"
             />
+   <spot id="l2" enabled="true" 
+                location="5 5 5" 
+                ambient="1 1 1 1" 
+                diffuse="1 1 1 1" 
+                specular="1 1 1 1"
+                angle="90" 
+                exponent="128" 
+                direction="4 10 0" 
+            /> 
+ 
  </lighting>
 
  <textures>   
