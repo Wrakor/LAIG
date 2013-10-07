@@ -1,4 +1,4 @@
-#include "DemoScene.h"
+#include "Scene.h"
 #include "CGFaxis.h"
 #include "CGFapplication.h"
 
@@ -11,11 +11,11 @@
 
 #include "CGFappearance.h"
 
-DemoScene::DemoScene(){
+Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
 }
 
-void DemoScene::init() 
+void Scene::init() 
 {
 	// Enables lighting computations
 	if(this->lightingEnabled)
@@ -66,14 +66,12 @@ void DemoScene::init()
 	glNormal3f(0,0,1);
 
 	obj=new ExampleObject();
-	materialAppearance=new CGFappearance();
-	textureAppearance=new CGFappearance("data/pyramid.jpg",GL_REPEAT, GL_REPEAT);
 	//shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
 	setUpdatePeriod(0);
 }
 
-void DemoScene::update(unsigned long t)
+void Scene::update(unsigned long t)
 {
 	//shader->bind();
 	//shader->update(t/400.0);
@@ -81,7 +79,7 @@ void DemoScene::update(unsigned long t)
 	
 }
 	
-void DemoScene::display() 
+void Scene::display() 
 {
 
 	// ---- BEGIN Background, camera and axis setup
@@ -113,13 +111,13 @@ void DemoScene::display()
 	// ---- BEGIN feature demos
 
 	// Simple object
-	materialAppearance->apply();
+	appearances[0]->apply();
 	obj->draw();
 
 	// textured object
 
 	glTranslatef(0,4,0);
-	textureAppearance->apply();
+	appearances[1]->apply();
 	obj->draw();
 
 	// shader object
@@ -139,7 +137,7 @@ void DemoScene::display()
 	std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
 
-/*DemoScene::~DemoScene()
+/*Scene::~Scene()
 {
 	delete(shader);
 	delete(textureAppearance);
@@ -148,17 +146,43 @@ void DemoScene::display()
 	delete(light0);
 } commented since values may not exist (parse failed)*/
 
-int DemoScene::addCamera(CGFcamera *c){
+int Scene::addCamera(CGFcamera *c){
 	//this->scene_cameras.insert(scene_cameras.begin(), c);
 	int id = this->scene_cameras.size();
 	this->scene_cameras.push_back(c);
 	return id;
 }
 
-void DemoScene::addLight(Light *l){
+void Scene::addLight(Light *l){
 	this->scene_lights.push_back(l);
 }
 
-void DemoScene::initCameras(){
+void Scene::initCameras(){
 	cout << "INITIATING CAMERAS" << endl; //isto não é chamado porquê? porque não dei overload ao constructor
+}
+
+void Scene::addTexture(Texture* texture)
+{
+	textures.push_back(texture);
+}
+
+void Scene::addAppearance(Appearance* appearance)
+{
+	appearances.push_back(appearance);
+}
+
+Texture* Scene::getTextureByID(string nodeID)
+{
+	for(int i=0;i<textures.size();i++)
+		if(textures[i]->nodeID == nodeID)
+			return textures[i];
+	throw "Texture not found"; //if texture isn't found, throw error
+}
+
+Appearance* Scene::getAppearanceByID(string nodeID)
+{
+	for(int i=0;i<appearances.size();i++)
+		if(appearances[i]->nodeID == nodeID)
+			return appearances[i];
+	throw "Appearance not found"; //if texture isn't found, throw error
 }

@@ -1,8 +1,11 @@
 #include <iostream>
 #include "PerspectiveCamera.h"
 
-PerspectiveCamera::PerspectiveCamera(GLdouble near, GLdouble far, float angle)
+using std::string;
+
+PerspectiveCamera::PerspectiveCamera(string nodeID, GLdouble near, GLdouble far, float angle)
 {
+	this->nodeID = nodeID;
 	this->near = near;
 	this->far = far;
 	this->angle = angle;

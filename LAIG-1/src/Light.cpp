@@ -4,15 +4,18 @@
 #define CG_GLIGHT_DEFAULT_SLICES 8
 #define CG_GLIGHT_DEFAULT_STACKS 8
 
+using std::string;
+
 int Light::getID()
 {
 	return this->id;
 }
 
-Light::Light(bool spot, unsigned int lightid, float *pos, float *dir, GLfloat exp):CGFlight(lightid, pos, dir) //call parent constructor
+Light::Light(string nodeID, bool spot, unsigned int lightid, float *pos, float *dir, GLfloat exp):CGFlight(lightid, pos, dir) //call parent constructor
 {
 	this->spot = spot;
 	this->exp = exp;
+	this->nodeID = nodeID;
 };
 
 void Light::update() {

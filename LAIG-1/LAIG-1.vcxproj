@@ -70,7 +70,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\DemoScene.cpp" />
+    <ClCompile Include="src\Appearance.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
     <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -80,7 +81,8 @@
     <ClCompile Include="src\Primitiva.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DemoScene.h" />
+    <ClInclude Include="src\Appearance.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\ExampleObject.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Node.h" />
@@ -88,6 +90,7 @@
     <ClInclude Include="src\Parser.h" />
     <ClInclude Include="src\PerspectiveCamera.h" />
     <ClInclude Include="src\Primitiva.h" />
+    <ClInclude Include="src\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="demograph.xml" />

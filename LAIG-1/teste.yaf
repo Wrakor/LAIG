@@ -25,10 +25,10 @@
  
  </lighting>
 
- <textures>   
-  <texture id="chao" file="chao.png" />   
-  <texture id="cubo" file="cubo.png" />   
- </textures> 
+ <textures>
+  <!--<texture id="chao" file="chao.png" />
+  <texture id="cubo" file="cubo.png" />-->
+ </textures>
 
  <appearances>
   <appearance id="chao"
@@ -36,20 +36,20 @@
     ambient="0 0 0 1" 
     diffuse="1 0.25 0 1" 
     specular="0.3 0.3 0.3 1" 
-    shininess="90"
-    textureref="chao" 
+    shininess="90" /> 
+   <!--textureref="chao" 
     texlength_s="1" 
-    texlength_t="1" /> 
+    texlength_t="1"-->
 
   <appearance id="cubo" 
     emissive="0.3 0.3 0.05 1" 
     ambient="0 0 0 1" 
     diffuse="0 0 0 1" 
     specular="0.3 0.3 0.3 1" 
-    shininess="0"
-    textureref="cubo" 
+    shininess="0" /> 
+   <!--textureref="cubo" 
     texlength_s="5" 
-    texlength_t="5" /> 
+    texlength_t="5"-->
  </appearances>
 
   <graph rootid="cena">

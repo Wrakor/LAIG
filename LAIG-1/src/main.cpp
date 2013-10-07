@@ -2,7 +2,7 @@
 #include <exception>
 
 #include "CGFapplication.h"
-#include "DemoScene.h"
+#include "Scene.h"
 #include "Parser.h"
 
 using std::cin;

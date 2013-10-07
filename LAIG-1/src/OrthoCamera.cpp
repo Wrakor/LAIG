@@ -1,8 +1,11 @@
 #include <iostream>
 #include "OrthoCamera.h"
 
-OrthoCamera::OrthoCamera(GLdouble near, GLdouble far, GLdouble left, GLdouble right, GLdouble top, GLdouble bottom)
+using std::string;
+
+OrthoCamera::OrthoCamera(string nodeID, GLdouble near, GLdouble far, GLdouble left, GLdouble right, GLdouble top, GLdouble bottom)
 {
+	this->nodeID = nodeID;
 	this->near = near;
 	this->far = far;
 	this->left = left;
