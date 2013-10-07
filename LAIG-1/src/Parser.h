@@ -17,12 +17,19 @@ public:
 protected:
 
 	TiXmlDocument* doc;
+	TiXmlElement* yafElement;
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;
 	TiXmlElement* lightingElement;
 	TiXmlElement* texturesElement;
 	TiXmlElement* appearancesElement;
 	TiXmlElement* graphElement;
+	void parseGlobals();
+	void parseCameras();
+	void parseLighting();
+	void parseTextures();
+	void parseAppearances();
+	void parseGraph();
 };
 
 bool to_bool(std::string str);
