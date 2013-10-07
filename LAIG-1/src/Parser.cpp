@@ -31,8 +31,6 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 
 void Parser::parseGlobals()
 {
-	/////////////////////////////////////////////////////////////// Globals ///////////////////////////////////////////////////////////////
-
 	globalsElement = yafElement->FirstChildElement( "globals" );
 	if(!globalsElement)
 		throw "Error parsing globals";
