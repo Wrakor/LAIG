@@ -43,7 +43,7 @@ void Scene::init()
 	glFrontFace(this->cullorder);
 
 	cout << "CAMERAS: " << endl;
-	for(int i = 0;i<this->scene_cameras.size();i++)
+	for(unsigned int i = 0;i<this->scene_cameras.size();i++)
 		cout << i << endl;
 
 	//this->activateCamera(0);
@@ -168,7 +168,7 @@ void Scene::addAppearance(Appearance* appearance)
 
 Texture* Scene::getTextureByID(string nodeID)
 {
-	for(int i=0;i<textures.size();i++)
+	for(unsigned int i=0;i<textures.size();i++)
 		if(textures[i]->nodeID == nodeID)
 			return textures[i];
 	throw "Texture not found"; //if texture isn't found, throw error
@@ -176,7 +176,7 @@ Texture* Scene::getTextureByID(string nodeID)
 
 Appearance* Scene::getAppearanceByID(string nodeID)
 {
-	for(int i=0;i<appearances.size();i++)
+	for(unsigned int i=0;i<appearances.size();i++)
 		if(appearances[i]->nodeID == nodeID)
 			return appearances[i];
 	throw "Appearance not found"; //if appearance isn't found, throw error
@@ -184,6 +184,6 @@ Appearance* Scene::getAppearanceByID(string nodeID)
 
 void Scene::loadTextures()
 {
-	for(int i = 0; i<textures.size();i++)
+	for(unsigned int i = 0; i<textures.size();i++)
 		textures[i]->load();
 }
