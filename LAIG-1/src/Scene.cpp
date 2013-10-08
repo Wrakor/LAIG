@@ -41,6 +41,8 @@ void Scene::init()
 		glEnable(GL_CULL_FACE);
 		glCullFace(this->cullfaceMode);
 	}
+	else
+		glDisable(GL_CULL_FACE);
 
 	//Define cullorder
 	glFrontFace(this->cullorder);
@@ -63,18 +65,18 @@ void Scene::init()
 	glNormal3f(0,0,1);
 
 	obj=new ExampleObject();
-	//shader=new CGFshader("data/texshader.vert","data/texshader.frag");
+	shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
 	loadTextures(); //got to load textures after initing scene
 
-	setUpdatePeriod(0);
+	setUpdatePeriod(30);
 }
 
 void Scene::update(unsigned long t)
 {
-	//shader->bind();
-	//shader->update(t/400.0);
-	//shader->unbind();
+	shader->bind();
+	shader->update(t/400.0);
+	shader->unbind();
 	
 }
 	
@@ -121,10 +123,10 @@ void Scene::display()
 
 	// shader object
 
-	/*glTranslatef(0,4,0);
+	glTranslatef(0,4,0);
 	shader->bind();
 	obj->draw();
-	shader->unbind();*/
+	shader->unbind();
 
 
 	// ---- END feature demos

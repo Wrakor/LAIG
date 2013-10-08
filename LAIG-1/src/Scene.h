@@ -36,7 +36,7 @@ private:
 	//CGFappearance* textureAppearance;
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
-	//CGFshader* shader;
+	CGFshader* shader;
 };
 
 #endif
