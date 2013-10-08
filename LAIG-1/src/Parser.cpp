@@ -153,7 +153,7 @@ void Parser::parseCameras()
 		{
 			if (camera->QueryFloatAttribute("angle", &angle) != 0)
 				throw "Error parsing Cameras: no 'angle' attribute";
-	
+
 			extractElementsFromString(pos_vector, camera->Attribute("pos"), 3);
 			extractElementsFromString(target_vector, camera->Attribute("target"), 3);
 
@@ -230,7 +230,7 @@ void Parser::parseLighting()
 	this->scene.lightingDoubleSided = doublesided;
 	this->scene.lightingLocal = local;
 	this->scene.lightingEnabled = enabled;
-	for(int i=0;i<ambient.size();i++) //set all background_ambient array fields with corresponding vector
+	for(unsigned int i=0;i<ambient.size();i++) //set all background_ambient array fields with corresponding vector
 		Light::background_ambient[i]=ambient[i];
 
 	cout << "Lighting" << endl;
@@ -238,7 +238,7 @@ void Parser::parseLighting()
 	cout << "\tLocal: " << boolalpha << local << endl;
 	cout << "\tEnabled: " << boolalpha << enabled << endl;
 	cout << "\tAmbient: ";
-	for (int i = 0; i < ambient.size(); i++)
+	for (unsigned int i = 0; i < ambient.size(); i++)
 		cout << ambient[i] << " ";
 
 	TiXmlElement *lighting = lightingElement->FirstChildElement();
@@ -264,18 +264,18 @@ void Parser::parseLighting()
 
 			cout << "\n\n\t- ID: " << id << endl;
 			cout << "\tType: " << type << endl;
-			cout << "\tEnabled: " << boolalpha << enabled << endl;	
+			cout << "\tEnabled: " << boolalpha << enabled << endl;
 			cout << "\tLocation: ";
-			for (int i = 0; i < location.size(); i++)
+			for (unsigned int i = 0; i < location.size(); i++)
 				cout << location[i] << " ";
 			cout << "\n\tAmbient: ";
-			for (int i = 0; i < ambient.size(); i++)
+			for (unsigned int i = 0; i < ambient.size(); i++)
 				cout << ambient[i] << " ";
 			cout << "\n\tDiffuse: ";
-			for (int i = 0; i < diffuse.size(); i++)
+			for (unsigned int i = 0; i < diffuse.size(); i++)
 				cout << diffuse[i] << " ";
 			cout << "\n\tSpecular: ";
-			for (int i = 0; i < specular.size(); i++)
+			for (unsigned int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
 			Light *l = new Light(id, false, GL_LIGHT0+j, &location[0]);
@@ -288,7 +288,7 @@ void Parser::parseLighting()
 
 				cout << "\tangle:" << angle << endl;
 				cout << "\texponent:" << exponent << endl;
-				for (int i = 0; i < direction.size(); i++)
+				for (unsigned int i = 0; i < direction.size(); i++)
 					cout << "\tdirection:" << direction[i] << endl;
 
 				//got to create again to set direction and exponent
@@ -364,16 +364,16 @@ void Parser::parseAppearances()
 
 		cout << "\n\t- ID: " << id << endl;
 		cout << "\temissive: ";
-		for (int i = 0; i < emissive.size(); i++)
+		for (unsigned int i = 0; i < emissive.size(); i++)
 			cout << emissive[i] << " ";
 		cout << "\n\tambient: ";
-		for (int i = 0; i < ambient.size(); i++)
+		for (unsigned int i = 0; i < ambient.size(); i++)
 			cout << ambient[i] << " ";
 		cout << "\n\tdiffuse: ";
-		for (int i = 0; i < diffuse.size(); i++)
+		for (unsigned int i = 0; i < diffuse.size(); i++)
 			cout << diffuse[i] << " ";
 		cout << "\n\tspecular: ";
-		for (int i = 0; i < specular.size(); i++)
+		for (unsigned int i = 0; i < specular.size(); i++)
 			cout << specular[i] << " ";
 		cout << "\n\tshininess: " << shininess;
 
@@ -447,7 +447,7 @@ void Parser::parseGraph()
 						extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
 
 						cout << "\tTranslate to: ";
-						for (int i = 0; i < transforms_components.size(); i++)						
+						for (unsigned int i = 0; i < transforms_components.size(); i++)						
 							cout << transforms_components[i] << " ";
 						cout << endl;
 
@@ -466,7 +466,7 @@ void Parser::parseGraph()
 						extractElementsFromString(transforms_components, transformsElement->Attribute("factor"), 3);
 
 						cout << "\tScale factor: ";
-						for (int i = 0; i < transforms_components.size(); i++)
+						for (unsigned int i = 0; i < transforms_components.size(); i++)
 						{
 							cout << transforms_components[i] << " ";
 						}
@@ -502,7 +502,7 @@ void Parser::parseGraph()
 							extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
 
 							cout << "\tRectangle: ";
-							for (int i = 0; i < xy1.size(); i++)
+							for (unsigned int i = 0; i < xy1.size(); i++)
 								cout << xy1[i] << " ";
 							cout << endl;
 
