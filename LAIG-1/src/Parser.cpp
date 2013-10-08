@@ -59,7 +59,7 @@ void Parser::parseGlobals()
 	//print globals attributes
 	cout << "Globals" << endl;
 	cout << "\tBackground: ";
-	for (int i = 0; i < background.size(); i++)
+	for (unsigned int i = 0; i < background.size(); i++)
 	{
 		cout << background[i] << " ";		
 	}
