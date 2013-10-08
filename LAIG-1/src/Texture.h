@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 #include "CGFtexture.h"
 
 class Texture : public CGFtexture
@@ -9,5 +8,3 @@ public:
 	string nodeID;
 	void load();
 };
-
-#endif

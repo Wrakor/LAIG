@@ -3,6 +3,8 @@
 
 #include "CGFscene.h"
 #include "CGFshader.h"
+#pragma once
+
 #include "Light.h"
 #include "Texture.h"
 #include "Appearance.h"
