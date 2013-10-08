@@ -3,6 +3,8 @@
 
 #include "CGFscene.h"
 #include "CGFshader.h"
+#pragma once
+
 #include "Light.h"
 #include "Texture.h"
 #include "Appearance.h"
@@ -15,11 +17,9 @@ public:
 	void display();
 	void update(unsigned long t);
 	//~Scene();
-	GLenum drawMode;
-	GLenum shadeModel;
+	GLenum drawMode, shadeModel, cullfaceMode, cullorder;
 	bool cullface;
-	GLenum cullfaceMode;
-	GLenum cullorder;
+	GLfloat backgroundR, backgroundG, backgroundB, backgroundA;
 	int addCamera(CGFcamera *c);
 	void initCameras();
 	bool lightingDoubleSided, lightingLocal, lightingEnabled;

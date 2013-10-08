@@ -1,5 +1,4 @@
-#ifndef EXAMPLEOBJECT_H
-#define EXAMPLEOBJECT_H
+#pragma once
 
 #include "CGFobject.h"
 
@@ -8,4 +7,3 @@ class ExampleObject: public CGFobject {
 		void draw();
 };
 
-#endif

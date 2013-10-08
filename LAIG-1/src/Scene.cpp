@@ -17,6 +17,9 @@ Scene::Scene(){
 
 void Scene::init() 
 {
+	//limpa a cor activa debackground e define nova cor RGBA
+	glClearColor(backgroundR,backgroundG,backgroundB,backgroundA);
+
 	// Enables lighting computations
 	if(this->lightingEnabled)
 		glEnable(GL_LIGHTING);

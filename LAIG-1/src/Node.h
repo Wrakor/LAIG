@@ -1,6 +1,9 @@
+#pragma once
+
 #include <string>
 #include <vector>
 #include "Primitiva.h"
+
 
 using namespace std;
 

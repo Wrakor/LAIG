@@ -1,5 +1,4 @@
-#ifndef _PARSER_H_
-#define _PARSER_H_
+#pragma once
 
 #include "tinyxml.h"
 #include "Light.h"
@@ -34,5 +33,3 @@ private:
 };
 
 bool to_bool(std::string str);
-
-#endif

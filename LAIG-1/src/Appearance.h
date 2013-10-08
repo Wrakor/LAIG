@@ -1,5 +1,4 @@
-#ifndef APPEARANCE_H
-#define APPEARANCE_H
+#pragma once
 #include "CGFapplication.h" //TEM DE ESTAR AQUI SENÃO ESTOURA
 #include "CGFappearance.h"
 
@@ -14,4 +13,3 @@ public:
 	void apply();
 };
 
-#endif

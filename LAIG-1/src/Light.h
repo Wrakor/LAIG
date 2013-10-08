@@ -1,5 +1,5 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#pragma once
+
 #include "CGFlight.h"
 
 using std::string;
@@ -16,5 +16,3 @@ private:
 	GLfloat exp;
 	bool spot;
 };
-
-#endif
