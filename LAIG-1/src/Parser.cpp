@@ -35,7 +35,7 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 	}
 
 	if(text_ss.rdbuf()->in_avail()!=0)
-		throw "Error parsing, parameter with invalid number of attributes!";
+		throw "Error parsing, parameter with invalid number/type of attribute(s)!";
 }
 
 void Parser::parseGlobals()
@@ -125,23 +125,24 @@ void Parser::parseCameras()
 	if(!initialCamera)
 		throw "Initial camera not declared";
 	cout << "Cameras" << endl;
-
-
-
 	cout << "\t Initial: " << initialCameraID << endl;
 	TiXmlElement* camera = camerasElement->FirstChildElement();
 
 	while(camera)
 	{
-		float near, far, left, right, top, bottom, angle, pos_x, pos_y, pos_z;
+		float near, far, left, right, top, bottom, angle;
 		int cameraVectorIndex = 0;
 
-		string id = camera->Attribute("id"),type = camera->Value(), pos, target;		
+		string id = camera->Attribute("id"),type = camera->Value(), target;		
 		vector<float> pos_vector;// = {0,0,0};
 		vector<float> target_vector;
 
-		camera->QueryFloatAttribute("near", &near);
-		camera->QueryFloatAttribute("far", &far);
+		if (id.empty() || type.empty())
+			throw "Error parsing Cameras: empty string";
+		if (camera->QueryFloatAttribute("near", &near) != 0)
+			throw "Error parsing Cameras: no 'near' attribute";
+		if (camera->QueryFloatAttribute("far", &far) != 0)
+			throw "Error parsing Cameras: no 'far' attribute";
 
 		cout << endl << "\tID: " << id << endl;
 		cout << "\tType: " << type << endl;
@@ -150,27 +151,21 @@ void Parser::parseCameras()
 
 		if (type == "perspective")
 		{
-			camera->QueryFloatAttribute("angle", &angle);
-			pos = camera->Attribute("pos");
-			extractElementsFromString(pos_vector, pos, 3);
-
-			target = camera->Attribute("target");
-			extractElementsFromString(target_vector, target, 3);
+			if (camera->QueryFloatAttribute("angle", &angle) != 0)
+				throw "Error parsing Cameras: no 'angle' attribute";
+	
+			extractElementsFromString(pos_vector, camera->Attribute("pos"), 3);
+			extractElementsFromString(target_vector, camera->Attribute("target"), 3);
 
 			//print camera attributes
 			cout << "\tAngle: " << angle << endl;
 			cout << "\tPos: ";
-
 			for (int i = 0; i < pos_vector.size(); i++)
 				cout << pos_vector[i] << " ";
-
 			cout << endl;
-
 			cout << "\tTarget: ";
-
 			for (int i = 0; i < target_vector.size(); i++)
 				cout << target_vector[i] << " ";
-
 			cout << endl;
 
 			PerspectiveCamera *c = new PerspectiveCamera(id, near, far, angle);
@@ -186,10 +181,14 @@ void Parser::parseCameras()
 		}
 		else if (type == "ortho")
 		{
-			camera->QueryFloatAttribute("left", &left);
-			camera->QueryFloatAttribute("right", &right);
-			camera->QueryFloatAttribute("top", &top);
-			camera->QueryFloatAttribute("bottom", &bottom);
+			if (camera->QueryFloatAttribute("left", &left) != 0)
+				throw "Error parsing Cameras: no 'left' attribute";
+			if (camera->QueryFloatAttribute("right", &right) != 0)
+				"Error parsing Cameras: no 'right' attribute";
+			if (camera->QueryFloatAttribute("top", &top) != 0)
+				throw "Error parsing Cameras: no 'top' attribute";
+			if (camera->QueryFloatAttribute("bottom", &bottom) != 0)
+				"Error parsing Cameras: no 'bottom' attribute";
 
 			//print camera attributes
 			cout << "\tLeft: " << left << endl;
@@ -204,6 +203,8 @@ void Parser::parseCameras()
 
 		if(camera == initialCamera)
 			this->scene.activateCamera(cameraVectorIndex);
+
+		//if (near.empty())
 
 		camera = camera->NextSiblingElement();
 	}
@@ -245,7 +246,7 @@ void Parser::parseLighting()
 	string id, type;
 	vector<float> location, diffuse, specular, direction;
 	float angle, exponent;
-	int i=0;
+	unsigned int j=0;
 	if(!lighting)
 		throw "Error parsing lighting";
 	else
@@ -263,7 +264,7 @@ void Parser::parseLighting()
 
 			cout << "\n\n\t- ID: " << id << endl;
 			cout << "\tType: " << type << endl;
-			cout << "\tEnabled: " << boolalpha << enabled << endl;
+			cout << "\tEnabled: " << boolalpha << enabled << endl;	
 			cout << "\tLocation: ";
 			for (int i = 0; i < location.size(); i++)
 				cout << location[i] << " ";
@@ -277,7 +278,7 @@ void Parser::parseLighting()
 			for (int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
-			Light *l = new Light(id, false, GL_LIGHT0+i, &location[0]);
+			Light *l = new Light(id, false, GL_LIGHT0+j, &location[0]);
 
 			if (type == "spot")
 			{
@@ -291,7 +292,7 @@ void Parser::parseLighting()
 					cout << "\tdirection:" << direction[i] << endl;
 
 				//got to create again to set direction and exponent
-				l = new Light(id, true, GL_LIGHT0+i, &location[0], &direction[0], exponent);
+				l = new Light(id, true, GL_LIGHT0+j, &location[0], &direction[0], exponent);
 				l->setAngle(angle);
 			}
 			l->setAmbient(&ambient[0]);
@@ -302,7 +303,7 @@ void Parser::parseLighting()
 			else
 				l->disable();
 			this->scene.addLight(l);
-			i++;
+			j++;
 			lighting = lighting->NextSiblingElement();
 		}
 }
