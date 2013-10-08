@@ -59,7 +59,7 @@ void Parser::parseGlobals()
 	//print globals attributes
 	cout << "Globals" << endl;
 	cout << "\tBackground: ";
-	for (int i = 0; i < background.size(); i++)
+	for (unsigned int i = 0; i < background.size(); i++)
 	{
 		cout << background[i] << " ";		
 	}
@@ -160,11 +160,11 @@ void Parser::parseCameras()
 			//print camera attributes
 			cout << "\tAngle: " << angle << endl;
 			cout << "\tPos: ";
-			for (int i = 0; i < pos_vector.size(); i++)
+			for (unsigned int i = 0; i < pos_vector.size(); i++)
 				cout << pos_vector[i] << " ";
 			cout << endl;
 			cout << "\tTarget: ";
-			for (int i = 0; i < target_vector.size(); i++)
+			for (unsigned int i = 0; i < target_vector.size(); i++)
 				cout << target_vector[i] << " ";
 			cout << endl;
 
