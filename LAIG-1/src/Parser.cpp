@@ -44,9 +44,10 @@ void Parser::parseGlobals()
 	if(!globalsElement)
 		throw "Error parsing globals";
 
-	string background, drawmode, shading, cullface, cullorder;
+	string drawmode, shading, cullface, cullorder;
+	vector<float> background;
 
-	background = globalsElement->Attribute("background");
+	extractElementsFromString(background, globalsElement->Attribute("background"), 4);
 	drawmode = globalsElement->Attribute("drawmode");
 	shading = globalsElement->Attribute("shading");
 	cullface = globalsElement->Attribute("cullface");
@@ -57,11 +58,20 @@ void Parser::parseGlobals()
 
 	//print globals attributes
 	cout << "Globals" << endl;
-	cout << "\tBackground: " << background << endl;
-	cout << "\tDrawmode: " << drawmode << endl;
+	cout << "\tBackground: ";
+	for (int i = 0; i < background.size(); i++)
+	{
+		cout << background[i] << " ";		
+	}
+	cout << "\n\tDrawmode: " << drawmode << endl;
 	cout << "\tShading: " << shading << endl;
 	cout << "\tCullface: " << cullface << endl;
 	cout << "\tCullorder: " << cullorder << endl;
+
+	scene.backgroundR = background[0];
+	scene.backgroundG = background[1];
+	scene.backgroundB = background[2];
+	scene.backgroundA = background[3];
 
 	if(drawmode == "fill")
 		this->scene.drawMode = GL_FILL;
