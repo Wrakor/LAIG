@@ -522,6 +522,8 @@ void Parser::parseGraph()
 					if (appearancerefid.empty())
 						throw "Error aprsing appearanceref id";
 					cout << "\t-Appearanceref ID: " << appearancerefid << endl;
+
+					readNode->appearance=this->scene.getAppearanceByID(appearancerefid);
 				}
 
 				TiXmlElement *childrenElement = children->FirstChildElement();				
