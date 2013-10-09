@@ -8,6 +8,7 @@
 #include "Light.h"
 #include "Texture.h"
 #include "Appearance.h"
+#include "Node.h"
 
 class Scene : public CGFscene
 {
@@ -29,6 +30,7 @@ public:
 	Texture* getTextureByID(string nodeID);
 	Appearance* getAppearanceByID(string nodeID);
 	void loadTextures();
+	void addNode(Node* node);
 private:
 	//CGFlight* light0;
 	CGFobject* obj;
@@ -36,6 +38,7 @@ private:
 	//CGFappearance* textureAppearance;
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
+	vector<Node*> nodes;
 	CGFshader* shader;
 };
 

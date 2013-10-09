@@ -192,3 +192,8 @@ void Scene::loadTextures()
 	for(unsigned int i = 0; i<textures.size();i++)
 		textures[i]->load();
 }
+
+void Scene::addNode(Node *node)
+{
+	this->nodes.push_back(node);
+}

@@ -9,6 +9,7 @@
 #include "PerspectiveCamera.h"
 #include "OrthoCamera.h"
 #include "Appearance.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -431,13 +432,17 @@ void Parser::parseGraph()
 			TiXmlElement *transforms = node->FirstChildElement("transforms");
 			TiXmlElement *transformsElement = transforms->FirstChildElement();
 
+			Node *readNode = new Node();
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+
 			cout << "\t-Transforms" << endl;
 
 			if (!transforms)
 				throw "Error parsing transforms";
 			else
 				while (transformsElement)
-				{						
+				{
 					vector<float> transforms_components, scale;
 					float angle;
 					string axis, value = transformsElement->Value();
@@ -446,11 +451,12 @@ void Parser::parseGraph()
 					{
 						extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
 
-						cout << "\tTranslate to: ";
+						cout << "\tTranslate: ";
 						for (unsigned int i = 0; i < transforms_components.size(); i++)						
 							cout << transforms_components[i] << " ";
 						cout << endl;
 
+						glTranslatef(transforms_components[0],transforms_components[1],transforms_components[2]);
 					}
 					else if (value == "rotate")
 					{
@@ -460,6 +466,15 @@ void Parser::parseGraph()
 						{}
 
 						cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
+						
+						if(axis=="x")
+							glRotatef(angle, 1, 0, 0);
+						else if(axis=="y")
+							glRotatef(angle, 0, 1, 0);
+						else if(axis=="z")
+							glRotatef(angle, 0, 0, 1);
+						else
+							throw "Invalid axis";
 					}
 					else if (value == "scale")
 					{
@@ -471,11 +486,13 @@ void Parser::parseGraph()
 							cout << transforms_components[i] << " ";
 						}
 						cout << endl;
+						glScalef(transforms_components[0], transforms_components[1], transforms_components[2]);
 					}
 
 					transformsElement = transformsElement->NextSiblingElement();
 				}
-
+				glGetFloatv(GL_MODELVIEW_MATRIX, readNode->T);
+				
 				string appearanceref, value;
 				TiXmlElement * children = transforms->NextSiblingElement(); //pode ser children ou appearanceref
 				value = children->Value();
@@ -555,6 +572,7 @@ void Parser::parseGraph()
 						childrenElement = childrenElement->NextSiblingElement();
 					}
 				}					
+				this->scene.addNode(readNode);
 				node = node->NextSiblingElement();
 		}
 }
