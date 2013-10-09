@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Appearance.cpp" />
+    <ClCompile Include="src\Interface.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
     <ClCompile Include="src\Light.cpp" />
@@ -83,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Appearance.h" />
+    <ClInclude Include="src\Interface.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\ExampleObject.h" />
     <ClInclude Include="src\Light.h" />

@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Appearance.h"
 #include "Node.h"
+#include "OrthoCamera.h"
 
 class Scene : public CGFscene
 {
@@ -31,6 +32,10 @@ public:
 	Appearance* getAppearanceByID(string nodeID);
 	void loadTextures();
 	void addNode(Node* node);
+	unsigned int getNumLights();
+	unsigned int getNumCameras();
+	CGFcamera* getCamera(unsigned int id);
+	unsigned int getCameraIDByID(string nodeID); //quero a posição do vector de câmaras dando o ID do yaf
 private:
 	//CGFlight* light0;
 	CGFobject* obj;

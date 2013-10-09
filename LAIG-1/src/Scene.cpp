@@ -197,3 +197,26 @@ void Scene::addNode(Node *node)
 {
 	this->nodes.push_back(node);
 }
+
+unsigned int Scene::getNumLights()
+{
+	return this->scene_lights.size();
+}
+
+unsigned int Scene::getNumCameras()
+{
+	return this->scene_cameras.size();
+}
+
+CGFcamera* Scene::getCamera(unsigned int id)
+{
+	return this->scene_cameras[id];
+}
+
+unsigned int Scene::getCameraIDByID(string nodeID)
+{
+	for(unsigned int i=0;i<this->scene_cameras.size();i++)
+		if(((OrthoCamera *)this->scene_cameras[i])->nodeID==nodeID)
+			return i;
+	throw "Camera not found";
+}

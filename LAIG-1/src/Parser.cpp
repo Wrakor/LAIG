@@ -646,6 +646,7 @@ Parser::Parser(char *filename)
 	parseTextures();	
 	parseAppearances();
 	parseGraph();
+	interface.setScene(&this->scene);
 }
 
 Parser::~Parser()

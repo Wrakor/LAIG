@@ -3,6 +3,7 @@
 #include "tinyxml.h"
 #include "Light.h"
 #include "Scene.h"
+#include "Interface.h"
 #include <stdexcept>
 
 class Parser
@@ -13,6 +14,7 @@ public:
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
 	Scene scene;
+	Interface interface;
 	
 private:
 

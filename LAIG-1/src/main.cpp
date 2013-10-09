@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 		try {
 			app.init(&argc, argv);
 			app.setScene(&parser->scene);
-			app.setInterface(new CGFinterface());
+			app.setInterface(&parser->interface);
 		
 			app.run();
 		}
