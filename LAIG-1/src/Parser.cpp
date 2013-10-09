@@ -204,8 +204,6 @@ void Parser::parseCameras()
 		if(camera == initialCamera)
 			this->scene.activateCamera(cameraVectorIndex);
 
-		//if (near.empty())
-
 		camera = camera->NextSiblingElement();
 	}
 }
@@ -260,6 +258,9 @@ void Parser::parseLighting()
 			extractElementsFromString(diffuse, lighting->Attribute("diffuse"), 4);
 			extractElementsFromString(specular, lighting->Attribute("specular"), 4);
 
+			if (type.empty() || id.empty())
+				throw "Error parsing Lighting: empty string";
+
 			location.push_back(1);
 
 			cout << "\n\n\t- ID: " << id << endl;
@@ -282,8 +283,10 @@ void Parser::parseLighting()
 
 			if (type == "spot")
 			{
-				lighting->QueryFloatAttribute("angle", &angle);
-				lighting->QueryFloatAttribute("exponent", &exponent);
+				if (lighting->QueryFloatAttribute("angle", &angle) != 0)
+					throw "Error parsing Lighting: no 'angle' attribute!";
+				if (lighting->QueryFloatAttribute("exponent", &exponent) != 0)
+					throw "Error parsing Lighting: no 'exponent' attribute!";
 				extractElementsFromString(direction, lighting->Attribute("direction"), 3);
 
 				cout << "\tangle:" << angle << endl;
@@ -310,13 +313,12 @@ void Parser::parseLighting()
 
 void Parser::parseTextures()
 {
-	string id;
+	string id, file_name;
 	texturesElement = yafElement->FirstChildElement( "textures" );
 
 	if(!texturesElement)
 		throw "Error parsing textures";
 
-	string file_name;
 	cout << "\nTextures" << endl;
 
 	TiXmlElement *textures = texturesElement->FirstChildElement("texture");
@@ -326,6 +328,8 @@ void Parser::parseTextures()
 		id = textures->Attribute("id");
 		file_name = textures->Attribute("file");
 
+		if (id.empty() || file_name.empty())
+			throw "Error parsing textures: empty string!";
 		cout << "\tID: " << id << endl;
 		cout << "\tFile: " << file_name << endl << endl;
 
@@ -356,11 +360,14 @@ void Parser::parseAppearances()
 		string textureref;
 
 		id = appearances->Attribute("id");
+		if (id.empty())
+			throw "Error parsing appearances: empty string";
 		extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
 		extractElementsFromString(ambient, appearances->Attribute("ambient"), 4);
 		extractElementsFromString(diffuse, appearances->Attribute("diffuse"), 4);
 		extractElementsFromString(specular, appearances->Attribute("specular"), 4);
-		appearances->QueryFloatAttribute("shininess", &shininess);
+		if (appearances->QueryFloatAttribute("shininess", &shininess) != 0)
+			throw "Error parsing appearances: no 'shininess' attribute";
 
 		cout << "\n\t- ID: " << id << endl;
 		cout << "\temissive: ";
@@ -382,13 +389,18 @@ void Parser::parseAppearances()
 		//se textureref existir, tem de haver texlength_s e texlength_t
 		if (appearances->Attribute("textureref") != NULL) 
 		{
-			textureref = appearances->Attribute("textureref");		
+			textureref = appearances->Attribute("textureref");			
+			if (textureref.empty())
+				throw "Error parsing appearanes: no 'textureref' attribute";
+			if (appearances->QueryFloatAttribute("texlength_s", &texlength_s) != 0)
+				throw "Error parsing appearances: no 'textlength_s' attribute";
+			if (appearances->QueryFloatAttribute("texlength_t", &texlength_t) != 0)
+				throw "Error parsing apearances: no 'length_t' attribute";
 			cout << "\n\ttextureref: " << textureref;
-			a->setTexture(scene.getTextureByID(textureref)); //get previously set texture by nodeID
-			appearances->QueryFloatAttribute("texlength_s", &texlength_s);
 			cout << "\n\ttexlength_s: " << texlength_s;
-			appearances->QueryFloatAttribute("texlength_t", &texlength_t);
 			cout << "\n\ttexlength_t: " << texlength_t;
+
+			a->setTexture(scene.getTextureByID(textureref)); //get previously set texture by nodeID
 			if(!texlength_s || !texlength_t)
 				throw("Texture wrap not set or invalid");
 			a->setTextureWrap(texlength_s, texlength_t);
@@ -402,7 +414,6 @@ void Parser::parseAppearances()
 
 void Parser::parseGraph()
 {
-
 	graphElement = yafElement->FirstChildElement( "graph" );
 
 	if(!graphElement)
@@ -426,12 +437,14 @@ void Parser::parseGraph()
 		while (node)
 		{
 			id = node->Attribute("id");
-			cout << "\n\t-ID: " << id << endl;
+			if (id.empty())
+				throw "Error parsing node: no 'id' attribute";
+			cout << "\n\tID: " << id << endl;
 
 			TiXmlElement *transforms = node->FirstChildElement("transforms");
 			TiXmlElement *transformsElement = transforms->FirstChildElement();
 
-			cout << "\t-Transforms" << endl;
+			cout << "\t-Transforms:" << endl;
 
 			if (!transforms)
 				throw "Error parsing transforms";
@@ -442,7 +455,9 @@ void Parser::parseGraph()
 					float angle;
 					string axis, value = transformsElement->Value();
 
-					if (value  == "translate")
+					if (value.empty())
+						throw "error parsing node: no tag value";
+					else if (value  == "translate")
 					{
 						extractElementsFromString(transforms_components, transformsElement->Attribute("to"), 3);
 
@@ -455,9 +470,11 @@ void Parser::parseGraph()
 					else if (value == "rotate")
 					{
 						axis = transformsElement->Attribute("axis");
+						if (axis.empty())
+							throw "Error parsing node: no 'axis' attribute";
 
-						if (transformsElement->QueryFloatAttribute("angle", &angle) == 0)
-						{}
+						if (transformsElement->QueryFloatAttribute("angle", &angle) != 0)
+							throw "Error parsing node: no 'angle' attribute";
 
 						cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
 					}
@@ -476,84 +493,102 @@ void Parser::parseGraph()
 					transformsElement = transformsElement->NextSiblingElement();
 				}
 
-				string appearanceref, value;
-				TiXmlElement * children = transforms->NextSiblingElement(); //pode ser children ou appearanceref
-				value = children->Value();
+				string appearancerefid, value;
+				TiXmlElement *children = transforms->NextSiblingElement("children"), *appearanceref = transforms->NextSiblingElement("appearanceref"); //pode ser children ou appearanceref
+				if (!children)
+					throw "Error parsing node: no children block";
 
-				if (value == "appearanceref")
+				if (appearanceref)
 				{
-					appearanceref = children->Attribute("id");
-					cout << "\t-Appearanceref ID: " << appearanceref << endl;
+					appearancerefid = appearanceref->Attribute("id");
+					if (appearancerefid.empty())
+						throw "Error aprsing appearanceref id";
+					cout << "\t-Appearanceref ID: " << appearancerefid << endl;
 				}
-				else if (value == "children")
+
+				TiXmlElement *childrenElement = children->FirstChildElement();				
+
+				cout << "\t-Children:" << endl;
+				while (childrenElement)
 				{
-					TiXmlElement *childrenElement = children->FirstChildElement();
-
-					cout << "\t-Children:" << endl;
-					while (childrenElement)
+					value = childrenElement->Value();
+					//cout << "\tVALUE: " << value << endl;
+					
+					if (value.empty())
+						throw "Error parsing node: no children 'value' set"; 
+					if (value == "rectangle")
 					{
-						value = childrenElement->Value();
+						vector<float> xy1, xy2;
 
-						if (value == "rectangle")
-						{
-							vector<float> xy1, xy2;
+						extractElementsFromString(xy1, childrenElement->Attribute("xy1"), 2);
+						extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
 
-							extractElementsFromString(xy1, childrenElement->Attribute("xy1"), 2);
-							extractElementsFromString(xy2, childrenElement->Attribute("xy2"), 2);
+						cout << "\tRectangle: ";
+						for (unsigned int i = 0; i < xy1.size(); i++)
+							cout << xy1[i] << " ";
+						for (unsigned int i = 0; i < xy2.size(); i++)
+							cout << xy2[i] << " ";
+						cout << endl;
 
-							cout << "\tRectangle: ";
-							for (unsigned int i = 0; i < xy1.size(); i++)
-								cout << xy1[i] << " ";
-							cout << endl;
-
-						}
-						else if (value == "triangle")
-						{
-							vector<float> xyz1, xyz2, xyz3;
-
-							extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
-							extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
-							extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
-						}
-						else if (value == "cylinder")
-						{
-							float base, top, height;
-							int slices, stacks;
-
-							childrenElement->QueryFloatAttribute("base", &base);
-							childrenElement->QueryFloatAttribute("top", &top);
-							childrenElement->QueryFloatAttribute("height", &height);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("stacks", &stacks);
-						}
-						else if (value == "sphere")
-						{
-							float radius;
-							int slices, stacks;
-
-							childrenElement->QueryFloatAttribute("radius", &radius);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("stacks", &stacks);
-						}
-						else if (value == "torus")
-						{
-							float inner, outer;
-							int slices, loops;
-
-							childrenElement->QueryFloatAttribute("inner", &inner);
-							childrenElement->QueryFloatAttribute("outer", &outer);
-							childrenElement->QueryIntAttribute("slices", &slices);
-							childrenElement->QueryIntAttribute("loops", &loops);
-						}
-						else if (value == "noderef")
-						{
-							int id;
-
-							childrenElement->QueryIntAttribute("id", &id);
-						}
-
-						childrenElement = childrenElement->NextSiblingElement();
 					}
+					else if (value == "triangle")
+					{
+						vector<float> xyz1, xyz2, xyz3;
+
+						extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
+						extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
+						extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
+					}
+					else if (value == "cylinder")
+					{
+						float base, top, height;
+						int slices, stacks;
+
+						if (childrenElement->QueryFloatAttribute("base", &base) != 0)
+							throw "Error parsing cylinder: no 'base' attribute";
+						if (childrenElement->QueryFloatAttribute("top", &top) != 0)
+							throw "Error parsing cylinder: no 'top' attribute";
+						childrenElement->QueryFloatAttribute("height", &height);
+						childrenElement->QueryIntAttribute("slices", &slices);
+						childrenElement->QueryIntAttribute("stacks", &stacks);
+					}
+					else if (value == "sphere")
+					{
+						float radius;
+						int slices, stacks;
+
+						if (childrenElement->QueryFloatAttribute("radius", &radius) != 0)
+							throw "Error parsing sphere: no 'radius' attribute";
+						if (childrenElement->QueryIntAttribute("slices", &slices) != 0)
+							throw "Error parsing sphere: no 'slices' attribute";
+						if (childrenElement->QueryIntAttribute("stacks", &stacks) != 0)
+							throw "Error parsing sphere: no 'stacks' attribute";
+					}
+					else if (value == "torus")
+					{
+						float inner, outer;
+						int slices, loops;
+
+						if (childrenElement->QueryFloatAttribute("inner", &inner) != 0)
+							throw "Error parsing torus: no 'inner' attribute";
+						if (childrenElement->QueryFloatAttribute("outer", &outer) != 0)
+							throw "Error parsing torus: no 'outer' attribute";
+						if (childrenElement->QueryIntAttribute("slices", &slices) != 0)
+							throw "Error parsing torus: no 'slices' attribute";
+						if (childrenElement->QueryIntAttribute("loops", &loops) != 0)
+							throw "Error parsing torus: no 'loops' attribute";
+					}
+					else if (value == "noderef")
+					{
+						string id = childrenElement->Attribute("id");
+						if (id.empty())
+							throw "Error parsing node: no noderef 'id' attribute";
+
+						cout << "\tnoderef id:" << id << endl;
+					}
+					else throw "ESTOUROU";
+
+					childrenElement = childrenElement->NextSiblingElement();
 				}					
 				node = node->NextSiblingElement();
 		}
@@ -614,6 +649,9 @@ TiXmlElement *Parser::findChildByAttribute(TiXmlElement *parent,const char * att
 }
 
 bool to_bool(std::string str) {
+	if (str.empty())
+		throw "Error parsing: empty string";
+
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	std::istringstream is(str);
 	bool b;
