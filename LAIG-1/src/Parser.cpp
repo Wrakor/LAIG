@@ -28,7 +28,7 @@ void extractElementsFromString(vector<float> &elements, string text, int n)
 		float j;
 
 		if(text_ss.rdbuf()->in_avail()==0) //verifica antes de ler a stringstream se o numero de caracteres a ler é 0, pois se for, significa que faltam elementos pois vai ser lido o ultimo numero outra vez 
-			throw "Error parsing, parameter with invalid number of attributes!";
+			throw "Error parsing, parameter with invalid number/type of attribute(s)!";
 
 		text_ss >> j;
 		elements.push_back(j);
