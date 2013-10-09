@@ -31,6 +31,7 @@ void Light::update() {
 	glLightfv(id, GL_POSITION, position);
 	if(spot)
 	{
+		glLightfv(id, GL_SPOT_CUTOFF, &angle);
 		glLightfv(id, GL_SPOT_DIRECTION, direction);
 		glLightf(id, GL_SPOT_EXPONENT, exp);
 	}
