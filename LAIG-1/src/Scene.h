@@ -36,6 +36,7 @@ public:
 	unsigned int getNumCameras();
 	Camera* getCamera(unsigned int id);
 	unsigned int getPositionInCamerasVector(string ID); //quero a posição do vector de câmaras dando o ID do yaf
+	Camera *getActiveCamera();
 private:
 	//CGFlight* light0;
 	CGFobject* obj;

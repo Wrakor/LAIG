@@ -222,3 +222,8 @@ unsigned int Scene::getPositionInCamerasVector(string ID)
 
 	throw "Camera not found";
 }
+
+Camera* Scene::getActiveCamera()
+{
+	return (Camera*)activeCamera;
+}

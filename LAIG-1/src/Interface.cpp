@@ -1,6 +1,4 @@
 #include "Interface.h"
-#include "OrthoCamera.h"
-
 
 void Interface::initGUI()
 {
@@ -10,17 +8,19 @@ void Interface::initGUI()
 	char name[255];
 
 	for(unsigned int i=0;i<scene->getNumCameras();i++)
-	{
+	{			
 		std::strcpy(name, ((Camera *)scene->getCamera(i))->nodeID.c_str());
 		addRadioButtonToGroup(cameraRadioGroup, name);
+
+		if (((Camera *)scene->getCamera(i)) == scene->getActiveCamera())
+			cameraRadioGroup->set_int_val(i);
 	}
 }
 
 void Interface::processGUI(GLUI_Control *ctrl)
 {
 	if(ctrl->user_id == 0)
-		scene->activateCamera(ctrl->get_int_val());
-	
+		scene->activateCamera(ctrl->get_int_val());	
 }
 
 void Interface::setScene(Scene *scene)
