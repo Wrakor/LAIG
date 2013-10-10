@@ -2,6 +2,7 @@
 #include "CGFinterface.h"
 #include "Scene.h"
 
+
 class Interface : public CGFinterface
 {
 	Scene *scene;

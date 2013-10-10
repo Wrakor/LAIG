@@ -12,6 +12,7 @@ public:
 	void draw();
 	bool isEnabled();
 	string nodeID;
+	unsigned int getLightID();
 private:
 	GLfloat exp;
 	bool spot;
