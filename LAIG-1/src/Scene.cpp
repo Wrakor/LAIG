@@ -8,6 +8,10 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <typeinfo>
+
+
+
 
 #include "CGFappearance.h"
 
@@ -213,10 +217,21 @@ CGFcamera* Scene::getCamera(unsigned int id)
 	return this->scene_cameras[id];
 }
 
-unsigned int Scene::getCameraIDByID(string nodeID)
+unsigned int Scene::getPositionInCamerasVector(string ID)
 {
 	for(unsigned int i=0;i<this->scene_cameras.size();i++)
-		if(((OrthoCamera *)this->scene_cameras[i])->nodeID==nodeID)
-			return i;
+	{
+		string s = typeid(scene_cameras[i]).name();
+
+		if (s == "class OrthoCamera *")
+		{
+			if (((OrthoCamera *)scene_cameras[i])->nodeID == ID)
+				return i;
+		}
+		else
+			if (((PerspectiveCamera *)scene_cameras[i])->nodeID == ID)
+				return i;
+	}
+
 	throw "Camera not found";
 }

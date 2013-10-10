@@ -18,7 +18,7 @@ void Interface::initGUI()
 void Interface::processGUI(GLUI_Control *ctrl)
 {
 	if(ctrl->user_id == 0)
-		scene->activateCamera(scene->getCameraIDByID(ctrl->name));
+		scene->activateCamera(scene->getPositionInCamerasVector(ctrl->name));
 }
 
 void Interface::setScene(Scene *scene)
