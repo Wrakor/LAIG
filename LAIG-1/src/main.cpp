@@ -15,12 +15,6 @@ using std::exception;
 int main(int argc, char* argv[]) {
 	CGFapplication app = CGFapplication();
 
-	OrthoCamera *a = new OrthoCamera("a", 2, 3, 4, 5, 6, 7);
-	string s = typeid(a).name();
-	cout << "a;"<< s<< "b" << endl;
-	if (s == "class OrthoCamera *")
-		cout << "fuck yeah";
-
 	try
 	{
 		Parser *parser = new Parser("teste.yaf");
