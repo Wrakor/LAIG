@@ -10,9 +10,6 @@
 #include <thread>
 #include <typeinfo>
 
-
-
-
 #include "CGFappearance.h"
 
 Scene::Scene(){
@@ -151,7 +148,7 @@ void Scene::display()
 	delete(light0);
 } commented since values may not exist (parse failed)*/
 
-int Scene::addCamera(CGFcamera *c){
+int Scene::addCamera(Camera *c){
 	int id = this->scene_cameras.size();
 	this->scene_cameras.push_back(c);
 	return id;
@@ -212,26 +209,16 @@ unsigned int Scene::getNumCameras()
 	return this->scene_cameras.size();
 }
 
-CGFcamera* Scene::getCamera(unsigned int id)
+Camera* Scene::getCamera(unsigned int id)
 {
-	return this->scene_cameras[id];
+	return (Camera *)scene_cameras[id];
 }
 
 unsigned int Scene::getPositionInCamerasVector(string ID)
 {
 	for(unsigned int i=0;i<this->scene_cameras.size();i++)
-	{
-		string s = typeid(scene_cameras[i]).name();
-
-		if (s == "class OrthoCamera *")
-		{
-			if (((OrthoCamera *)scene_cameras[i])->nodeID == ID)
+		if (((Camera *)scene_cameras[i])->nodeID == ID)
 				return i;
-		}
-		else
-			if (((PerspectiveCamera *)scene_cameras[i])->nodeID == ID)
-				return i;
-	}
 
 	throw "Camera not found";
 }

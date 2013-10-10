@@ -9,9 +9,6 @@ using std::cin;
 using std::cout;
 using std::exception;
 
-#include <typeinfo> //apagar
-
-
 int main(int argc, char* argv[]) {
 	CGFapplication app = CGFapplication();
 
@@ -22,7 +19,7 @@ int main(int argc, char* argv[]) {
 			app.init(&argc, argv);
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
-		
+			//app.setInterface(new CGFinterface());
 			app.run();
 		}
 		catch(GLexception& ex) {

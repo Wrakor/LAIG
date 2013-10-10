@@ -3,11 +3,8 @@
 
 using std::string;
 
-PerspectiveCamera::PerspectiveCamera(string nodeID, GLdouble near, GLdouble far, float angle)
+PerspectiveCamera::PerspectiveCamera(string nodeID, GLdouble near, GLdouble far, float angle):Camera(nodeID, near, far)
 {
-	this->nodeID = nodeID;
-	this->near = near;
-	this->far = far;
 	this->angle = angle;
 }
 
@@ -16,7 +13,7 @@ void PerspectiveCamera::updateProjectionMatrix(int width, int height)
 	float aspect= (float)width / (float)height;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(angle,aspect, near, far);
+	gluPerspective(angle,aspect, ((Camera *)this)->near, far);
 	//glFrustum(-aspect*.04, aspect*.04, -.04, .04, this->near, this->far);
 }
 

@@ -1,15 +1,14 @@
 #pragma once
 
 #include <GL/glut.h>
-#include "CGFCamera.h"
+#include "Camera.h"
 
 using std::string;
 
-class PerspectiveCamera : public CGFcamera
+class PerspectiveCamera : public Camera
 {
 private:
 	float angle;
-	GLdouble near, far;
 public:
 	PerspectiveCamera(string nodeID, GLdouble near, GLdouble far, float angle);
 	void updateProjectionMatrix(int width, int height);

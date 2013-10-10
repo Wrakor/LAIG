@@ -9,8 +9,7 @@
 #include "Texture.h"
 #include "Appearance.h"
 #include "Node.h"
-#include "OrthoCamera.h"
-#include "PerspectiveCamera.h"
+#include "Camera.h"
 
 class Scene : public CGFscene
 {
@@ -23,7 +22,7 @@ public:
 	GLenum drawMode, shadeModel, cullfaceMode, cullorder;
 	bool cullface;
 	GLfloat backgroundR, backgroundG, backgroundB, backgroundA;
-	int addCamera(CGFcamera *c);
+	int addCamera(Camera *c);
 	void initCameras();
 	bool lightingDoubleSided, lightingLocal, lightingEnabled;
 	void addLight(Light *l);
@@ -35,7 +34,7 @@ public:
 	void addNode(Node* node);
 	unsigned int getNumLights();
 	unsigned int getNumCameras();
-	CGFcamera* getCamera(unsigned int id);
+	Camera* getCamera(unsigned int id);
 	unsigned int getPositionInCamerasVector(string ID); //quero a posição do vector de câmaras dando o ID do yaf
 private:
 	//CGFlight* light0;

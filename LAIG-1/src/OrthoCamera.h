@@ -1,16 +1,14 @@
 #pragma once
 #include <GL/glut.h>
-#include "CGFCamera.h"
+#include "Camera.h"
 
 using std::string;
 
-class OrthoCamera : public CGFcamera
+class OrthoCamera : public Camera
 {
 private:
-	GLdouble near, far, left, right, top, bottom;
+	GLdouble left, right, top, bottom;
 public:
 	OrthoCamera(string nodeID, GLdouble near, GLdouble far, GLdouble left, GLdouble right, GLdouble top, GLdouble bottom);
 	void updateProjectionMatrix(int width, int height);
-	//void applyView();
-	string nodeID;
 };

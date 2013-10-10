@@ -3,11 +3,8 @@
 
 using std::string;
 
-OrthoCamera::OrthoCamera(string nodeID, GLdouble near, GLdouble far, GLdouble left, GLdouble right, GLdouble top, GLdouble bottom)
+OrthoCamera::OrthoCamera(string nodeID, GLdouble near, GLdouble far, GLdouble left, GLdouble right, GLdouble top, GLdouble bottom):Camera(nodeID, near, far)
 {
-	this->nodeID = nodeID;
-	this->near = near;
-	this->far = far;
 	this->left = left;
 	this->right = right;
 	this->top = top;
@@ -15,14 +12,13 @@ OrthoCamera::OrthoCamera(string nodeID, GLdouble near, GLdouble far, GLdouble le
 	this->setX(0);
 	this->setY(0);
 	this->setZ(0);
-	//this->setWalkMode();
 }
 
 void OrthoCamera::updateProjectionMatrix(int width, int height)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(this->left, this->right, this->bottom, this->top, this->near, this->far);
+	glOrtho(this->left, this->right, this->bottom, this->top, ((Camera *)this)->near, ((Camera *)this)->far);
 }
 
 /*void OrthoCamera::applyView()
