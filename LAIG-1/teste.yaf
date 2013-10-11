@@ -19,7 +19,7 @@
                 diffuse="1 1 1 1" 
                 specular="1 1 1 1"
                 angle="45" 
-                exponent="0" 
+                exponent="0"
                 direction="-1 0 -1" 
             /> 
  

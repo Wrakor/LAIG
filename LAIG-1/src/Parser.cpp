@@ -520,7 +520,7 @@ void Parser::parseGraph()
 				{
 					appearancerefid = appearanceref->Attribute("id");
 					if (appearancerefid.empty())
-						throw "Error aprsing appearanceref id";
+						throw "Error parsing appearanceref id";
 					cout << "\t-Appearanceref ID: " << appearancerefid << endl;
 
 					readNode->appearance=this->scene.getAppearanceByID(appearancerefid);
@@ -550,6 +550,8 @@ void Parser::parseGraph()
 							cout << xy2[i] << " ";
 						cout << endl;
 
+						readNode->primitivas.push_back(new Rectangle(xy1[0],xy2[0],xy1[1],xy2[1]));
+
 					}
 					else if (value == "triangle")
 					{
@@ -558,6 +560,8 @@ void Parser::parseGraph()
 						extractElementsFromString(xyz1, childrenElement->Attribute("xyz1"),	3);
 						extractElementsFromString(xyz2, childrenElement->Attribute("xyz2"),	3);
 						extractElementsFromString(xyz3, childrenElement->Attribute("xyz3"),	3);
+
+						readNode->primitivas.push_back(new Triangle(xyz1[0],xyz2[0],xyz3[0],xyz1[1],xyz2[1],xyz3[1],xyz1[2],xyz2[2],xyz3[2]));
 					}
 					else if (value == "cylinder")
 					{
@@ -568,9 +572,14 @@ void Parser::parseGraph()
 							throw "Error parsing cylinder: no 'base' attribute";
 						if (childrenElement->QueryFloatAttribute("top", &top) != 0)
 							throw "Error parsing cylinder: no 'top' attribute";
-						childrenElement->QueryFloatAttribute("height", &height);
-						childrenElement->QueryIntAttribute("slices", &slices);
-						childrenElement->QueryIntAttribute("stacks", &stacks);
+						if (childrenElement->QueryFloatAttribute("height", &height) != 0)
+							throw "Error parsing cylinder: no 'height' attribute";
+						if (childrenElement->QueryIntAttribute("slices", &slices) != 0)
+							throw "Error parsing cylinder: no 'slices' attribute";
+						if (childrenElement->QueryIntAttribute("stacks", &stacks) != 0)
+							throw "Error parsing cylinder: no 'stacks' attribute";
+
+						readNode->primitivas.push_back(new Cylinder(base, top, height, slices, stacks));
 					}
 					else if (value == "sphere")
 					{
@@ -583,6 +592,8 @@ void Parser::parseGraph()
 							throw "Error parsing sphere: no 'slices' attribute";
 						if (childrenElement->QueryIntAttribute("stacks", &stacks) != 0)
 							throw "Error parsing sphere: no 'stacks' attribute";
+
+						readNode->primitivas.push_back(new Sphere(radius, slices, stacks));
 					}
 					else if (value == "torus")
 					{
@@ -597,6 +608,8 @@ void Parser::parseGraph()
 							throw "Error parsing torus: no 'slices' attribute";
 						if (childrenElement->QueryIntAttribute("loops", &loops) != 0)
 							throw "Error parsing torus: no 'loops' attribute";
+
+						readNode->primitivas.push_back(new Torus(inner, outer, slices, loops));
 					}
 					else if (value == "noderef")
 					{
@@ -605,11 +618,12 @@ void Parser::parseGraph()
 							throw "Error parsing node: no noderef 'id' attribute";
 
 						cout << "\tnoderef id:" << id << endl;
+
+						readNode->children.push_back(id);
 					}
-					else throw "ESTOUROU";
 
 					childrenElement = childrenElement->NextSiblingElement();
-				}					
+				}			
 				this->scene.addNode(readNode);
 				node = node->NextSiblingElement();
 		}
@@ -626,26 +640,20 @@ Parser::Parser(char *filename)
 	bool loadOkay = doc->LoadFile();
 
 	if ( !loadOkay )
-	{
-		printf( "Could not load file '%s'. Error='%s'. Exiting.\n", filename, doc->ErrorDesc() );
-		exit( 1 );
-	}
+		throw "Could not load file '%s'. Error='%s'. Exiting.\n", filename, doc->ErrorDesc();
 
 	yafElement = doc->FirstChildElement( "yaf" );
 
 
 	if (yafElement == NULL)
-	{
-		printf("Main yaf block element not found! Exiting!\n");
-		exit(1);
-	}
+		throw "Main yaf block element not found! Exiting!\n";
 
 	parseGlobals();
 	parseCameras();
 	parseLighting();
 	parseTextures();	
 	parseAppearances();
-	parseGraph();
+	//parseGraph();
 	interface.setScene(&this->scene);
 }
 
