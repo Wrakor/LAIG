@@ -2,6 +2,7 @@
 #include "GL/glut.h"
 
 class Primitiva{
+public:
 	virtual void draw()=0;
 };
 

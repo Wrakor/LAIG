@@ -1,15 +1,13 @@
-#ifndef Scene_H
-#define Scene_H
-
+#pragma once
 #include "CGFscene.h"
 #include "CGFshader.h"
-#pragma once
 
 #include "Light.h"
 #include "Texture.h"
 #include "Appearance.h"
 #include "Node.h"
 #include "Camera.h"
+#include <map>
 
 class Scene : public CGFscene
 {
@@ -30,7 +28,7 @@ public:
 	void addAppearance(Appearance* appearance);
 	Texture* getTextureByID(string nodeID);
 	Appearance* getAppearanceByID(string nodeID);
-	void addNode(Node* node);
+	void addNode(string nodeID, Node* node);
 	unsigned int getNumLights();
 	unsigned int getNumCameras();
 	Camera* getCamera(unsigned int id);
@@ -39,16 +37,13 @@ public:
 	//std::list<CGFlight*> getSceneLights();
 	Light *getLightByGLFloat(GLfloat id);
 	void setDrawMode(GLenum drawMode);
+	void processGraph(string nodeID);
+	string rootNode; //id do primeiro nó
 
 private:
-	//CGFlight* light0;
 	CGFobject* obj;
-	//CGFappearance* materialAppearance;
-	//CGFappearance* textureAppearance;
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
-	vector<Node*> nodes;
+	map<string, Node*> nodes;
 	CGFshader* shader;
 };
-
-#endif

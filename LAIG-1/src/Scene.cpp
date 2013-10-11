@@ -107,28 +107,7 @@ void Scene::display()
 
 	// ---- END Background, camera and axis setup
 
-
-	// ---- BEGIN feature demos
-
-	// Simple object
-	appearances[0]->apply();
-	obj->draw();
-
-	// textured object
-
-	glTranslatef(0,4,0);
-	appearances[1]->apply();
-	obj->draw();
-
-	// shader object
-
-	glTranslatef(0,4,0);
-	shader->bind();
-	obj->draw();
-	shader->unbind();
-
-
-	// ---- END feature demos
+	processGraph(rootNode);
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -186,9 +165,9 @@ Appearance* Scene::getAppearanceByID(string nodeID)
 	throw "Appearance not found"; //if appearance isn't found, throw error
 }
 
-void Scene::addNode(Node *node)
+void Scene::addNode(string nodeID, Node *node)
 {
-	this->nodes.push_back(node);
+	this->nodes.insert(std::pair<string, Node *>(nodeID, node));
 }
 
 unsigned int Scene::getNumLights()
@@ -238,4 +217,24 @@ Light* Scene::getLightByGLFloat(GLfloat id)
 void Scene::setDrawMode(GLenum drawMode)
 {
 	this->drawMode = drawMode;
+}
+
+void Scene::processGraph(string nodeID)
+{
+	Node *node = nodes[nodeID];
+	glMultMatrixf(node->T);
+	if(node->appearance)
+		node->appearance->apply();
+
+	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)
+	{
+		(*it)->draw();
+	}
+
+	for(vector<string>::iterator it = node->children.begin();it!=node->children.end();it++)
+	{
+		glPushMatrix();
+		processGraph(*it);
+		glPopMatrix();
+	}
 }

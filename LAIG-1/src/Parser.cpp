@@ -430,6 +430,8 @@ void Parser::parseGraph()
 	cout << "\nGraph" << endl;
 	cout << "\tRoot ID: " << rootid << endl;
 
+	this->scene.rootNode = rootid;
+
 	TiXmlElement *node = graphElement->FirstChildElement("node");
 
 	if (!node)
@@ -613,18 +615,18 @@ void Parser::parseGraph()
 					}
 					else if (value == "noderef")
 					{
-						string id = childrenElement->Attribute("id");
-						if (id.empty())
+						string childid = childrenElement->Attribute("id");
+						if (childid.empty())
 							throw "Error parsing node: no noderef 'id' attribute";
 
-						cout << "\tnoderef id:" << id << endl;
+						cout << "\tnoderef id:" << childid << endl;
 
-						readNode->children.push_back(id);
+						readNode->children.push_back(childid);
 					}
 
 					childrenElement = childrenElement->NextSiblingElement();
 				}			
-				this->scene.addNode(readNode);
+				this->scene.addNode(id, readNode);
 				node = node->NextSiblingElement();
 		}
 }

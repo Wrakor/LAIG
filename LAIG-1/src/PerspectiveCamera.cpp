@@ -32,7 +32,6 @@ void PerspectiveCamera::setTargetZ(float value)
 void PerspectiveCamera::applyView()
 {
 	gluLookAt(position[0],position[1],position[2],target[0],target[1],target[2],0,1,0);
-	glTranslatef(-position[0],-position[1],-position[2]);
 	glRotatef(rotation[0], 1.f, 0.f, 0.f);
 	glRotatef(rotation[1], 0.f, 1.f, 0.f);
 	glRotatef(rotation[2], 0.f, 0.f, 1.f);

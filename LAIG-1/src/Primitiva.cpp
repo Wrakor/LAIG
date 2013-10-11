@@ -10,12 +10,16 @@ Rectangle::Rectangle(float x1,float x2,float y1,float y2)
 }
 
 void Rectangle::draw(){
-	//faltam normais
 	glBegin(GL_QUADS);
+		glNormal3f(0,0,1);
 		glTexCoord2f(0,0);
 		glVertex2f(x1,y1);
+		glTexCoord2f(1,0);
+		glVertex2f(x2,y1);
 		glTexCoord2f(1,1);
 		glVertex2f(x2,y2);
+		glTexCoord2f(0,1);
+		glVertex2f(x1,y2);
 	glEnd();
 }
 
