@@ -6,5 +6,4 @@ class Texture : public CGFtexture
 public:
 	Texture(string nodeID, string fileName);
 	string nodeID;
-	void load();
 };

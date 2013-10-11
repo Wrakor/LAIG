@@ -11,11 +11,16 @@ int Light::getID()
 	return this->id;
 }
 
-Light::Light(string nodeID, bool spot, unsigned int lightid, float *pos, float *dir, GLfloat exp):CGFlight(lightid, pos, dir) //call parent constructor
+Light::Light(string nodeID, unsigned int lightid, float *pos, float *dir, GLfloat exp):CGFlight(lightid, pos, dir) //call parent constructor
 {
-	this->spot = spot;
+	if(dir==NULL)
+		this->spot = false;
+	else
+		this->spot = true;
 	this->exp = exp;
 	this->nodeID = nodeID;
+	if(spot)
+		glLightf(id, GL_SPOT_EXPONENT, exp);
 };
 
 void Light::update() {
@@ -24,17 +29,12 @@ void Light::update() {
 	else
 		glDisable(id);
 
-	//is this needed?
-	glLightfv(id, GL_AMBIENT, ambient);
-	glLightfv(id, GL_DIFFUSE, diffuse);
-	glLightfv(id, GL_SPECULAR, specular);
+	//apenas o position e o spot_direction precisam de ser actualizados
+
 	glLightfv(id, GL_POSITION, position);
+
 	if(spot)
-	{
-		glLightfv(id, GL_SPOT_CUTOFF, &angle);
 		glLightfv(id, GL_SPOT_DIRECTION, direction);
-		glLightf(id, GL_SPOT_EXPONENT, exp);
-	}
 }
 
 void Light::draw() {

@@ -65,8 +65,6 @@ void Scene::init()
 	obj=new ExampleObject();
 	shader=new CGFshader("data/texshader.vert","data/texshader.frag");
 
-	loadTextures(); //got to load textures after initing scene
-
 	setUpdatePeriod(30);
 }
 
@@ -188,12 +186,6 @@ Appearance* Scene::getAppearanceByID(string nodeID)
 	throw "Appearance not found"; //if appearance isn't found, throw error
 }
 
-void Scene::loadTextures()
-{
-	for(unsigned int i = 0; i<textures.size();i++)
-		textures[i]->load();
-}
-
 void Scene::addNode(Node *node)
 {
 	this->nodes.push_back(node);
@@ -238,12 +230,9 @@ Light* Scene::getLightByGLFloat(GLfloat id)
 	std::list<CGFlight *>::iterator it = scene_lights.begin();
 
 	for(;it!=scene_lights.end();++it)
-	{
 		if ( ((Light*)(*it))->getLightID() == id)
-		{
 			return (Light *)(*it);
-		}
-	}
+	throw "Light not found";
 }
 
 void Scene::setDrawMode(GLenum drawMode)

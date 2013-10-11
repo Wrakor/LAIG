@@ -14,15 +14,11 @@ int main(int argc, char* argv[]) {
 
 	try
 	{
-
-		//TODO PASSAR CENAS PARA DEPOIS DO INIT
+		app.init(&argc, argv);
 		Parser *parser = new Parser("teste.yaf");
 		try {
-			app.init(&argc, argv);
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
-			//app.setInterface(new CGFinterface());
-			parser->parseGraph();
 			app.run();
 		}
 		catch(GLexception& ex) {

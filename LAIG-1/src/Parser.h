@@ -15,7 +15,6 @@ public:
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
 	Scene scene;
 	Interface interface;
-	void parseGraph();
 	
 private:
 
@@ -32,6 +31,7 @@ private:
 	void parseLighting();
 	void parseTextures();
 	void parseAppearances();
+	void parseGraph();
 	
 };
 

@@ -30,7 +30,6 @@ public:
 	void addAppearance(Appearance* appearance);
 	Texture* getTextureByID(string nodeID);
 	Appearance* getAppearanceByID(string nodeID);
-	void loadTextures();
 	void addNode(Node* node);
 	unsigned int getNumLights();
 	unsigned int getNumCameras();

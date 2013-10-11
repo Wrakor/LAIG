@@ -280,7 +280,7 @@ void Parser::parseLighting()
 			for (unsigned int i = 0; i < specular.size(); i++)
 				cout << specular[i] << " ";
 
-			Light *l = new Light(id, false, GL_LIGHT0+j, &location[0]);
+			Light *l = new Light(id, GL_LIGHT0+j, &location[0]);
 
 			if (type == "spot")
 			{
@@ -296,7 +296,7 @@ void Parser::parseLighting()
 					cout << "\tdirection:" << direction[i] << endl;
 
 				//got to create again to set direction and exponent
-				l = new Light(id, true, GL_LIGHT0+j, &location[0], &direction[0], exponent);
+				l = new Light(id, GL_LIGHT0+j, &location[0], &direction[0], exponent);
 				l->setAngle(angle);
 			}
 			l->setAmbient(&ambient[0]);
@@ -653,7 +653,7 @@ Parser::Parser(char *filename)
 	parseLighting();
 	parseTextures();	
 	parseAppearances();
-	//parseGraph();
+	parseGraph();
 	interface.setScene(&this->scene);
 }
 
