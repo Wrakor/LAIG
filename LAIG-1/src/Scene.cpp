@@ -30,9 +30,6 @@ void Scene::init()
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, this->lightingLocal);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, Light::background_ambient);  // Define ambient light
 
-	//Define drawmode
-	glPolygonMode(GL_FRONT_AND_BACK, this->drawMode);
-
 	//Define shading
 	glShadeModel(this->shadeModel);
 
@@ -88,6 +85,9 @@ void Scene::display()
 	
 	// Clear image and depth buffer everytime we update the scene
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+	//Define drawmode
+	glPolygonMode(GL_FRONT_AND_BACK, this->drawMode);
 
 	// Initialize Model-View matrix as identity (no transformation
 	glMatrixMode(GL_MODELVIEW);
@@ -226,4 +226,27 @@ unsigned int Scene::getPositionInCamerasVector(string ID)
 Camera* Scene::getActiveCamera()
 {
 	return (Camera*)activeCamera;
+}
+
+/*std::list<CGFlight*> Scene::getSceneLights()
+{
+	return scene_lights;
+}*/
+
+Light* Scene::getLightByGLFloat(GLfloat id)
+{
+	std::list<CGFlight *>::iterator it = scene_lights.begin();
+
+	for(;it!=scene_lights.end();++it)
+	{
+		if ( ((Light*)(*it))->getLightID() == id)
+		{
+			return (Light *)(*it);
+		}
+	}
+}
+
+void Scene::setDrawMode(GLenum drawMode)
+{
+	this->drawMode = drawMode;
 }

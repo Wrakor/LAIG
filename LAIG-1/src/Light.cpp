@@ -51,3 +51,7 @@ bool Light::isEnabled()
 {
 	return enabled;
 }
+unsigned int Light::getLightID()
+{
+	return id;
+}
