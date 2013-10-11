@@ -39,7 +39,7 @@ Triangle::Triangle(float x1,float x2,float x3,float y1, float y2, float y3, floa
 void Triangle::draw()
 {
 	glBegin(GL_TRIANGLES);
-		//FALTAM TEXTURAS e normais
+		glNormal3f(0, 0, 1);
 		glVertex3f(x1, y1, z1);
         glVertex3f(x2, y2, z2);
         glVertex3f(x3, y3, z3);
@@ -58,8 +58,6 @@ Cylinder::Cylinder(float base, float top, float height, int slices, int stacks)
 void Cylinder::draw()
 {
 	GLUquadric *quadric = gluNewQuadric();
-	gluQuadricDrawStyle(quadric, GLU_FILL); //alterar para o valor do scene drawmode?? (será que herda?)
-	//gluQuadricOrientation(quadric, GLU_INSIDE); //needed?
 	gluQuadricNormals(quadric, GLU_SMOOTH); //passar parametro da scene
 	gluQuadricTexture(quadric, true);
 	gluCylinder(quadric, base, top, height, slices, stacks);
@@ -82,8 +80,6 @@ Sphere::Sphere(float radius, int slices, int stacks)
 void Sphere::draw()
 {
 	GLUquadric *quadric = gluNewQuadric();
-	gluQuadricDrawStyle(quadric, GLU_FILL); //alterar para o valor do scene drawmode?? (será que herda?)
-	//gluQuadricOrientation(quadric, GLU_INSIDE); //needed?
 	gluQuadricNormals(quadric, GLU_SMOOTH); //passar parametro da scene
 	gluQuadricTexture(quadric, true);
 	gluSphere(quadric, radius, slices, stacks);
@@ -100,5 +96,12 @@ Torus::Torus(float inner, float outer, int slices, int loops)
 
 void Torus::draw()
 {
+
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+	glEnable(GL_TEXTURE_GEN_S);
+	glEnable(GL_TEXTURE_GEN_T);
 	glutSolidTorus(inner, outer, slices, loops); //não gera coordenadas de textura
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
 }
