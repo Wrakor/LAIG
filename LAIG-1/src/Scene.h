@@ -37,7 +37,7 @@ public:
 	//std::list<CGFlight*> getSceneLights();
 	Light *getLightByGLFloat(GLfloat id);
 	void setDrawMode(GLenum drawMode);
-	void processGraph(string nodeID);
+	void processGraph(string nodeID, Appearance *app);
 	string rootNode; //id do primeiro nó
 
 private:

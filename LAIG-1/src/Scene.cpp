@@ -102,12 +102,12 @@ void Scene::display()
 	}
 
 	// Draw axis
-	axis.draw();
+	//axis.draw();
 
 
 	// ---- END Background, camera and axis setup
 
-	processGraph(rootNode);
+	processGraph(rootNode, nodes[rootNode]->appearance); //temos de passar o id do nó inicial e a sua aparência
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -219,22 +219,28 @@ void Scene::setDrawMode(GLenum drawMode)
 	this->drawMode = drawMode;
 }
 
-void Scene::processGraph(string nodeID)
+void Scene::processGraph(string nodeID, Appearance *app)
 {
 	Node *node = nodes[nodeID];
 	glMultMatrixf(node->T);
-	if(node->appearance) //BUG: tem de buscar appearance do pai
-		node->appearance->apply();
+	if(node->appearance) //se nó tem aparência, substitui a do pai
+		app=node->appearance;
+
+	if(node->primitivas.size()>0) //se nó tem primitivas para desenhar
+	{
+		if(app) //se a aparência não for nula
+			app->apply(); //aplica a aparência para desenhar as primitivas
+		else
+			throw "YAF malformed: can't draw a primitive before refering an appearanceref"; //se a aparência for nula, estamos a tentar desenhar sem que nenhuma aparência esteja definida, nem no nó nem na sua linhagem
+	}
 
 	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)
-	{
 		(*it)->draw();
-	}
 
 	for(vector<string>::iterator it = node->children.begin();it!=node->children.end();it++)
 	{
 		glPushMatrix();
-		processGraph(*it);
+		processGraph(*it, app);
 		glPopMatrix();
 	}
 }
