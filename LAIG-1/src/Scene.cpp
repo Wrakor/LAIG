@@ -10,8 +10,6 @@
 #include <thread>
 #include <typeinfo>
 
-#include "CGFappearance.h"
-
 Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
 }
@@ -61,19 +59,6 @@ void Scene::init()
 
 	// Defines a default normal
 	glNormal3f(0,0,1);
-
-	obj=new ExampleObject();
-	shader=new CGFshader("data/texshader.vert","data/texshader.frag");
-
-	setUpdatePeriod(30);
-}
-
-void Scene::update(unsigned long t)
-{
-	shader->bind();
-	shader->update(t/400.0);
-	shader->unbind();
-	
 }
 	
 void Scene::display() 

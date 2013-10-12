@@ -15,7 +15,6 @@ public:
 	Scene();
 	void init();
 	void display();
-	void update(unsigned long t);
 	//~Scene();
 	GLenum drawMode, shadeModel, cullfaceMode, cullorder;
 	bool cullface;
@@ -41,9 +40,7 @@ public:
 	string rootNode; //id do primeiro nó
 
 private:
-	CGFobject* obj;
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
 	map<string, Node*> nodes;
-	CGFshader* shader;
 };

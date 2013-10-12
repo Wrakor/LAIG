@@ -645,7 +645,14 @@ Parser::Parser(char *filename)
 	bool loadOkay = doc->LoadFile();
 
 	if ( !loadOkay )
-		throw "Could not load file '%s'. Error='%s'. Exiting.\n", filename, doc->ErrorDesc();
+	{
+		string message = "Could not load file '";
+		message+=filename;
+		message+="'!. Error='";
+		message+=doc->ErrorDesc();
+		message+="'. Exiting.\n";
+		throw message;
+	}
 
 	yafElement = doc->FirstChildElement( "yaf" );
 
