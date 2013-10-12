@@ -223,7 +223,8 @@ void Scene::processGraph(string nodeID)
 {
 	Node *node = nodes[nodeID];
 	glMultMatrixf(node->T);
-	node->getAppearance()->apply();
+	if(node->primitivas.size()>0) //se houver primitivas a desenhar, tem de haver appearance definida
+		node->getAppearance()->apply();
 
 	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)
 		(*it)->draw();
