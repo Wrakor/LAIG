@@ -5,20 +5,24 @@ void Interface::initGUI()
 
 	///////////////////////////////// Cameras ///////////////////////////////// 
 	GLUI_Panel* cameraPanel = addPanel("Cameras", GLUI_PANEL_EMBOSSED);
-	GLUI_RadioGroup *cameraRadioGroup = addRadioGroupToPanel(cameraPanel, 0, 0);
+	//GLUI_RadioGroup *cameraRadioGroup = addRadioGroupToPanel(cameraPanel, 0, 0);
+	cameraListbox = addListboxToPanel(cameraPanel, "", 0, 0);
 	addColumn();
-	char name[255];
 
 	for(unsigned int i=0;i<scene->getNumCameras();i++)
 	{
 		Camera *thisCamera = (Camera *)scene->getCamera(i);
 
-		std::strcpy(name, thisCamera->nodeID.c_str());
-		addRadioButtonToGroup(cameraRadioGroup, name);
+		//std::strcpy(name, thisCamera->nodeID.c_str());
+		//addRadioButtonToGroup(cameraRadioGroup, name);
+		cameraListbox->add_item(i, thisCamera->nodeID.c_str());
 
 		if (thisCamera == scene->getActiveCamera())
-			cameraRadioGroup->set_int_val(i);
+			//cameraRadioGroup->set_int_val(i);
+			cameraListbox->set_int_val(i);
 	}
+
+	addButtonToPanel(cameraPanel, "Reset", 1);
 
 	///////////////////////////////// Luzes ///////////////////////////////// 
 	GLUI_Panel* lightPanel = addPanel("Lights", GLUI_PANEL_EMBOSSED);
@@ -27,6 +31,7 @@ void Interface::initGUI()
 	{
 		Light *thisLight = scene->getLightByGLFloat(GL_LIGHT0+i);
 
+		char *name = new char[thisLight->nodeID.size()+1]; //define char pointer com tamanho da string nodeID (addCheckboxToPanel não aceita const char)
 		std::strcpy(name, thisLight->nodeID.c_str());	
 
 		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, name, NULL, GL_LIGHT0+i);
@@ -37,7 +42,7 @@ void Interface::initGUI()
 
 	///////////////////////////////// Polygon Mode /////////////////////////////////	
 	GLUI_Panel *polygonModePanel = addPanel("Polygon Mode", GLUI_PANEL_EMBOSSED);
-	GLUI_RadioGroup *polygonModeRadioGroup = addRadioGroupToPanel(polygonModePanel, 0, 1);
+	GLUI_RadioGroup *polygonModeRadioGroup = addRadioGroupToPanel(polygonModePanel, 0, 2);
 	addRadioButtonToGroup(polygonModeRadioGroup, "Points");
 	addRadioButtonToGroup(polygonModeRadioGroup, "Lines");
 	addRadioButtonToGroup(polygonModeRadioGroup, "Fill");
@@ -70,6 +75,10 @@ void Interface::processGUI(GLUI_Control *ctrl)
 			thisLight->disable();		
 	}
 	else if (ctrl->user_id == 1)
+	{
+		scene->getCamera(cameraListbox->get_int_val())->reset();
+	}
+	else if (ctrl->user_id == 2)
 	{		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT+ctrl->get_int_val()); //GL_POINT < GL_LINE < GL_FILL
 		scene->setDrawMode(GL_POINT+ctrl->get_int_val());

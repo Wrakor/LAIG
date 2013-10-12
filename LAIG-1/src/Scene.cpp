@@ -97,9 +97,7 @@ void Scene::display()
 	// Draw (and update) light
 	std::list<CGFlight *>::iterator it = scene_lights.begin();
 	for(;it!=scene_lights.end();++it)
-	{
 		((Light *)(*it))->draw();
-	}
 
 	// Draw axis
 	//axis.draw();

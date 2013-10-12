@@ -15,24 +15,23 @@ int main(int argc, char* argv[]) {
 	try
 	{
 		app.init(&argc, argv);
-		Parser *parser = new Parser("cenas/solarsystem/T01G04_solarsystem.xml");
+		if(argc<2 || argc>2)
+			throw "Usage: thisProgram scene.yaf";
+		Parser *parser = new Parser(argv[1]);
 		try {
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
 			app.run();
 		}
 		catch(GLexception& ex) {
-			cout << "Error: " << ex.what();
-			return -1;
+			throw "Error: " + *ex.what();
 		}
 		catch(exception& ex) {
-			cout << "Unexpected error: " << ex.what();
-			return -1;
+			throw "Unexpected error: " + *ex.what();
 		}
 	}
 	catch (const char* msg) { //parse exception
 		cout << "EXCEPTION: " << msg;
-		cin.get();
 		exit(1);
 	}
 
