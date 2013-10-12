@@ -1,0 +1,429 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, para --> 
+<!-- separar dos hifens --> 
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) --> 
+<!-- Todas as tags e atributos sao obrigatorios, exceto onde for --> 
+<!-- referido o contrario --> 
+
+<yaf> 
+
+    <globals background="0 0 0 1" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" /> 
+	
+	<cameras initial="camera1">
+		<perspective id="camera1" near="0.1" far="50.0" angle="90.0" pos="5 7 15.0" target="5 3 -10.0" />
+		<ortho id="camera2" near="-20" far="500.0" left="0.0" right="10.0" top="10.0" bottom="0.0" /> 
+		<perspective id="camera3" near="0.1" far="1000" angle="60" pos="5 15 5" target="5 0.0 5" /> 
+		<perspective id="camera4" near="0.1" far="1000" angle="60" pos="15 15 15" target="5 0 5" /> 
+	</cameras>
+	
+	<lighting doublesided="false" local="true" enabled="true" ambient="0.7 0.7 0.7 1">
+    <omni id="light1" enabled="true" 
+          location="0 10 3" 
+          ambient="0.1 0.1 0.1 0.1" 
+          diffuse="0.2 0.2 0.2 0.2" 
+          specular="0.9 0.2 0.2 1" 
+      />
+    <spot id="light2" enabled="false" 
+          location="5 10 5"
+          ambient="0 0 0 1"
+          diffuse="0 0 0 1"
+          specular="1 1 0 1"
+		  angle="20"
+          exponent="5"
+          direction="0 -1 0"
+		  
+      />
+	  <spot id="light3" enabled="false" 
+          location="5 8 2"
+          ambient="1 1 1 1"
+          diffuse="1 1 1 1"
+          specular="1 1 1 1"
+          angle="60"
+          exponent="5"
+          direction="0 -0.6 -0.8"
+      />
+  </lighting>
+
+  <textures>
+	<texture id="tire" file="tire.jpg" />
+	<texture id="floor" file="floor.jpg" />
+	<texture id="aa" file="robot2.jpg" />
+	<texture id="as" file="as.jpg" />
+	<texture id="rmv" file="rmv.jpg" />
+	<texture id="woodsphere" file="earth.jpg" />
+  </textures>
+
+  <appearances> 
+	 <appearance id="carrocaria"
+        emissive="0 0 0 1"
+        ambient="0.1 0 0 1"
+        diffuse="0.1 0 0 1"
+        specular="1 0.2 0.2 1"
+        shininess="2"
+     />
+	 
+	 <appearance id="esfera"
+        emissive="0 0 0 1"
+        ambient="0.7 0.7 0.7 1"
+        diffuse="0.7 0.7 0.7 1"
+        specular="0.8 0.8 0.9 1"
+        shininess="68"
+		textureref="woodsphere"
+		texlength_s="3"
+		texlength_t="2.5"
+     />
+	 
+	 <appearance id="triangle"
+        emissive="0 0 0 1"
+        ambient="0.7 0.7 0.7 1"
+        diffuse="0.7 0.7 0.7 1"
+        specular="1 1 0.9 1"
+        shininess="68"
+		textureref="aa"
+		texlength_s="3"
+		texlength_t="2.5"
+     />
+	 
+	 <appearance id="pneu"
+        emissive="0 0 0 0"
+        ambient="0.5 0.5 0.5 0.5"
+        diffuse="0.5 0.5 0.5 0.5"
+        specular="1 1 1 1"
+        shininess="0"
+		textureref="tire"
+		texlength_s="1.5"
+		texlength_t="1.5"
+     />
+	 
+	 <appearance id="chao"
+        emissive="0 0 0 0"
+        ambient="0.5 0.5 0.5 0.5"
+        diffuse="0.5 0.5 0.5 0.5"
+        specular="0.7 0.7 0.7 0.7"
+        shininess="0.6"
+		textureref="floor"
+		texlength_s="10"
+		texlength_t="10"
+     />
+	 
+	 <appearance id="as"
+        emissive="0 0 0 0"
+        ambient="0.5 0.5 0.5 0.5"
+        diffuse="0.5 0.5 0.5 0.5"
+        specular="0.7 0.7 0.7 0.7"
+        shininess="60"
+		textureref="as"
+		texlength_s="2"
+		texlength_t="2"
+     />
+	 
+	 <appearance id="rmv"
+        emissive="0 0 0 0"
+        ambient="0.5 0.5 0.5 0.5"
+        diffuse="0.5 0.5 0.5 0.5"
+        specular="0.7 0.7 0.7 0.7"
+        shininess="60"
+		textureref="rmv"
+		texlength_s="2"
+		texlength_t="2"
+     />
+  </appearances>
+  
+  <graph rootid="cena">
+         <node id="cena">
+            <transforms>
+            </transforms> 
+			
+            <children>            
+                <noderef id="carro" /> 
+				<noderef id="chao" /> 
+				<noderef id="esfera" />
+				<noderef id="triangle1" />
+				<noderef id="triangle2" />
+				<noderef id="torus" />
+            </children>
+        </node>
+		
+		<node id="triangle1">
+			<transforms>
+			</transforms>
+			
+			<appearanceref id="triangle" />
+			
+			<children>
+				<triangle xyz1="2 3 0" xyz2="8 3 0" xyz3="17 7 -3" />
+			</children>
+		</node>
+		<node id="triangle2">
+			<transforms>
+			</transforms>
+			
+			<appearanceref id="triangle" />
+			
+			<children>
+				<triangle xyz1="2 3 -3" xyz2="8 3 -3" xyz3="-10 7 -6" />
+			</children>
+		</node>
+		
+		<node id="torus">
+			<transforms>
+				<translate to="5 7.5 5" />
+				<rotate axis="z" angle="-15" />
+				<rotate axis="x" angle="-90" />
+			</transforms>
+			
+			<children>
+				<torus inner="0.75" outer="2" slices="100" loops="100" />
+			</children>
+		</node>
+		
+		<node id="esfera">
+			<transforms>
+				<translate to="5 7.5 5" />
+			</transforms>
+			
+			<appearanceref id="esfera" /> 
+			
+			<children>
+				<sphere radius="1" slices="50" stacks="50" />
+			</children>
+		</node>
+		
+		<node id="ladoRectanguloBaixo">
+            <transforms>
+				 <translate to="0 -2 0" /> 
+				 <rotate axis="x" angle="90" /> 
+            </transforms>   
+			
+            <children>			
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="ladoRectanguloTopo">
+            <transforms>
+				<translate to="0 2 0" /> 
+				<rotate axis="x" angle="-90" /> 
+            </transforms>  
+			
+            <children>            
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="ladoRectangulo1">
+            <transforms>
+				<translate to="0 0 2" /> 
+            </transforms>  
+			
+            <children>            
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="ladoRectangulo2">
+            <transforms>
+				<translate to="0 0 -2" /> 
+				<rotate axis="y" angle="180" /> 
+            </transforms>  
+			
+            <children>            
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="ladoRectangulo3">
+            <transforms>
+				<translate to="2 0 0" /> 
+				<rotate axis="y" angle="90" /> 
+            </transforms>  
+			
+            <children>            
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="ladoRectangulo4">
+            <transforms>
+				<translate to="-2 0 0" />
+				<rotate axis="y" angle="-90" />  
+            </transforms>  
+			
+            <children>            
+                <rectangle xy1="-2 -2" xy2="2 2" />
+            </children>
+        </node>
+		
+		<node id="paralelepipedo">
+            <transforms>
+            </transforms>  
+			
+            <children>            
+                <noderef id="ladoRectanguloTopo" /> 
+				<noderef id="ladoRectanguloBaixo" /> 
+				<noderef id="ladoRectangulo1" /> 
+				<noderef id="ladoRectangulo2" />
+				<noderef id="ladoRectangulo3" />
+				<noderef id="ladoRectangulo4" /> 
+            </children>
+        </node>
+		
+		<node id="pneu1">
+            <transforms>
+				<translate to="-2 0 3" />
+				<rotate axis="y" angle="90" /> 
+				<translate to="0 0 -0.25" /> 
+            </transforms>  
+		
+            <children> 
+				 <cylinder base="0.75" top="0.75" height="0.5" slices="10" stacks="2" />
+            </children>
+        </node>
+		
+		<node id="pneu2">
+            <transforms>
+				<translate to="2 0 3" />
+				<rotate axis="y" angle="90" /> 
+				<translate to="0 0 -0.25" /> 
+            </transforms>  
+		
+            <children> 
+				 <cylinder base="0.75" top="0.75" height="0.5" slices="10" stacks="2" />
+            </children>
+        </node>
+		
+		<node id="pneu3">
+            <transforms>
+				<translate to="-2 0 -3" />
+				<rotate axis="y" angle="90" /> 
+				<translate to="0 0 -0.25" /> 
+            </transforms>  
+		
+            <children> 
+				 <cylinder base="0.75" top="0.75" height="0.5" slices="10" stacks="2" />
+            </children>
+        </node>
+		
+		<node id="pneu4">
+            <transforms>
+				<translate to="2 0 -3" />
+				<rotate axis="y" angle="90" /> 
+				<translate to="0 0 -0.25" /> 
+            </transforms>  
+		
+            <children> 
+				 <cylinder base="0.75" top="0.75" height="0.5" slices="10" stacks="2" />
+            </children>
+        </node>
+		
+		<node id="pneus">
+            <transforms>
+				<translate to="0 0.75 0"/>
+            </transforms>  
+			
+			<appearanceref id="pneu" /> 
+		
+            <children> 
+				<noderef id="pneu1" /> 
+				<noderef id="pneu2" />
+				<noderef id="pneu3" />
+				<noderef id="pneu4" /> 
+            </children>
+        </node>
+		
+		<node id="chassisMeio">
+            <transforms>
+				<translate to="0 3.5 0" /> 
+            </transforms>  
+		
+            <children> 
+				<noderef id="paralelepipedo" /> 
+				<noderef id="janelacondutor" />
+				<noderef id="janelapassageiro" />
+            </children>
+        </node>
+		
+		<node id="janelapassageiro">
+            <transforms>
+				<translate to="-2 0 2.1" /> 
+            </transforms>  
+		
+			<appearanceref id="as" />
+		
+            <children> 
+				<rectangle xy1="0 0" xy2="2 2" /> 
+            </children>
+        </node>
+		
+		<node id="janelacondutor">
+            <transforms>
+				<translate to="0 0 2.1" /> 
+            </transforms>  
+		
+			<appearanceref id="rmv" />
+		
+            <children> 
+				<rectangle xy1="0 0" xy2="2 2" /> 
+            </children>
+        </node>
+		
+		<node id="chassisFrente">
+            <transforms>
+				<translate to="0 2.5 3" /> 
+				<scale factor="1 0.5 0.5" /> 
+            </transforms>  
+		
+            <children> 
+				<noderef id="paralelepipedo" /> 
+            </children>
+        </node>
+		
+		<node id="chassisRetaguarda">
+            <transforms>
+				<translate to="0 2.5 -3" /> 
+				<scale factor="1 0.5 0.5" /> 
+            </transforms>  
+		
+            <children> 
+				<noderef id="paralelepipedo" /> 
+            </children>
+        </node>
+		
+		<node id="carrocaria">
+            <transforms> 
+            </transforms>  
+		
+			<appearanceref id="carrocaria" /> 
+			
+            <children> 
+				<noderef id="chassisMeio" /> 
+				<noderef id="chassisFrente" />
+				<noderef id="chassisRetaguarda" />
+            </children>
+        </node>
+		
+		<node id="carro">
+            <transforms>
+				<translate to="5 0 5" /> 
+            </transforms>
+		
+            <children> 
+				<noderef id="carrocaria" /> 
+				<noderef id="pneus" /> 
+            </children>
+        </node>
+		
+		<node id="chao">
+            <transforms>
+				<translate to="0 0 10"/>
+				<rotate axis="x" angle="-90" />
+            </transforms>
+		
+			<appearanceref id="chao" /> 
+			
+            <children> 
+				<rectangle xy1="0 0" xy2="10 10" />
+            </children>
+        </node>
+    </graph> 
+
+</yaf> 

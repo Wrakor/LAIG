@@ -10,7 +10,7 @@ using namespace std;
 
 class Node {
 public:
-	Node(){this->appearance=NULL;}
+	Node(string id);
 	string id;
 	Appearance *appearance;
 	float T[16]; //matriz de transformações

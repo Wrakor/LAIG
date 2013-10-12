@@ -100,7 +100,7 @@ void Scene::display()
 		((Light *)(*it))->draw();
 
 	// Draw axis
-	//axis.draw();
+	axis.draw();
 
 
 	// ---- END Background, camera and axis setup
@@ -229,7 +229,8 @@ void Scene::processGraph(string nodeID, Appearance *app)
 		if(app) //se a aparência não for nula
 			app->apply(); //aplica a aparência para desenhar as primitivas
 		else
-			throw "YAF malformed: can't draw a primitive before refering an appearanceref"; //se a aparência for nula, estamos a tentar desenhar sem que nenhuma aparência esteja definida, nem no nó nem na sua linhagem
+			//throw "YAF malformed: can't draw a primitive before refering an appearanceref"; //se a aparência for nula, estamos a tentar desenhar sem que nenhuma aparência esteja definida, nem no nó nem na sua linhagem
+			(new CGFappearance())->apply(); //material por defeito
 	}
 
 	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)

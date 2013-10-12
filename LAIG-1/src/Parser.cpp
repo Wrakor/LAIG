@@ -447,7 +447,7 @@ void Parser::parseGraph()
 			TiXmlElement *transforms = node->FirstChildElement("transforms");
 			TiXmlElement *transformsElement = transforms->FirstChildElement();
 
-			Node *readNode = new Node();
+			Node *readNode = new Node(id);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
