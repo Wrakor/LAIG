@@ -10,11 +10,13 @@ void Interface::initGUI()
 	char name[255];
 
 	for(unsigned int i=0;i<scene->getNumCameras();i++)
-	{			
-		std::strcpy(name, ((Camera *)scene->getCamera(i))->nodeID.c_str());
+	{
+		Camera *thisCamera = (Camera *)scene->getCamera(i);
+
+		std::strcpy(name, thisCamera->nodeID.c_str());
 		addRadioButtonToGroup(cameraRadioGroup, name);
 
-		if (((Camera *)scene->getCamera(i)) == scene->getActiveCamera())
+		if (thisCamera == scene->getActiveCamera())
 			cameraRadioGroup->set_int_val(i);
 	}
 
@@ -23,14 +25,14 @@ void Interface::initGUI()
 
 	for (unsigned int i = 0; i < scene->getNumLights(); i++)
 	{
+		Light *thisLight = scene->getLightByGLFloat(GL_LIGHT0+i);
+
 		string a = std::to_string(i);
-		std::strcpy(name, scene->getLightByGLFloat(GL_LIGHT0+i)->nodeID.c_str());	
+		std::strcpy(name, thisLight->nodeID.c_str());	
 
 		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, name, NULL, GL_LIGHT0+i);
-		if (scene->getLightByGLFloat(GL_LIGHT0+i)->isEnabled())
-		{			
-			light->set_int_val(1);
-		}		
+		if (thisLight->isEnabled())		
+			light->set_int_val(1);	
 	}
 	addColumn();
 
@@ -61,15 +63,16 @@ void Interface::processGUI(GLUI_Control *ctrl)
 		scene->activateCamera(ctrl->get_int_val());	
 	else if (ctrl->user_id >= GL_LIGHT0 && ctrl->user_id <= GL_LIGHT7)
 	{
+		Light *thisLight = scene->getLightByGLFloat(ctrl->user_id);
+
 		if (ctrl->get_int_val() == GL_TRUE)
-			scene->getLightByGLFloat(ctrl->user_id)->enable();
+			thisLight->enable();
 		else
-			scene->getLightByGLFloat(ctrl->user_id)->disable();		
+			thisLight->disable();		
 	}
 	else if (ctrl->user_id == 1)
 	{		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT+ctrl->get_int_val()); //GL_POINT < GL_LINE < GL_FILL
-		//scene->drawMode =  GL_POINT+ctrl->get_int_val();
 		scene->setDrawMode(GL_POINT+ctrl->get_int_val());
 	}
 }
