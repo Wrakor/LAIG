@@ -334,7 +334,7 @@ void Parser::parseTextures()
 		cout << "\tID: " << id << endl;
 		cout << "\tFile: " << file_name << endl << endl;
 
-		this->scene.addTexture(new Texture(id, file_name));
+		this->scene.addTexture(new Texture(id, this->path+file_name)); //usa o caminho do yaf para as texturas
 
 		textures = textures->NextSiblingElement();
 	}
@@ -632,7 +632,10 @@ void Parser::parseGraph()
 }
 Parser::Parser(char *filename)
 {
-
+	string path = filename;
+	unsigned found = path.find_last_of("/\\");
+	if(found!=string::npos)
+		this->path = path.substr(0,found+1); //guarda o caminho para o ficheiro yaf (para usar no caminho das texturas)
 	//INIT Scene
 	this->scene = * new Scene();
 

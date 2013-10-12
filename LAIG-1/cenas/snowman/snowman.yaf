@@ -1,0 +1,606 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, para --> 
+<!-- separar dos hifens --> 
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) --> 
+<!-- Todas as tags e atributos sao obrigatorios, exceto onde for --> 
+<!-- referido o contrario --> 
+
+<yaf> 
+
+    <!-- bloco de configuracoes globais --> 
+    <!-- a declaracao dos atributos deste bloco e' obrigatoria --> 
+    <!-- Valores para draw mode: "fill" , "line", "point" --> 
+    <!-- Valores para shading: "flat", "gouraud" ) --> 
+    <!-- Valores para cullface: "none", "back" , "front" ou "both" --> 
+    <!-- Valores para cullorder : "CCW" ou "CW" --> 
+    <globals background="0.0 0.0 0.0 0.0" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" /> 
+     
+    <!-- bloco de camaras: o atributo "initial" identifica a camara/ponto de vista inicial --> 
+    <cameras initial="perspective_one" > 
+        <!-- tem de existir, pelo menos uma camara dos tipos seguintes (perspective ou ortho) --> 
+
+        <perspective id="perspective_one" near="1.0" far="100.0" angle="45" pos="22.0 22.0 22.0" target="0.0 0.0 0.0" />
+		<ortho id="ortho_one" near="-10.0" far="100.0" left="-5.0" right="20.0" top="20.0" bottom="-10.0" />
+
+    </cameras> 
+	
+	    <!-- bloco de iluminacao; segue os parametros do OpenGL --> 
+    <lighting doublesided="true" local="false" enabled="true" ambient="0.0 0.0 1.0 1.0" > 
+             <!-- Deve existir pelo menos um dos seguintes blocos: omin ou spot --> 
+            <!-- Os identificadores "id" nao podem ser repetidos --> 
+            <omni id="light1" enabled="true" 
+                location="4.0 12.0 8.0" 
+                ambient="1.0 1.0 0.0 1.0"
+                diffuse="0.4 0.4 0.4 1.0"
+                specular="0.6 0.6 0.6 1.0"
+            />
+			
+			<omni id="light2" enabled="true" 
+                location="16.0 12.0 8.0" 
+                ambient="1.0 1.0 0.0 1.0"
+                diffuse="0.4 0.4 0.4 1.0"
+                specular="0.6 0.6 0.6 1.0"
+            />
+			
+			<omni id="light3" enabled="true" 
+                location="4.0 12.0 16.0" 
+                ambient="1.0 1.0 0.0 1.0"
+                diffuse="0.4 0.4 0.4 1.0"
+                specular="0.6 0.6 0.6 1.0"
+            />
+			
+			<omni id="light4" enabled="true" 
+                location="16.0 12.0 16.0" 
+                ambient="1.0 1.0 0.0 1.0"
+                diffuse="0.4 0.4 0.4 1.0"
+                specular="0.6 0.6 0.6 1.0"
+            />
+
+    </lighting> 
+	
+
+	<!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas texturas --> 
+    <textures>        
+          <texture id="snow" file="snow.png" />
+		  <texture id="orange" file="orange.png" />
+		  <texture id="wood" file="wood.jpg" />
+		  <texture id="woodNames" file="woodNames.jpg" />
+		  <texture id="pine" file="pine.jpg" />
+    </textures> 
+	
+	
+	<!-- bloco de materiais; --> 
+    <appearances> 
+        <!-- deve existir um ou mais blocos "appearance" -->
+        <!-- IMPORTANTE: -->
+        <!--   textureref, texlength_s e textlength_t sao atributos -->
+        <!--   opcionais se for usada uma textura. --> 
+        <!--   ver topico 'Notas finais' no enunciado sobre os -->
+        <!--   parametros texlength_...) -->  
+        <appearance id="snowAppearance" 
+            emissive="0.5 0.5 0.5 0.5" 
+            ambient="0.5 0.5 0.5 0.5" 
+            diffuse="0.5 0.5 0.5 0.5" 
+            specular="0.5 0.5 0.5 0.5" 
+            shininess="0.5" 
+            textureref="snow" 
+            texlength_s="1.0" 
+            texlength_t="1.0" />
+		
+		<appearance id="orangeAppearance" 
+            emissive="0.5 0.5 0.5 0.5" 
+            ambient="0.5 0.5 0.5 0.5" 
+            diffuse="0.5 0.5 0.5 0.5" 
+            specular="0.5 0.5 0.5 0.5" 
+            shininess="0.5" 
+            textureref="orange" 
+            texlength_s="1.0" 
+            texlength_t="1.0" />
+		
+		<appearance id="woodAppearance" 
+            emissive="0.5 0.5 0.5 0.5" 
+            ambient="0.5 0.5 0.5 0.5" 
+            diffuse="0.5 0.5 0.5 0.5" 
+            specular="0.5 0.5 0.5 0.5" 
+            shininess="0.5" 
+            textureref="wood" 
+            texlength_s="1.0" 
+            texlength_t="1.0" />
+		
+		<appearance id="woodNamesAppearance" 
+            emissive="0.5 0.5 0.5 0.5" 
+            ambient="0.5 0.5 0.5 0.5" 
+            diffuse="0.5 0.5 0.5 0.5" 
+            specular="0.5 0.5 0.5 0.5" 
+            shininess="0.5" 
+            textureref="woodNames" 
+            texlength_s="4.0" 
+            texlength_t="3.0" />
+		
+		<appearance id="pineAppearance" 
+            emissive="0.5 0.5 0.5 0.5" 
+            ambient="0.5 0.5 0.5 0.5" 
+            diffuse="0.5 0.5 0.5 0.5" 
+            specular="0.5 0.5 0.5 0.5" 
+            shininess="0.5" 
+            textureref="pine" 
+            texlength_s="1.0" 
+            texlength_t="1.0" />
+		
+		<appearance id="blackAppearance" 
+            emissive="0.0 0.0 0.0 0.0" 
+            ambient="0.0 0.0 0.0 0.0" 
+            diffuse="0.0 0.0 0.0 0.0" 
+            specular="0.0 0.0 0.0 0.0" 
+            shininess="0.5" />
+			
+		<appearance id="whiteAppearance" 
+            emissive="1.0 1.0 1.0 1.0" 
+            ambient="1.0 1.0 1.0 1.0" 
+            diffuse="1.0 1.0 1.0 1.0" 
+            specular="1.0 1.0 1.0 1.0" 
+            shininess="0.5" />
+		
+		<appearance id="redAppearance" 
+            emissive="1.0 0.0 0.0 0.5" 
+            ambient="1.0 0.0 0.0 0.5" 
+            diffuse="1.0 0.0 0.0 0.5" 
+            specular="1.0 0.0 0.0 0.5" 
+            shininess="0.5" />
+		</appearances>
+	
+	
+	
+	<!-- bloco do grafo; "rootid" identifica o no de raiz --> 
+    <graph rootid="scene"> 
+		
+		<node id="scene">
+			<transforms> 
+			</transforms>
+		
+			<appearanceref id="snowAppearance" /> 
+            
+			<children>
+				<noderef id="floor" />
+				<noderef id="snowman" />
+				<noderef id="tree" />
+				<noderef id="plaque" />
+			</children>
+        </node>
+		
+		<node id="floor"> 
+            <transforms> 
+               <rotate axis="x" angle="-90" />
+			   <translate to="0.0 -20.0 0.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="20.0 20.0" />
+
+            </children> 
+        </node>
+		
+		<node id="snowman">
+            <transforms> 
+				<translate to="4.0 2.0 4.0" />
+			</transforms>
+           
+			<children>
+                <noderef id="body" />
+				<noderef id="head" />
+            </children>
+        </node>
+		
+		<node id="body"> 
+            <transforms> 
+            </transforms>
+                               
+            <children> 
+				<sphere radius="3" slices="12" stacks="12" />
+				
+				<noderef id="arm1" />
+				<noderef id="arm2" />
+				<noderef id="arm3" />
+				<noderef id="arm4" />
+				<noderef id="arm5" />
+				<noderef id="arm6" />
+
+            </children> 
+        </node>
+		
+		<node id="arm1"> 
+            <transforms> 
+				<rotate axis="y" angle="-90" />
+				<rotate axis="x" angle="-30" />
+				<translate to="0.0 0.0 0.0" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="5.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="arm2"> 
+            <transforms> 
+				<rotate axis="y" angle="-90" />
+				<rotate axis="x" angle="-75" />
+				<translate to="0.0 -2.7 2.7" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="1.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="arm3"> 
+            <transforms> 
+				<rotate axis="y" angle="-90" />
+				<rotate axis="x" angle="-75" />
+				<translate to="0.0 -2.7 2.7" />
+				<rotate axis="x" angle="75" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="1.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="arm4"> 
+            <transforms> 
+				<rotate axis="y" angle="90" />
+				<rotate axis="x" angle="-30" />
+				<translate to="0.0 0.0 0.0" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="5.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="arm5"> 
+            <transforms> 
+				<rotate axis="y" angle="90" />
+				<rotate axis="x" angle="-75" />
+				<translate to="0.0 -2.7 2.7" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="1.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="arm6"> 
+            <transforms> 
+				<rotate axis="y" angle="90" />
+				<rotate axis="x" angle="-75" />
+				<translate to="0.0 -2.7 2.7" />
+				<rotate axis="x" angle="75" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.2" height="1.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="head"> 
+            <transforms> 
+               <translate to="0.0 4.0 0.0" />
+            </transforms>
+                               
+            <children> 
+
+                <sphere radius="2" slices="12" stacks="12" />
+				
+				<noderef id="nose" />
+				<noderef id="leftEye" />
+				<noderef id="rightEye" />
+				<noderef id="hat" />
+
+            </children> 
+        </node>
+		
+		<node id="nose"> 
+            <transforms> 
+               <translate to="0.0 0.0 2.0" />
+            </transforms> 
+           
+            <appearanceref id="orangeAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.2" top="0.1" height="0.8" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="leftEye"> 
+            <transforms> 
+               <translate to="-0.5 0.7 1.7" />
+            </transforms> 
+           
+            <appearanceref id="blackAppearance" /> 
+                               
+            <children> 
+
+                <sphere radius="0.2" slices="12" stacks="12" />
+
+            </children> 
+        </node> 
+		
+		<node id="rightEye"> 
+            <transforms> 
+               <translate to="0.5 0.7 1.7" />
+            </transforms> 
+           
+            <appearanceref id="blackAppearance" /> 
+                               
+            <children> 
+
+                <sphere radius="0.2" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="hat"> 
+            <transforms>
+				<translate to="0.0 1.5 0.0" />
+            </transforms>
+                               
+            <children>
+                <noderef id="hatBase" />
+				<noderef id="hatBall" />
+            </children>
+        </node>
+		
+		<node id="hatBase"> 
+            <transforms> 
+				<rotate axis="x" angle="-90" />
+            </transforms>
+			
+			<appearanceref id="redAppearance" />
+                               
+            <children> 
+
+               <cylinder base="1.0" top="0.2" height="2.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="hatBall"> 
+            <transforms> 
+               <translate to="0.0 2.0 0.0" />
+            </transforms>
+			
+			<appearanceref id="whiteAppearance" /> 
+                               
+            <children> 
+
+                <sphere radius="0.2" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="tree"> 
+            <transforms>
+				<translate to="14.0 0.0 4.0" />
+            </transforms>
+                               
+            <children>
+                <noderef id="treeHead" />
+				<noderef id="treeFoot" />
+            </children>
+        </node>
+		
+		<node id="treeHead"> 
+            <transforms> 
+				<rotate axis="x" angle="-90" />
+				<translate to="0.0 0.0 5.0" />
+            </transforms> 
+           
+            <appearanceref id="pineAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="3.0" top="0.0" height="8.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="treeFoot"> 
+            <transforms> 
+				<rotate axis="x" angle="-90" />
+				<translate to="0.0 0.0 0.0" />
+            </transforms> 
+           
+            <appearanceref id="woodAppearance" /> 
+                               
+            <children> 
+
+                <cylinder base="0.8" top="0.8" height="5.0" slices="12" stacks="12" />
+
+            </children> 
+        </node>
+		
+		<node id="plaque"> 
+            <transforms>
+				<translate to="6.5 2.5 10.0" />
+            </transforms>
+			
+			<appearanceref id="woodAppearance" /> 
+                               
+            <children>
+                <noderef id="plaqueHead1" />
+				<noderef id="plaqueHead2" />
+				<noderef id="plaqueHead3" />
+				<noderef id="plaqueHead4" />
+				<noderef id="plaqueHead5" />
+				<noderef id="plaqueHead6" />
+				<noderef id="plaqueFoot1" />
+				<noderef id="plaqueFoot2" />
+				<noderef id="plaqueFoot3" />
+				<noderef id="plaqueFoot4" />
+            </children>
+        </node>
+		
+		<node id="plaqueHead1"> 
+            <transforms> 
+            </transforms> 
+           
+            <appearanceref id="woodNamesAppearance" /> 
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="4.0 3.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueHead2"> 
+            <transforms>
+				<rotate axis="y" angle="90" />
+				<translate to="0.0 0.0 4.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 3.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueHead3"> 
+            <transforms> 
+				<rotate axis="y" angle="180" />
+				<translate to="-4.0 0.0 0.5" />
+            </transforms> 
+           
+            <appearanceref id="woodNamesAppearance" /> 
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="4.0 3.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueHead4"> 
+            <transforms>
+				<rotate axis="y" angle="270" />
+				<translate to="-0.5 0.0 0.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 3.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueHead5"> 
+            <transforms> 
+               <rotate axis="x" angle="-90" />
+			   <rotate axis="z" angle="90" />
+			   <translate to="0.0 -4.0 3.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 4.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueHead6"> 
+            <transforms> 
+               <rotate axis="x" angle="90" />
+			   <rotate axis="z" angle="-90" />
+			   <translate to="0.0 0.0 0.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 4.0" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueFoot1"> 
+            <transforms>
+				<translate to="1.5 -2.0 0.0" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="1.0 2.5" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueFoot2"> 
+            <transforms>
+				<rotate axis="y" angle="90" />
+				<translate to="0.0 -2.0 2.5" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 2.5" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueFoot3"> 
+            <transforms> 
+				<rotate axis="y" angle="180" />
+				<translate to="-2.5 -2.0 0.5" />
+            </transforms> 
+           
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="1.0 2.5" />
+
+            </children> 
+        </node>
+		
+		<node id="plaqueFoot4"> 
+            <transforms>
+				<rotate axis="y" angle="270" />
+				<translate to="-0.5 -2.0 -1.5" />
+            </transforms>
+                               
+            <children> 
+
+                <rectangle xy1="0.0 0.0" xy2="0.5 2.5" />
+
+            </children> 
+        </node>
+		
+    </graph> 
+
+
+  
+</yaf> 

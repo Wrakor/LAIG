@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 	try
 	{
 		app.init(&argc, argv);
-		Parser *parser = new Parser("teste.yaf");
+		Parser *parser = new Parser("cenas/solarsystem/T01G04_solarsystem.xml");
 		try {
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);

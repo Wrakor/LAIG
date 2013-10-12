@@ -1,0 +1,212 @@
+<yaf>
+    
+    <globals background="0.0 0.0 0.0 1.0" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" />
+    
+    <cameras initial="1" >
+        <perspective id="1" near="0.1" far="500" angle="60" pos="5 5 25" target="0 0 0" />
+    </cameras>
+    
+    
+    <lighting doublesided="false" local="false" enabled="true" ambient="0.4 0.4 0.4 1.0" >
+        <omni id="luz1" enabled="true"
+        location="5 4.5 1"
+        ambient="0.1 0.1 0.1 1.0"
+        diffuse="0.7 0.7 0.7 1.0"
+        specular="0.7 0.7 0.7 1.0"
+        />
+        
+        <omni id="topo" enabled="true"
+        location="3 15 3"
+        ambient="0.7 0.7 0.7 1.0"
+        diffuse="0.9 0.9 0.9 1.0"
+        specular="0.9 0.9 0.9 1.0"
+        />
+        
+        />
+        
+    </lighting>
+    
+    <textures>
+        <texture id="tasf" file="asfalto.jpg" />
+        <texture id="tjanelas" file="janelas.jpg" />
+        <texture id="tpasseio" file="passeio.jpg" />
+
+    </textures>
+    
+    <appearances>
+        <appearance id="passeio"
+        emissive="0 0 0 0"
+        ambient="0.1 0.1 0.1 1"
+        diffuse="0.7 0.7 0.7 1"
+        specular="0.7 0.7 0.7 1"
+        shininess="4"
+        textureref="tpasseio"
+        texlength_s="10"
+        texlength_t="10" />
+        
+        <appearance id="alcatrao"
+        emissive="0 0 0 0"
+        ambient="0.1 0.1 0.1 1"
+        diffuse="0.7 0.7 0.7 1"
+        specular="0.7 0.7 0.7 1"
+        shininess="4"
+        textureref="tasf"
+        texlength_s="10"
+        texlength_t="10" />
+        
+        <appearance id="janelas"
+        emissive="0 0 0 0"
+        ambient="0.1 0.1 0.1 1"
+        diffuse="0.7 0.7 0.7 1"
+        specular="0.7 0.7 0.7 1"
+        shininess="4"
+        textureref="tjanelas"
+        texlength_s="10"
+        texlength_t="10" />
+        
+    </appearances>
+    
+    <graph rootid="cena">
+        
+        <node id="cena">
+            <transforms>
+            </transforms>
+                        
+            <children>
+                <noderef id="predio" />
+                <noderef id="chao" />
+                <noderef id="candeeiro" />
+            </children>
+        </node>
+        
+        <node id="candeeiro">
+            <transforms>
+              <translate to="5 0 1" />
+                <rotate axis="x" angle="-90" />
+            </transforms>
+            
+            <children>
+                <cylinder base="0.1" top="0.1" height="4" slices="8" stacks="15" />
+                <noderef id="luz" />
+            </children>
+        </node>
+        
+        <node id="luz">
+            <transforms>
+                <translate to="0 0 4" />
+            </transforms>
+            
+            <children>
+                <torus inner="0.1" outer="0.15" slices="5" loops="5" />
+            </children>
+        </node>
+        
+        <node id="chao">
+            <transforms>
+             <rotate axis="x" angle="-90" />
+                <translate to="0 -6 0" />
+            </transforms>
+            
+            <children>
+                <noderef id="passeios" />
+                <noderef id="estrada" />
+            </children>
+        </node>
+        
+        <node id="passeios">
+            <transforms>
+            </transforms>
+            
+            <appearanceref id="passeio" />
+            
+            <children>
+                <rectangle xy1="0 0" xy2="15 1.5" />
+                <rectangle xy1="0 4.5" xy2="15 6" />
+            </children>
+        </node>
+        
+        <node id="estrada">
+            <transforms>
+            </transforms>
+            
+            <appearanceref id="alcatrao" />
+            
+            <children>
+                <rectangle xy1="0 1.5" xy2="15 4.5" />
+            </children>
+        </node>
+        
+        <node id="predio">
+            <transforms>
+                <translate to="8 0 0" />
+            </transforms>
+            
+            <children>
+                <noderef id="parede_norte" />
+                <noderef id="parede_sul" />
+                <noderef id="parede_este" />
+                <noderef id="parede_oeste" />
+                
+                <triangle xyz1="-1.5 10 -1.5" xyz2="0 11 0" xyz3="1.5 10 -1.5" />
+                <!-- Tecto Norte -->
+                <triangle xyz1="1.5 10 -1.5" xyz2="0 11 0" xyz3="1.5 10 1.5" />
+                <!-- Tecto Este -->
+                <triangle xyz1="1.5 10 1.5" xyz2="0 11 0" xyz3="-1.5 10 1.5" />
+                <!-- Tecto Sul -->
+                <triangle xyz1="-1.5 10 1.5" xyz2="0 11 0" xyz3="-1.5 10 -1.5" />
+                <!-- Tecto Oeste -->
+            </children>
+        </node>
+        
+        <node id="parede_norte">
+            <transforms>
+                <translate to="0 0 -1.5" />
+                <rotate axis="y" angle="180" />
+            </transforms>
+            
+            <appearanceref id="janelas" />
+            
+            <children>
+                <rectangle xy1="-1.5 0" xy2="1.5 10" />
+            </children>
+        </node>
+        
+        <node id="parede_sul">
+            <transforms>
+                <translate to="0 0 1.5" />
+            </transforms>
+            
+            <appearanceref id="janelas" />
+            
+            <children>
+                <rectangle xy1="-1.5 0" xy2="1.5 10" />
+            </children>
+        </node>
+        
+        <node id="parede_este">
+            <transforms>
+                <translate to="1.5 0 0" />
+                <rotate axis="y" angle="90" />
+            </transforms>
+            
+            <appearanceref id="janelas" />
+            
+            <children>
+                <rectangle xy1="-1.5 0" xy2="1.5 10" />
+            </children>
+        </node>
+        
+        <node id="parede_oeste">
+            <transforms>
+                <translate to="-1.5 0 0" />
+                <rotate axis="y" angle="-90" />
+            </transforms>
+            
+            <appearanceref id="janelas" />
+            
+            <children>
+                <rectangle xy1="-1.5 0" xy2="1.5 10" />
+            </children>
+        </node>
+    </graph>
+</yaf>

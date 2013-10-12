@@ -223,7 +223,7 @@ void Scene::processGraph(string nodeID)
 {
 	Node *node = nodes[nodeID];
 	glMultMatrixf(node->T);
-	if(node->appearance)
+	if(node->appearance) //BUG: tem de buscar appearance do pai
 		node->appearance->apply();
 
 	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)

@@ -32,6 +32,7 @@ private:
 	void parseTextures();
 	void parseAppearances();
 	void parseGraph();
+	string path;
 	
 };
 

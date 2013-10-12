@@ -1,0 +1,264 @@
+<yaf> 
+
+    <!-- bloco de configuracoes globais --> 
+    <!-- a declaracao dos atributos deste bloco e' obrigatoria --> 
+    <!-- Valores para draw mode: "fill" , "line", "point" --> 
+    <!-- Valores para shading: "flat", "gouraud" ) --> 
+    <!-- Valores para cullface: "none", "back" , "front" ou "both" --> 
+    <!-- Valores para cullorder : "CCW" ou "CW" --> 
+    <globals background="0 0 0 0" drawmode="fill" shading="flat" cullface="back" cullorder="CCW" /> 
+     
+    <!-- bloco de camaras: o atributo "initial" identifica a camara/ponto de vista inicial --> 
+    <cameras initial="Perspective" > 
+        <!-- tem de existir, pelo menos uma camara dos tipos seguintes (perspective ou ortho) --> 
+
+        <perspective id="Perspective" near="3.0" far="50.0" angle="50" pos="30.0 15.0 30.0" target="1.0 10.0 1.0" />
+		
+    </cameras> 
+	
+	<lighting doublesided="true" local="true" enabled="true" ambient="0.4 0.4 0.4 0.2" > 
+             <!-- Deve existir pelo menos um dos seguintes blocos: omin ou spot --> 
+            <!-- Os identificadores "id" nao podem ser repetidos --> 
+			
+			<omni id="omni1" enabled="true" 
+                location="5.0 5.0 5.0" 
+                ambient="2.0 2.0 2.0 2.0" 
+                diffuse="0.53 0.43 0.24 0.78" 
+                specular="0.81 0.57 0.54 0.42" />
+				
+				<omni id="omni2" enabled="true" 
+                location="5.0 5.0 5.0" 
+                ambient="2.0 2.0 2.0 2.0" 
+                diffuse="0.53 0.43 0.24 0.78" 
+                specular="0.81 0.57 0.54 0.42" />
+			
+			<spot id="2" enabled="true" 
+                location="5 0 10" 
+                ambient="0.8 0.8 0.8 1.0" 
+                diffuse="0.1 0.1 0.1 1.0" 
+                specular="0.1 0.1 0.1 1.0"
+                angle="359" 
+                exponent="50" 
+                direction="5 5 5" 
+            /> 
+
+    </lighting> 
+	
+	<textures> 
+		<texture id="spaceShipTex" file="metal.jpg" />
+		<texture id="diamondTex" file="diamond.png" />
+		<texture id="lightBeamTex" file="smoke.png" />
+    </textures> 
+	
+	<appearances> 
+        <!-- deve existir um ou mais blocos "appearance" -->
+        <!-- IMPORTANTE: -->
+        <!--   textureref, texlength_s e textlength_t sao atributos -->
+        <!--   opcionais se for usada uma textura. --> 
+        <!--   ver topico 'Notas finais' no enunciado sobre os -->
+        <!--   parametros texlength_...) -->  
+        <appearance id="spaceShip" 
+            emissive="0 0 0 1" 
+            ambient="0.1 0.1 0.1 1.0" 
+            diffuse="0.7 0.7 0.7 1.0" 
+            specular="0.2 0.2 0.2 1.0"  
+            shininess="60"
+			textureref="spaceShipTex"
+            texlength_s="1.0"
+            texlength_t="1.0" />
+			
+			<appearance id="diamond" 
+            emissive="0 0 0 1" 
+            ambient="0.1 0.1 0.5 1.0" 
+            diffuse="0.5 0.5 0.5 1.0" 
+            specular="0.5 0.5 0.5 1.0" 
+            shininess="60"
+			textureref="diamondTex"
+            texlength_s="1.0"
+            texlength_t="1.0" />
+			
+			<appearance id="lightBeam" 
+            emissive="0 0 0 1" 
+            ambient="0.0 0.4 0 1.0" 
+            diffuse="0.0 0.2 0 1.0" 
+            specular="0.0 0.7 0 1.0" 
+            shininess="100"
+			textureref="lightBeamTex"
+            texlength_s="1.0"
+            texlength_t="1.0" />
+			
+			<appearance id="lightBeam2" 
+            emissive="0 0 0 1" 
+            ambient="0.0 0.0 0.6 1.0" 
+            diffuse="0.0 0.0 0.2 1.0" 
+            specular="0.0 0.0 0.2 1.0" 
+            shininess="100"
+			textureref="lightBeamTex"
+            texlength_s="1.0"
+            texlength_t="1.0" />
+			
+		<appearance id="1" 
+            emissive="0 0 0 1" 
+            ambient="0.2 0.2 0.2 1" 
+            diffuse="0.4 0.4 0.4 1" 
+            specular="0.4 0.4 0.4 1" 
+            shininess="90" /> 
+	</appearances>
+	
+	
+	<graph rootid="cena"> 
+
+        <!-- tem de existir, pelo menos, um bloco "node" --> 
+        <node id="cena"> 
+            <!-- bloco "transforms" obrigatorio --> 
+            <transforms> 
+				<translate to="5 0 5" />
+            </transforms> 
+			
+			<appearanceref id="1" />
+			
+            <children> 
+				<noderef id="box" />	
+				<noderef id="nave" />
+				<noderef id="coluna" />
+				<noderef id="extra" />
+            </children> 
+        </node> 
+		
+		<node id="box">
+		    <transforms> 
+				
+            </transforms> 
+			
+			<appearanceref id="diamond" />
+			
+			<children> 
+				<noderef id="face1" />
+				<noderef id="face2" />	
+				<noderef id="face3" />	
+				<noderef id="face4" />	
+				<noderef id="face5" />	
+				<noderef id="face6" />		
+			</children>
+		</node>
+		
+		<node id="face1"> 
+            <transforms> 
+				<translate to="-0.5 0 0" /> 
+                <rotate axis="y" angle="-90" />	
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="face2"> 
+            <transforms> 
+				<translate to="0.5 0 0" /> 
+                <rotate axis="y" angle="90" />	
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="face3"> 
+            <transforms> 
+				<translate to="0 -0.5 0" /> 
+                <rotate axis="x" angle="90" />	
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+               <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="face4"> 
+            <transforms> 
+				<translate to="0 0.5 0" /> 
+                <rotate axis="x" angle="-90" />	
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="face5"> 
+            <transforms> 
+				<translate to="0 0 0.5" /> 
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="face6"> 
+            <transforms> 
+				<translate to="0 0 -0.5" />
+				<rotate axis="y" angle="180" />				
+            </transforms> 
+		
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </children> 
+        </node> 
+		
+		<node id="nave"> 
+            <transforms> 	
+				<translate to="0 15 0" /> 
+				<rotate axis="x" angle="90" /> 
+            </transforms> 
+			
+			<appearanceref id="spaceShip" />
+			
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+				<sphere radius="5.4" slices="50" stacks="50" /> 
+				<torus inner="3.2" outer="6.8" slices="3" loops="7" /> 
+            </children> 
+        </node> 
+		
+		
+		<node id="coluna"> 
+            <transforms> 	
+				<translate to="0 1.5 0" /> 
+				<rotate axis="x" angle="-90" />
+            </transforms> 
+		
+			<appearanceref id="lightBeam" />
+			
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <cylinder base="0.8" top="0.2" height="10" slices="10" stacks="10" />
+				
+            </children> 
+        </node> 
+		
+		
+		<node id="extra"> 
+            <transforms> 	
+				<translate to="0 9.5 0" /> 
+				<rotate axis="x" angle="90" />
+            </transforms> 
+		
+			<appearanceref id="lightBeam2" />
+			
+             <!-- bloco "children" obrigatorio --> 
+            <children> 
+                <torus inner="0.6" outer="0.8" slices="5" loops="5" /> 
+            </children> 
+        </node> 
+
+		
+    </graph> 
+</yaf>
