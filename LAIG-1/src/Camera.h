@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CGFCamera.h"
+#include "CGFcamera.h"
 #include <string>
 #include <GL/glut.h>
 

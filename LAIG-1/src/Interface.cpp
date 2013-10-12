@@ -27,7 +27,6 @@ void Interface::initGUI()
 	{
 		Light *thisLight = scene->getLightByGLFloat(GL_LIGHT0+i);
 
-		string a = std::to_string(i);
 		std::strcpy(name, thisLight->nodeID.c_str());	
 
 		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, name, NULL, GL_LIGHT0+i);
