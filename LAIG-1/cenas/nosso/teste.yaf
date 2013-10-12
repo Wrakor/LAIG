@@ -4,7 +4,7 @@
  <cameras initial="mesa">
  	<perspective id="mesa" near="0.1" far="500" angle="45" pos="12 5 12" target="5 0.75 5" />
     <perspective id="close" near="0.1" far="500" angle="45" pos="5 4 8" target="5 0.75 5" />
-    <perspective id="staff" near="0.1" far="500" angle="45" pos="8 4 4" target="6 0.75 5" />
+    <perspective id="lanca" near="0.1" far="500" angle="45" pos="8 4 4" target="6 0.75 5" />
     <perspective id="topo" near="0.1" far="500" angle="45" pos="10 18 0" target="5 0 5" />
     <ortho id="ortho" near="-100" far="100" left="-2" right="10" top="10" bottom="-2" />
  </cameras>
@@ -32,8 +32,7 @@
   <texture id="chao" file="chao.png" />
   <texture id="madeira" file="madeira.png" />
   <texture id="caixa" file="caixa.jpg" />
-  <texture id="gem" file="gem.jpg" />
-  <texture id="gold" file="gold.jpg" />
+  <texture id="ouro" file="ouro.jpg" />
   <!--<texture id="pyramid" file="data/pyramid.jpg" />-->
  </textures>
 
@@ -50,8 +49,8 @@
 
   <appearance id="madeira" 
     emissive="0 0 0 1" 
-    ambient="0.5 0.5 0.5 1" 
-    diffuse="0.5 0.5 0.5 1" 
+    ambient="0.2 0.2 0.2 1" 
+    diffuse="0.2 0.2 0.2 1" 
     specular="0 0 0 1" 
     shininess="128" 
     textureref="madeira" 
@@ -67,24 +66,22 @@
     textureref="caixa" 
     texlength_s="1" 
     texlength_t="1"/>
- 
-   <appearance id="gem" 
+
+   <appearance id="ponta"
     emissive="0 0 0 1" 
-    ambient="1 1 1 1" 
-    diffuse="1 1 1 1" 
-    specular="1 1 1 1" 
-    shininess="0"
-    textureref="gem" 
-    texlength_s="1" 
-    texlength_t="1"/>
+    ambient="0.2 0.2 0.2 1" 
+    diffuse="0.2 0.2 0.2 1" 
+    specular="0.2 0.2 0.2 1" 
+    shininess="20" 
+   />
     
-   <appearance id="gold" 
+   <appearance id="ouro" 
     emissive="0 0 0 1" 
-    ambient="1 1 1 1" 
-    diffuse="1 1 1 1" 
-    specular="1 1 1 1" 
+    ambient="0.2 0.2 0.2 1" 
+    diffuse="0.2 0.2 0.2 1" 
+    specular="0.5 0.5 0.5 1" 
     shininess="0"
-    textureref="gold" 
+    textureref="ouro" 
     texlength_s="1" 
     texlength_t="1"/>
 
@@ -99,7 +96,7 @@
         <noderef id="cubo" />
         <noderef id="chao" />
         <noderef id="mesa" />
-        <noderef id="bastao" />
+        <noderef id="lanca" />
         <noderef id="coins" />
       </children>
     </node>
@@ -299,7 +296,7 @@
         </children> 
       </node> 
       
-      <node id="bastao">
+      <node id="lanca">
         <transforms>
             <translate to="4.5 1.55 4" />
             <rotate axis="y" angle="75" />
@@ -308,7 +305,7 @@
         
         <children>
             <noderef id="cabo" />
-            <noderef id="gem" />
+            <noderef id="ponta" />
         </children>
       </node>
       
@@ -323,15 +320,15 @@
         </children>
       </node>
       
-      <node id="gem">
+      <node id="ponta">
         <transforms>
             <translate to="0 0 3" />
         </transforms>
         
-        <appearanceref id="gem" />
+        <appearanceref id="ponta" />
         
         <children>
-            <cylinder base="0.1" top="0.01" height="0.3" slices="9" stacks="5"/>
+            <cylinder base="0.1" top="0.01" height="0.3" slices="4" stacks="1"/>
         </children>
       </node>
       
@@ -339,7 +336,7 @@
           <transforms>
           </transforms>
           
-          <appearanceref id="gold" />
+          <appearanceref id="ouro" />
           
           <children>
             <noderef id="coin1" />
