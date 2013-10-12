@@ -39,7 +39,6 @@ public:
 	void setDrawMode(GLenum drawMode);
 	void processGraph(string nodeID);
 	string rootNode; //id do primeiro nó
-	void setNodeParents();
 
 private:
 	CGFobject* obj;

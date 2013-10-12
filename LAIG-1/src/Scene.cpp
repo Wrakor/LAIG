@@ -223,26 +223,18 @@ void Scene::processGraph(string nodeID)
 {
 	Node *node = nodes[nodeID];
 	glMultMatrixf(node->T);
-	if(node->primitivas.size()>0) //se houver primitivas a desenhar, tem de haver appearance definida
-		node->getAppearance()->apply();
+	if(node->appearance) //BUG: tem de buscar appearance do pai
+		node->appearance->apply();
 
 	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)
+	{
 		(*it)->draw();
+	}
 
 	for(vector<string>::iterator it = node->children.begin();it!=node->children.end();it++)
 	{
 		glPushMatrix();
 		processGraph(*it);
 		glPopMatrix();
-	}
-}
-
-void Scene::setNodeParents()
-{
-	for(map<string, Node*>::iterator it = nodes.begin();it!=nodes.end();it++)
-	{
-		Node *parentNode = (*it).second; //Nó a ser processado agora
-		for(int i=0;i<parentNode->children.size();i++) //Percorre filhos do nó
-			nodes[parentNode->children[i]]->parent = (*it).second; //Define o parent de cada nó filho como o nó que está a ser processado agora
 	}
 }

@@ -447,7 +447,7 @@ void Parser::parseGraph()
 			TiXmlElement *transforms = node->FirstChildElement("transforms");
 			TiXmlElement *transformsElement = transforms->FirstChildElement();
 
-			Node *readNode = new Node(id);
+			Node *readNode = new Node();
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
@@ -659,7 +659,6 @@ Parser::Parser(char *filename)
 	parseTextures();	
 	parseAppearances();
 	parseGraph();
-	scene.setNodeParents(); //define nós pai
 	interface.setScene(&this->scene);
 }
 
