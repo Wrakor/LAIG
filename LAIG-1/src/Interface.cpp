@@ -24,8 +24,7 @@ void Interface::initGUI()
 	for (unsigned int i = 0; i < scene->getNumLights(); i++)
 	{
 		string a = std::to_string(i);
-		std::strcpy(name, "Luz ");
-		std::strcat(name, a.c_str());		
+		std::strcpy(name, scene->getLightByGLFloat(GL_LIGHT0+i)->nodeID.c_str());	
 
 		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, name, NULL, GL_LIGHT0+i);
 		if (scene->getLightByGLFloat(GL_LIGHT0+i)->isEnabled())
