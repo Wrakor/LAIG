@@ -10,13 +10,13 @@
  </cameras>
 
  <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
-   <omni id="l1" enabled="false"
+   <omni id="omni" enabled="false"
                 location="0 5 0"
                 ambient="1 1 1 1"
                 diffuse="1 1 1 1"
                 specular="1 1 1 1"
             />
-   <spot id="l2" enabled="true" 
+   <spot id="spot" enabled="true" 
                 location="5 10 5" 
                 ambient="1 1 1 1" 
                 diffuse="1 1 1 1" 
