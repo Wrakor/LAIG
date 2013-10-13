@@ -630,6 +630,7 @@ void Parser::parseGraph()
 				node = node->NextSiblingElement();
 		}
 }
+
 Parser::Parser(char *filename)
 {
 	string path = filename;
@@ -655,7 +656,6 @@ Parser::Parser(char *filename)
 	}
 
 	yafElement = doc->FirstChildElement( "yaf" );
-
 
 	if (yafElement == NULL)
 		throw "Main yaf block element not found! Exiting!\n";

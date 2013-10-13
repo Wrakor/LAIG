@@ -1,5 +1,6 @@
 #pragma once
 #include "GL/glut.h"
+#include <cmath>
 
 class Primitiva{
 public:
@@ -19,6 +20,9 @@ class Triangle : public Primitiva
 {
 private:
 	float x1,x2,x3,y1,y2,y3,z1,z2,z3;
+	float normal_x, normal_y, normal_z;
+	void calculateTexCoords();
+	float lengthAB, lengthAC, texCoord_x, texCoord_y;
 public:
 	Triangle(float x1,float x2,float x3,float y1, float y2, float y3, float z1, float z2, float z3);
 	void draw();
