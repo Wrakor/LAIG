@@ -23,6 +23,36 @@ void Rectangle::draw(){
 	glEnd();
 }
 
+void Triangle::calculateTexCoords()
+{
+	float width, height;
+	float angle;
+	float dotProduct;
+
+	float vecAC_x, vecAC_y, vecAC_z, vecAB_x, vecAB_y, vecAB_z;
+
+	vecAC_x = x3-x1;
+	vecAC_y = y3-y1;
+	vecAC_z = z3-z1;
+
+	vecAB_x = x2-x1;
+	vecAB_y = y2-y1;
+	vecAB_z = z2-z1;
+
+	dotProduct = (vecAC_x)*(vecAB_x) + (vecAC_y)*(vecAB_y) + (vecAC_z)*(vecAB_z);
+
+	lengthAC = sqrt((vecAC_x)*(vecAC_x) + (vecAC_y)*(vecAC_y) + (vecAC_z)*(vecAC_z));
+	lengthAB = sqrt((vecAB_x)*(vecAB_x) + (vecAB_y)*(vecAB_y) + (vecAB_z)*(vecAB_z));
+
+	angle = acos(dotProduct/(lengthAB*lengthAC));
+
+	width = cos(angle)*lengthAC;
+	height = sin(angle)*lengthAC;
+
+	texCoord_x = width;
+	texCoord_y = height;
+}
+
 Triangle::Triangle(float x1,float x2,float x3,float y1, float y2, float y3, float z1, float z2, float z3)
 {
 	this->x1=x1;
@@ -34,14 +64,35 @@ Triangle::Triangle(float x1,float x2,float x3,float y1, float y2, float y3, floa
 	this->z1=z1;
 	this->z2=z2;
 	this->z3=z3;
+
+	normal_x = 0;
+	normal_y = 0;
+	normal_z = 0;
+
+	normal_x += (y1-y2)*(z1-z2);
+	normal_y += (z1-z2)*(x1-x2);
+	normal_z += (x1-x2)*(y1-y2);
+
+	normal_x += (y2-y3)*(z2-z3);
+	normal_y += (z2-z3)*(x2-x3);
+	normal_z += (x2-x3)*(y2-y3);
+
+	normal_x += (y3-y1)*(z3-z1);
+	normal_y += (z3-z1)*(x3-x1);
+	normal_z += (x3-x1)*(y3-y1);
+
+	calculateTexCoords();
 }
 
 void Triangle::draw()
 {
 	glBegin(GL_TRIANGLES);
-		glNormal3f(0, 0, 1);
+		glNormal3f(normal_x, normal_y, normal_z);
+		glTexCoord2d(0,0);
 		glVertex3f(x1, y1, z1);
+		glTexCoord2d(lengthAB,0);
         glVertex3f(x2, y2, z2);
+		glTexCoord2d(texCoord_x,texCoord_y);
         glVertex3f(x3, y3, z3);
 	glEnd();
 }
