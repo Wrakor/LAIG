@@ -58,7 +58,7 @@ Cylinder::Cylinder(float base, float top, float height, int slices, int stacks)
 void Cylinder::draw()
 {
 	GLUquadric *quadric = gluNewQuadric();
-	gluQuadricNormals(quadric, GLU_SMOOTH); //passar parametro da scene
+	gluQuadricNormals(quadric, GLU_SMOOTH);
 	gluQuadricTexture(quadric, true);
 	gluCylinder(quadric, base, top, height, slices, stacks);
 	glRotatef(180, 1, 0, 0);
@@ -80,7 +80,7 @@ Sphere::Sphere(float radius, int slices, int stacks)
 void Sphere::draw()
 {
 	GLUquadric *quadric = gluNewQuadric();
-	gluQuadricNormals(quadric, GLU_SMOOTH); //passar parametro da scene
+	gluQuadricNormals(quadric, GLU_SMOOTH);
 	gluQuadricTexture(quadric, true);
 	gluSphere(quadric, radius, slices, stacks);
 	gluDeleteQuadric(quadric);

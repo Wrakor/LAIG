@@ -18,4 +18,5 @@ public:
 	void setX(float value);
 	void setY(float value);
 	void setZ(float value);
+	virtual void updateProjectionMatrix(int width, int height) = 0;
 };

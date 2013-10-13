@@ -33,7 +33,6 @@ public:
 	Camera* getCamera(unsigned int id);
 	unsigned int getPositionInCamerasVector(string ID); //quero a posição do vector de câmaras dando o ID do yaf
 	Camera *getActiveCamera();
-	//std::list<CGFlight*> getSceneLights();
 	Light *getLightByGLFloat(GLfloat id);
 	void setDrawMode(GLenum drawMode);
 	void processGraph(string nodeID, Appearance *app);

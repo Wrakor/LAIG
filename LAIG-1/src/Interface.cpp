@@ -5,7 +5,6 @@ void Interface::initGUI()
 
 	///////////////////////////////// Cameras ///////////////////////////////// 
 	GLUI_Panel* cameraPanel = addPanel("Cameras", GLUI_PANEL_EMBOSSED);
-	//GLUI_RadioGroup *cameraRadioGroup = addRadioGroupToPanel(cameraPanel, 0, 0);
 	cameraListbox = addListboxToPanel(cameraPanel, "", 0, 0);
 	addColumn();
 
@@ -13,8 +12,6 @@ void Interface::initGUI()
 	{
 		Camera *thisCamera = (Camera *)scene->getCamera(i);
 
-		//std::strcpy(name, thisCamera->nodeID.c_str());
-		//addRadioButtonToGroup(cameraRadioGroup, name);
 		cameraListbox->add_item(i, thisCamera->nodeID.c_str());
 
 		if (thisCamera == scene->getActiveCamera())
@@ -31,10 +28,7 @@ void Interface::initGUI()
 	{
 		Light *thisLight = scene->getLightByGLFloat(GL_LIGHT0+i);
 
-		char *name = new char[thisLight->nodeID.size()+1]; //define char pointer com tamanho da string nodeID (addCheckboxToPanel não aceita const char)
-		std::strcpy(name, thisLight->nodeID.c_str());	
-
-		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, name, NULL, GL_LIGHT0+i);
+		GLUI_Checkbox * light = addCheckboxToPanel(lightPanel, (char *)thisLight->nodeID.c_str(), NULL, GL_LIGHT0+i);
 		if (thisLight->isEnabled())		
 			light->set_int_val(1);	
 	}

@@ -20,10 +20,3 @@ void OrthoCamera::updateProjectionMatrix(int width, int height)
 	glLoadIdentity();
 	glOrtho(this->left, this->right, this->bottom, this->top, this->near, this->far);
 }
-
-/*void OrthoCamera::applyView()
-{
-	glRotatef(rotation[0], 1.f, 0.f, 0.f);
-	glRotatef(rotation[1], 0.f, 1.f, 0.f);
-	glRotatef(rotation[2], 0.f, 0.f, 1.f);
-}*/

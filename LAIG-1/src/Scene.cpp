@@ -2,8 +2,6 @@
 #include "CGFaxis.h"
 #include "CGFapplication.h"
 
-#include "ExampleObject.h"
-
 #include <math.h>
 #include <iostream>
 #include <chrono>
@@ -181,11 +179,6 @@ Camera* Scene::getActiveCamera()
 {
 	return (Camera*)activeCamera;
 }
-
-/*std::list<CGFlight*> Scene::getSceneLights()
-{
-	return scene_lights;
-}*/
 
 Light* Scene::getLightByGLFloat(GLfloat id)
 {

@@ -14,7 +14,6 @@ void PerspectiveCamera::updateProjectionMatrix(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(angle,aspect, near, far);
-	//glFrustum(-aspect*.04, aspect*.04, -.04, .04, this->near, this->far);
 }
 
 void PerspectiveCamera::setTargetX(float value)

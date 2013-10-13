@@ -1,5 +1,5 @@
 #pragma once
-#include "CGFapplication.h" //TEM DE ESTAR AQUI SENÃO ESTOURA
+#include "CGFapplication.h"
 #include "CGFappearance.h"
 
 class Appearance : public CGFappearance
