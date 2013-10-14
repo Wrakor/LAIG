@@ -4,8 +4,6 @@
 
 #include <math.h>
 #include <iostream>
-#include <chrono>
-#include <thread>
 #include <typeinfo>
 
 Scene::Scene(){
@@ -94,7 +92,7 @@ void Scene::display()
 	// while the graphics card is showing the contents of another buffer - the front buffer
 	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 	glutSwapBuffers();
-	std::this_thread::sleep_for(std::chrono::milliseconds(17));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
 
 /*Scene::~Scene()
