@@ -436,7 +436,7 @@ void Parser::parseAnimations()
 				throw "Error parsing animation: no span attribute";
 
 			TiXmlElement *controlpoint = animation->FirstChildElement();
-			
+
 			while (controlpoint)
 			{
 				if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
@@ -444,7 +444,6 @@ void Parser::parseAnimations()
 			}
 		}
 	}
-
 }
 
 void Parser::parseGraph()
@@ -455,14 +454,22 @@ void Parser::parseGraph()
 		throw "Error parsing graph";
 
 	string rootid, id;
+	bool displayList = false;
 
 	rootid = graphElement->Attribute("rootid");
+
+	const char * displayListElement = graphElement->Attribute("displaylist");
+	if (displayListElement != NULL)
+		displayList = to_bool(graphElement->Attribute("displaylist"));
 
 	if(rootid.empty())
 		throw "Error parsing graph attributes";
 
+
+
 	cout << "\nGraph" << endl;
 	cout << "\tRoot ID: " << rootid << endl;
+	cout << "\tDisplaylist: " << displayList << endl;
 
 	this->scene.rootNode = rootid;
 
@@ -519,7 +526,7 @@ void Parser::parseGraph()
 							throw "Error parsing node: no 'angle' attribute";
 
 						cout << "\tRotate axis " << axis << " by " << angle <<" degrees" << endl;
-						
+
 						if(axis=="x")
 							glRotatef(angle, 1, 0, 0);
 						else if(axis=="y")
@@ -546,9 +553,9 @@ void Parser::parseGraph()
 				}
 
 				glGetFloatv(GL_MODELVIEW_MATRIX, readNode->T);
-				
+
 				string appearancerefid, value;
-				TiXmlElement *children = transforms->NextSiblingElement("children"), *appearanceref = transforms->NextSiblingElement("appearanceref"); //pode ser children ou appearanceref
+				TiXmlElement *children = transforms->NextSiblingElement("children"), *appearanceref = transforms->NextSiblingElement("appearanceref"), *animationref = transforms->NextSiblingElement("animationref"); //pode ser children ou appearanceref ou animationref	
 				if (!children)
 					throw "Error parsing node: no children block";
 
@@ -562,6 +569,16 @@ void Parser::parseGraph()
 					readNode->appearance=this->scene.getAppearanceByID(appearancerefid);
 				}
 
+				if (animationref)
+				{
+					string animationrefid = animationref->Attribute("id");
+					if (animationrefid.empty())
+						throw "Error parsing animationref id";
+					cout << "\t-Animationref ID: " << animationrefid << endl;
+
+					//TO DO OPENGL COMANDO
+				}
+
 				TiXmlElement *childrenElement = children->FirstChildElement();				
 
 				cout << "\t-Children:" << endl;
@@ -569,7 +586,7 @@ void Parser::parseGraph()
 				{
 					value = childrenElement->Value();
 					//cout << "\tVALUE: " << value << endl;
-					
+
 					if (value.empty())
 						throw "Error parsing node: no children 'value' set"; 
 					if (value == "rectangle")
@@ -656,6 +673,41 @@ void Parser::parseGraph()
 						cout << "\tnoderef id:" << childid << endl;
 
 						readNode->children.push_back(childid);
+					}
+					else if (value == "plane")
+					{
+						int parts;
+
+						if (childrenElement->QueryIntAttribute("parts", &parts) != 0)
+							throw "Error parsing node: no plane 'parts' attribute";						
+					}
+					else if (value == "patch")
+					{
+						int order, partsU, partsV;	
+						string compute = childrenElement->Attribute("compute");
+
+						if (childrenElement->QueryIntAttribute("order", &order) != 0 ||	childrenElement->QueryIntAttribute("partsU", &partsU) != 0 || childrenElement->QueryIntAttribute("partsV", &partsV) || compute.empty())
+							throw "Error parsing patch attributes";
+
+						TiXmlElement *controlpoint = childrenElement->FirstChildElement();
+						float xx, yy, zz;
+
+						while (controlpoint)
+						{
+							if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
+								throw "Error parsing animation: no controlpoint attributes";
+						}
+					}
+					else if (value == "vehicle")
+					{
+						//PUFF, FEZ-SE CHOCAPIC
+					}
+					else if (value == "waterline")
+					{
+						string heightmap = childrenElement->Attribute("heightmap"), texturemap = childrenElement->Attribute("texturemap"), fragmentshader = childrenElement->Attribute("fragmentshader"), vertexshader = childrenElement->Attribute("vertexshader");
+
+						if (heightmap.empty() || texturemap.empty() || fragmentshader.empty() || vertexshader.empty())
+							throw "Error parsing waterline attributes";
 					}
 
 					childrenElement = childrenElement->NextSiblingElement();
