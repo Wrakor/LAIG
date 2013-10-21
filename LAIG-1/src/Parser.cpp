@@ -363,10 +363,12 @@ void Parser::parseAppearances()
 		id = appearances->Attribute("id");
 		if (id.empty())
 			throw "Error parsing appearances: empty string";
+
 		extractElementsFromString(emissive, appearances->Attribute("emissive"), 4);
 		extractElementsFromString(ambient, appearances->Attribute("ambient"), 4);
 		extractElementsFromString(diffuse, appearances->Attribute("diffuse"), 4);
 		extractElementsFromString(specular, appearances->Attribute("specular"), 4);
+
 		if (appearances->QueryFloatAttribute("shininess", &shininess) != 0)
 			throw "Error parsing appearances: no 'shininess' attribute";
 
@@ -411,6 +413,38 @@ void Parser::parseAppearances()
 
 		appearances = appearances->NextSiblingElement();
 	}
+}
+
+void Parser::parseAnimations()
+{
+	animationsElement = yafElement->FirstChildElement("animations");
+
+	if (animationsElement)
+	{
+		TiXmlElement *animation = animationsElement->FirstChildElement();
+
+		while (animation)
+		{		
+			string id;
+			float span, xx, yy, zz;
+
+			id = animation->Attribute("id");			
+			if (id.empty())
+				throw "Error parsing animation: no ID";
+
+			if (animation->QueryFloatAttribute("span", &span) != 0)
+				throw "Error parsing animation: no span attribute";
+
+			TiXmlElement *controlpoint = animation->FirstChildElement();
+			
+			while (controlpoint)
+			{
+				if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
+					throw "Error parsing animation: no controlpoint attributes";
+			}
+		}
+	}
+
 }
 
 void Parser::parseGraph()
@@ -665,6 +699,7 @@ Parser::Parser(char *filename)
 	parseLighting();
 	parseTextures();	
 	parseAppearances();
+	parseAnimations();
 	parseGraph();
 	interface.setScene(&this->scene);
 }

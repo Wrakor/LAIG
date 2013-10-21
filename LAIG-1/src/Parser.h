@@ -25,12 +25,14 @@ private:
 	TiXmlElement* lightingElement;
 	TiXmlElement* texturesElement;
 	TiXmlElement* appearancesElement;
+	TiXmlElement* animationsElement;
 	TiXmlElement* graphElement;
 	void parseGlobals();
 	void parseCameras();
 	void parseLighting();
 	void parseTextures();
 	void parseAppearances();
+	void parseAnimations();
 	void parseGraph();
 	string path;
 	
