@@ -55,3 +55,12 @@ public:
 	Torus(float inner, float outer, int slices, int loops);
 	void draw();
 };
+
+class Plane : public Primitiva
+{
+private:
+	int parts;
+public:
+	Plane(int);
+	void draw();
+};
