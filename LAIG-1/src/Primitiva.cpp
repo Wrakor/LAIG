@@ -159,9 +159,14 @@ void Torus::draw()
 
 
 //coordenadas do quadrado 1x1
-GLfloat ctrlpoints[2][2][3] = {
+/*GLfloat ctrlpoints[2][2][3] = {
 	{ { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } },
 	{ { 0.0, 0.0, 1.0 }, { 1.0, 0.0, 1.0 } }
+};*/
+
+GLfloat ctrlpoints[4][3] = {
+	 { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 },
+	 { 0.0, 0.0, 1.0 }, { 1.0, 0.0, 1.0 },
 };
 
 GLfloat nrmlcompon[4][3] = { { 0.0, 0.0, 1.0 },
@@ -192,7 +197,7 @@ void Plane::draw()
 		3, 2, //cada coordenada tem 3 valores , 2 = de segunda ordem
 		0.0, 1.0, // V varia entre 0 e 1
 		6, 2,  // 6 = 2 coordenadas por coluna * 3 valores por coordenada, 2 = de segunda ordem
-		&ctrlpoints[0][0][0]); //pontos de controlo	
+		&ctrlpoints[0][0]); //pontos de controlo	
 	glMap2f(GL_MAP2_NORMAL, 0.0, 1.0, 3, 2, 0.0, 1.0, 6, 2, &nrmlcompon[0][0]);
 	glMap2f(GL_MAP2_TEXTURE_COORD_2, 0.0, 1.0, 2, 2, 0.0, 1.0, 4, 2, &textpoints[0][0]); //definir coordenadas de textura
 
@@ -200,7 +205,59 @@ void Plane::draw()
 	glMapGrid2f(parts, 0.0, 1.0, parts, 0.0, 1.0);
 	glEvalMesh2(GL_FILL, 0, parts, 0, parts);
 
+	/*glBegin(GL_FILL);
+	for (int i = 0; i <= 10; i++)
+		glEvalCoord1f((GLfloat)i / 10);
+	glEnd();*/
+
 	glDisable(GL_MAP2_VERTEX_3);
 	glDisable(GL_MAP2_TEXTURE_COORD_2);
 
+}
+
+Patch::Patch(int order, int partsU, int partsV, string compute)
+{
+	this->order = order;
+	this->partsU = partsU;
+	this->partsV = partsV;
+
+	if (compute == "point")
+		mode = GL_POINT;
+	else if (compute == "line")
+		mode = GL_LINE;
+	else if (compute == "fill")
+		mode = GL_FILL;
+}
+
+void Patch::addControlPoint(float x, float y, float z)
+{
+	controlpoints.push_back(controlpoint(x, y, z));
+}
+
+void Patch::draw()
+{
+	int size = controlpoints.size();
+
+	GLfloat** ctrl_points = new GLfloat*[size]; //array bidimensional 
+
+	for (int i = 0; i < size; i++) //popular o array com os controlpoints
+	{
+		ctrl_points[i] = new GLfloat[3];
+		ctrl_points[i][0] = controlpoints[i].x;
+		ctrl_points[i][1] = controlpoints[i].y;
+		ctrl_points[i][2] = controlpoints[i].z;
+	}
+	
+	glPushMatrix();
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_AUTO_NORMAL);
+
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, order + 1, 0.0, 1.0, 3 * (order + 1), order + 1, &ctrl_points[0][0]);
+
+	glMapGrid2f(partsU, 0.0, 1.0, partsV, 0.0, 1.0);
+	glEvalMesh2(mode, 0, partsU, 0, partsV);
+
+	glDisable(GL_MAP2_VERTEX_3);
+	glDisable(GL_AUTO_NORMAL);
+	glPopMatrix();
 }
