@@ -679,7 +679,9 @@ void Parser::parseGraph()
 						int parts;
 
 						if (childrenElement->QueryIntAttribute("parts", &parts) != 0)
-							throw "Error parsing node: no plane 'parts' attribute";						
+							throw "Error parsing node: no plane 'parts' attribute";			
+
+						readNode->primitivas.push_back(new Plane(parts));
 					}
 					else if (value == "patch")
 					{
@@ -692,11 +694,19 @@ void Parser::parseGraph()
 						TiXmlElement *controlpoint = childrenElement->FirstChildElement();
 						float xx, yy, zz;
 
+						Patch *patch = new Patch(order, partsU, partsV, compute);
+
 						while (controlpoint)
 						{
 							if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
 								throw "Error parsing animation: no controlpoint attributes";
+
+							patch->addControlPoint(xx, yy, zz);
+
+							controlpoint = controlpoint->NextSiblingElement();
 						}
+
+						readNode->primitivas.push_back(patch);
 					}
 					else if (value == "vehicle")
 					{
