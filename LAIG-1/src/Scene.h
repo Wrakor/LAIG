@@ -35,9 +35,9 @@ public:
 	Camera *getActiveCamera();
 	Light *getLightByGLFloat(GLfloat id);
 	void setDrawMode(GLenum drawMode);
-	void processGraph(string nodeID, Appearance *app);
+	void processGraph(string nodeID, Appearance *app=NULL);
+	void createDisplayLists(string nodeID, Appearance *app=NULL, bool onDisplayList=false);
 	string rootNode; //id do primeiro nó
-
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;

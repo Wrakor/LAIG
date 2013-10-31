@@ -218,7 +218,7 @@
       </children>
     </node>
 
-    <node id="mesa"> 
+    <node id="mesa" displaylist="true"> 
       <transforms>
         <translate to="5 0.75 5" /> 
       </transforms>

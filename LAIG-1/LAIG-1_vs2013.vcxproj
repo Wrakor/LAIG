@@ -93,14 +93,6 @@
     <ClInclude Include="src\Primitiva.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="demograph.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="teste.yaf">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
