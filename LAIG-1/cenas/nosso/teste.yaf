@@ -87,6 +87,16 @@
 
  </appearances>
 
+<animations>
+	<animation id="cubo" span="10" type="linear">
+		<controlpoint xx="0" yy="0" zz="0" />
+		<controlpoint xx="0" yy="5" zz="0" />
+		<controlpoint xx="0" yy="5" zz="5" />
+		<controlpoint xx="0" yy="5" zz="0" />
+		<controlpoint xx="0" yy="0" zz="0" />
+	</animation>
+</animations>
+ 
   <graph rootid="cena">
 
     <node id="cena">
@@ -123,6 +133,8 @@
         </transforms>
         
         <appearanceref id="caixa" />
+		
+		<animationref id="cubo" />
         
         <children>
             <noderef id="cuboUnitario" />

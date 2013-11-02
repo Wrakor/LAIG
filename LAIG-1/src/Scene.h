@@ -7,6 +7,7 @@
 #include "Appearance.h"
 #include "Node.h"
 #include "Camera.h"
+#include "Animation.h"
 #include <map>
 
 class Scene : public CGFscene
@@ -25,8 +26,10 @@ public:
 	void addLight(Light *l);
 	void addTexture(Texture* texture);
 	void addAppearance(Appearance* appearance);
+	void addAnimation(Animation* animation);
 	Texture* getTextureByID(string nodeID);
 	Appearance* getAppearanceByID(string nodeID);
+	Animation* getAnimationByID(string nodeID);
 	void addNode(string nodeID, Node* node);
 	unsigned int getNumLights();
 	unsigned int getNumCameras();
@@ -38,8 +41,10 @@ public:
 	void processGraph(string nodeID, Appearance *app=NULL);
 	void createDisplayLists(string nodeID, Appearance *app=NULL, bool onDisplayList=false);
 	string rootNode; //id do primeiro nó
+	void initAnimations();
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
+	vector<Animation*> animations;
 	map<string, Node*> nodes;
 };

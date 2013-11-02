@@ -10,6 +10,7 @@
 #include "OrthoCamera.h"
 #include "Appearance.h"
 #include "Node.h"
+#include "Animation.h"
 
 using namespace std;
 
@@ -419,29 +420,58 @@ void Parser::parseAnimations()
 {
 	animationsElement = yafElement->FirstChildElement("animations");
 
-	if (animationsElement)
+	if (!animationsElement)
+		throw "Animations element doesn't exist!";
+	else
 	{
 		TiXmlElement *animation = animationsElement->FirstChildElement();
 
 		while (animation)
 		{		
-			string id;
+			string id, type;
 			float span, xx, yy, zz;
 
-			id = animation->Attribute("id");			
+			id = animation->Attribute("id");
 			if (id.empty())
-				throw "Error parsing animation: no ID";
+				throw "Error parsing animation: no id attribute";
 
 			if (animation->QueryFloatAttribute("span", &span) != 0)
 				throw "Error parsing animation: no span attribute";
 
-			TiXmlElement *controlpoint = animation->FirstChildElement();
+			type = animation->Attribute("type");
+			if (type.empty())
+				throw "Error parsing animation: no type attribute";
 
-			while (controlpoint)
+			if (type == "linear")
 			{
-				if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
-					throw "Error parsing animation: no controlpoint attributes";
+				LinearAnimation *readAnimation = new LinearAnimation(id, span);
+
+				TiXmlElement *controlpoint = animation->FirstChildElement();
+
+				if (!controlpoint)
+					throw "Error parsing animation: at least one control point is needed!"; //two i guess
+
+				while (controlpoint)
+				{
+					if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
+						throw "Error parsing animation: no controlpoint attributes";
+
+					std::array<float, 3> readControlPoint;
+					readControlPoint[0] = xx;
+					readControlPoint[1] = yy;
+					readControlPoint[2] = zz;
+
+					readAnimation->addControlPoint(readControlPoint);
+
+					controlpoint = controlpoint->NextSiblingElement();
+				}
+
+				this->scene.addAnimation(readAnimation);
+
+				animation = animation->NextSiblingElement();
 			}
+			else
+				throw "Only linear animations supported";
 		}
 	}
 }
@@ -580,7 +610,7 @@ void Parser::parseGraph()
 						throw "Error parsing animationref id";
 					cout << "\t-Animationref ID: " << animationrefid << endl;
 
-					//TO DO OPENGL COMANDO
+					readNode->animation = this->scene.getAnimationByID(animationrefid);
 				}
 
 				TiXmlElement *childrenElement = children->FirstChildElement();				
