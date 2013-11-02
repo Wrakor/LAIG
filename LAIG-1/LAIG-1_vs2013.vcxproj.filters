@@ -87,14 +87,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="demograph.xml">
-      <Filter>Resource Files</Filter>
-    </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="teste.yaf">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

@@ -454,13 +454,9 @@ void Parser::parseGraph()
 		throw "Error parsing graph";
 
 	string rootid, id;
-	bool displayList = false;
+	bool displayList;
 
 	rootid = graphElement->Attribute("rootid");
-
-	const char * displayListElement = graphElement->Attribute("displaylist");
-	if (displayListElement != NULL)
-		displayList = to_bool(graphElement->Attribute("displaylist"));
 
 	if(rootid.empty())
 		throw "Error parsing graph attributes";
@@ -469,7 +465,6 @@ void Parser::parseGraph()
 
 	cout << "\nGraph" << endl;
 	cout << "\tRoot ID: " << rootid << endl;
-	cout << "\tDisplaylist: " << displayList << endl;
 
 	this->scene.rootNode = rootid;
 
@@ -489,6 +484,15 @@ void Parser::parseGraph()
 			TiXmlElement *transformsElement = transforms->FirstChildElement();
 
 			Node *readNode = new Node(id);
+
+			const char * readDisplayList = node->Attribute("displaylist");
+			if (readDisplayList != NULL)
+			{
+				displayList = to_bool(readDisplayList);
+				readNode->displayList = displayList;
+				cout << "\tDisplaylist: " << boolalpha << displayList << endl;
+			}
+
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 

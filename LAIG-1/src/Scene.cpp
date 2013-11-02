@@ -55,6 +55,7 @@ void Scene::init()
 
 	// Defines a default normal
 	glNormal3f(0,0,1);
+	createDisplayLists(this->rootNode);
 }
 	
 void Scene::display() 
@@ -85,9 +86,7 @@ void Scene::display()
 
 
 	// ---- END Background, camera and axis setup
-
-	processGraph(rootNode, nodes[rootNode]->appearance); //temos de passar o id do nó inicial e a sua aparência
-
+	processGraph(rootNode); //temos de passar o id do nó inicial
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
 	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
@@ -196,26 +195,72 @@ void Scene::setDrawMode(GLenum drawMode)
 void Scene::processGraph(string nodeID, Appearance *app)
 {
 	Node *node = nodes[nodeID];
-	glMultMatrixf(node->T);
 	if(node->appearance) //se nó tem aparência, substitui a do pai
 		app=node->appearance;
 
-	if(node->primitivas.size()>0) //se nó tem primitivas para desenhar
+	if(app) //se a aparência não for nula
+		app->apply(); //aplica a aparência para desenhar as primitivas
+	else
+		(new CGFappearance())->apply(); //material por defeito
+
+	if (node->displayList) //se houver uma display list, chama-a e ignora filhos
+		glCallList(node->displayListID);
+	else //se não, percorre normalmente
 	{
-		if(app) //se a aparência não for nula
-			app->apply(); //aplica a aparência para desenhar as primitivas
-		else
-			//throw "YAF malformed: can't draw a primitive before refering an appearanceref"; //se a aparência for nula, estamos a tentar desenhar sem que nenhuma aparência esteja definida, nem no nó nem na sua linhagem
-			(new CGFappearance())->apply(); //material por defeito
+		glMultMatrixf(node->T);
+		for (vector<Primitiva *>::iterator it = node->primitivas.begin(); it != node->primitivas.end(); it++)
+			(*it)->draw();
+
+		for (vector<string>::iterator it = node->children.begin(); it != node->children.end(); it++)
+		{
+			glPushMatrix();
+			processGraph(*it, app);
+			glPopMatrix();
+		}
 	}
+}
 
-	for(vector<Primitiva *>::iterator it = node->primitivas.begin();it!=node->primitivas.end();it++)
-		(*it)->draw();
+void Scene::createDisplayLists(string nodeID, Appearance *app, bool onDisplayList)
+{
+	Node *node = nodes[nodeID];
+	bool createdDisplayList = false;
+	if (node->displayList && !onDisplayList && node->displayListID == NULL) //se nó tem uma displaylist que ainda não foi criada, e não estamos a construir uma displaylist
+	{
+		onDisplayList = true;
+		createdDisplayList = true;
+		node->displayListID = glGenLists(1);
+		glNewList(node->displayListID, GL_COMPILE);
+	}
+	if (onDisplayList) //só desenha se estivermos dentro de uma DL
+	{
+		glMultMatrixf(node->T);
+		if (node->appearance) //se nó tem aparência, substitui a do pai
+			app = node->appearance;
 
-	for(vector<string>::iterator it = node->children.begin();it!=node->children.end();it++)
+		if (node->primitivas.size() > 0) //se nó tem primitivas para desenhar
+		{
+			if (app) //se a aparência não for nula
+				app->apply(); //aplica a aparência para desenhar as primitivas
+		}
+
+		for (vector<Primitiva *>::iterator it = node->primitivas.begin(); it != node->primitivas.end(); it++)
+			(*it)->draw();
+	}
+	for (vector<string>::iterator it = node->children.begin(); it != node->children.end(); it++)
 	{
 		glPushMatrix();
-		processGraph(*it, app);
+		createDisplayLists(*it, app, onDisplayList);
 		glPopMatrix();
+	}
+	if (createdDisplayList) //se este foi o nó onde a DL actual foi criada, fecha-a
+	{
+		glEndList();
+		//percorre novamente filhos para criar DL's individualmente
+		for (vector<string>::iterator it = node->children.begin(); it != node->children.end(); it++)
+		{
+			glPushMatrix();
+			createDisplayLists(*it);
+			glPopMatrix();
+		}
 	}
 }
