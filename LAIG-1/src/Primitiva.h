@@ -90,4 +90,7 @@ public:
 	Patch(int, int, int, string);
 	void addControlPoint(float, float, float);
 	void draw();
+	
 };
+
+void drawFlyingVehicle();
