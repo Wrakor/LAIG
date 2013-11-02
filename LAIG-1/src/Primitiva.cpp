@@ -187,6 +187,16 @@ Plane::Plane(int parts)
 	this->parts = parts;
 }
 
+/*GLfloat ctrlpoints[10][3] = {
+	 { -1.5, -1.5, 4.0 }, { -0.5, -1.5, 2.0 },
+	 {0.5, -1.5, -1.0 }, { 1.5, -1.5, 2.0 } ,
+	 { -1.5, -0.5, 1.0 }, { -0.5, -0.5, 3.0 },
+	 {0.5, -0.5, 0.0 }, { 1.5, -0.5, -1.0 } ,
+	 { -1.5, 0.5, 4.0 }, { -0.5, 0.5, 0.0 }
+};*/
+
+
+
 void Plane::draw()
 {
 	glEnable(GL_MAP2_VERTEX_3);
@@ -204,11 +214,6 @@ void Plane::draw()
 
 	glMapGrid2f(parts, 0.0, 1.0, parts, 0.0, 1.0);
 	glEvalMesh2(GL_FILL, 0, parts, 0, parts);
-
-	/*glBegin(GL_FILL);
-	for (int i = 0; i <= 10; i++)
-		glEvalCoord1f((GLfloat)i / 10);
-	glEnd();*/
 
 	glDisable(GL_MAP2_VERTEX_3);
 	glDisable(GL_MAP2_TEXTURE_COORD_2);
@@ -238,24 +243,69 @@ void Patch::draw()
 {
 	int size = controlpoints.size();
 
-	GLfloat** ctrl_points = new GLfloat*[size]; //array bidimensional 
+	GLfloat *ctrl_points = new GLfloat[size*3];
 
-	for (int i = 0; i < size; i++) //popular o array com os controlpoints
+	for (int i = 0, j = 0; i < size*3; j++) //popular o array com os controlpoints
 	{
-		ctrl_points[i] = new GLfloat[3];
-		ctrl_points[i][0] = controlpoints[i].x;
-		ctrl_points[i][1] = controlpoints[i].y;
-		ctrl_points[i][2] = controlpoints[i].z;
+		ctrl_points[i++] = controlpoints[j].x;
+		ctrl_points[i++] = controlpoints[j].y;
+		ctrl_points[i++] = controlpoints[j].z;
 	}
-	
+
+	glPushMatrix();
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_AUTO_NORMAL);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
+
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, order + 1, 0.0, 1.0, 3 * (order + 1), order + 1, &ctrl_points[0]);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2, 0.0, 1.0, 2, 2, 0.0, 1.0, 4, 2, &textpoints[0][0]); //definir coordenadas de textura
+
+	glMapGrid2f(partsU, 0.0, 1.0, partsV, 0.0, 1.0);
+	glEvalMesh2(mode, 0, partsU, 0, partsV);
+
+	glDisable(GL_MAP2_VERTEX_3);
+	glDisable(GL_AUTO_NORMAL);
+	glPopMatrix();
+}
+
+GLfloat ctrlpoints_flyingVehicle[4][3] = {
+	{ 0, 0.0, 2.0 }, { 0.5, 1.5, 2.0 },
+	{ 0.5, 1.5, 2.0 }, { 1.5, 0, 1.5 }
+};
+
+
+void drawFlyingVehicle()
+{
+	/*Patch a(3, 10, 10, "fill");*/
+	Triangle b(0, 0, 1.5, 0, 0, 0, 0, 2, 1.5);
+	Rectangle c(1.5, 3, 0.5, 0);
+	Rectangle d(1.5, 3, 0.5, 0);
+
+	b.draw();
+
+	glPushMatrix();
+	glRotatef(20, 0, 1, 0);
+	glTranslated(-1.75, 0.5, 1.5);
+	glRotatef(90, 1, 0, 0);
+	c.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(20, 0, 1, 0);
+	glTranslated(-2.75, 0.5, 1.5);
+	glRotatef(90, 1, 0, 0);
+	d.draw();
+	glPopMatrix();
+
+	//a.draw();
 	glPushMatrix();
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_AUTO_NORMAL);
 
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, order + 1, 0.0, 1.0, 3 * (order + 1), order + 1, &ctrl_points[0][0]);
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 3 + 1, 0.0, 1.0, 3 * (3 + 1), 3 + 1, &ctrlpoints_flyingVehicle[0][0]);
 
-	glMapGrid2f(partsU, 0.0, 1.0, partsV, 0.0, 1.0);
-	glEvalMesh2(mode, 0, partsU, 0, partsV);
+	glMapGrid2f(10, 0.0, 1.0, 10, 0.0, 1.0);
+	glEvalMesh2(GL_FILL, 0, 10, 0, 10);
 
 	glDisable(GL_MAP2_VERTEX_3);
 	glDisable(GL_AUTO_NORMAL);
