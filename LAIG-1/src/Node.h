@@ -4,6 +4,7 @@
 #include <vector>
 #include "Primitiva.h"
 #include "Appearance.h"
+#include "Animation.h"
 
 
 using namespace std;
@@ -18,4 +19,5 @@ public:
 	vector<Primitiva*> primitivas;
 	bool displayList;
 	GLuint displayListID;
+	Animation* animation;
 };

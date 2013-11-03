@@ -87,6 +87,16 @@
 
  </appearances>
 
+<animations>
+	<animation id="anim1" span="5" type="linear">
+		<controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="-5" />
+        <controlpoint xx="-5" yy="0" zz="-5" />
+        <controlpoint xx="-5" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="0" />
+	</animation>
+</animations>
+ 
   <graph rootid="cena">
 
     <node id="cena">
@@ -121,6 +131,8 @@
             <rotate axis="y" angle="15" />
             <scale factor="0.5 0.5 0.5" />
         </transforms>
+        
+        <animationref id="anim1" />
         
         <appearanceref id="caixa" />
         

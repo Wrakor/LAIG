@@ -56,6 +56,7 @@ void Scene::init()
 	// Defines a default normal
 	glNormal3f(0,0,1);
 	createDisplayLists(this->rootNode);
+	initAnimations();
 }
 	
 void Scene::display() 
@@ -143,6 +144,14 @@ Appearance* Scene::getAppearanceByID(string nodeID)
 	throw "Appearance not found"; //if appearance isn't found, throw error
 }
 
+Animation* Scene::getAnimationByID(string nodeID)
+{
+	for (unsigned int i = 0; i<animations.size(); i++)
+	if (animations[i]->nodeID == nodeID)
+		return animations[i];
+	throw "Animation not found"; //if animation isn't found, throw error
+}
+
 void Scene::addNode(string nodeID, Node *node)
 {
 	this->nodes.insert(std::pair<string, Node *>(nodeID, node));
@@ -208,6 +217,8 @@ void Scene::processGraph(string nodeID, Appearance *app)
 	else //se não, percorre normalmente
 	{
 		glMultMatrixf(node->T);
+		if (node->animation != NULL)
+			node->animation->draw();
 		for (vector<Primitiva *>::iterator it = node->primitivas.begin(); it != node->primitivas.end(); it++)
 			(*it)->draw();
 
@@ -263,4 +274,15 @@ void Scene::createDisplayLists(string nodeID, Appearance *app, bool onDisplayLis
 			glPopMatrix();
 		}
 	}
+}
+
+void Scene::addAnimation(Animation* animation)
+{
+	this->animations.push_back(animation);
+}
+
+void Scene::initAnimations()
+{
+	for (int i = 0; i < animations.size(); i++)
+		((LinearAnimation*)animations[i])->init();
 }
