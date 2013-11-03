@@ -98,26 +98,12 @@ public:
 	
 };
 
-/*class Shader : public CGFshader
+class Vehicle : public Primitiva
 {
-public:
-	Shader();
-	void bind(float timestamp = clock());
-	void setScale(float s);
-	float normScale;
+	void draw();
+};
 
-protected:
-	CGFtexture * heightMapTexture;
-	CGFtexture * secTexture;
-
-	GLint baseImageLoc;
-	GLint scaleLoc;
-	GLint heightMapLoc;
-	GLint timeLoc;
-	float lastTimestamp, totalTime = 0;
-};*/
-
-class Waterline : public CGFshader
+class Waterline : public CGFshader, public Primitiva
 {
 public:
 	Waterline();
@@ -132,7 +118,7 @@ protected:
 
 	GLint textureLoc, scaleLoc, heightMapLoc, timeLoc;
 	float lastTimestamp, totalTime = 0;
-	Plane plane = Plane(40);
+	Plane plane = Plane(50);
 };
 
 void drawFlyingVehicle();

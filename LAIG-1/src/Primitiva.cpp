@@ -301,7 +301,7 @@ void Patch::draw()
 	glPopMatrix();
 }
 
-void drawFlyingVehicle()
+void Vehicle::draw()
 {
 	Patch p1(2, 10, 10, "fill");
 	p1.addControlPoint(0.25, 0, 0.25);

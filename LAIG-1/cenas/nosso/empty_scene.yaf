@@ -1,0 +1,58 @@
+<yaf>
+ <globals background="0 0 0 0" drawmode="line" shading="gouraud" cullface="none" cullorder="CCW" /> 
+
+ <cameras initial="mesa">
+ 	<perspective id="mesa" near="0.1" far="500" angle="45" pos="0.1 10 0" target="0 0 0" />
+    <perspective id="close" near="0.1" far="500" angle="45" pos="5 4 8" target="5 0.75 5" />
+    <perspective id="lanca" near="0.1" far="500" angle="45" pos="8 4 4" target="6 0.75 5" />
+    <perspective id="topo" near="0.1" far="500" angle="45" pos="10 18 0" target="5 0 5" />
+    <ortho id="ortho" near="-100" far="100" left="-2" right="10" top="10" bottom="-2" />
+ </cameras>
+
+ <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
+   <omni id="omni" enabled="true"
+                location="0 5 0"
+                ambient="1 1 1 1"
+                diffuse="1 1 1 1"
+                specular="1 1 1 1"
+            />
+   <spot id="spot" enabled="true" 
+                location="0 20 0" 
+                ambient="1 1 1 1" 
+                diffuse="0 0 0 0" 
+                specular="0 0 0 0"
+                angle="45" 
+                exponent="10"
+                direction="0 -1 0" 
+            /> 
+ 
+ </lighting>
+
+ <textures>
+ <texture id="chao" file="chao.png" />
+ </textures>
+
+ <appearances>
+  <appearance id="chao"
+    emissive="0 0 0 1"
+    ambient="0.4 0.4 0.4 1" 
+    diffuse="0.5 0.5 0.5 1" 
+    specular="1 1 1 1" 
+    shininess="0"
+    textureref="chao" 
+    texlength_s="1" 
+    texlength_t="1"/>
+ </appearances>
+
+ <animations>
+ </animations>
+
+  <graph rootid="cena">
+  <node id="cena">
+  <transforms>
+  </transforms>
+  <children>
+  </children>
+  </node>
+  </graph>
+</yaf>

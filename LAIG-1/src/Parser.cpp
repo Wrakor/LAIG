@@ -744,7 +744,7 @@ void Parser::parseGraph()
 					}
 					else if (value == "vehicle")
 					{
-						//PUFF, FEZ-SE CHOCAPIC
+						readNode->primitivas.push_back(new Vehicle);
 					}
 					else if (value == "waterline")
 					{
@@ -752,6 +752,8 @@ void Parser::parseGraph()
 
 						if (heightmap.empty() || texturemap.empty() || fragmentshader.empty() || vertexshader.empty())
 							throw "Error parsing waterline attributes";
+
+						readNode->primitivas.push_back(new Waterline(heightmap, texturemap, fragmentshader, vertexshader));
 					}
 
 					childrenElement = childrenElement->NextSiblingElement();
