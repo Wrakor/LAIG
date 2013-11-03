@@ -170,6 +170,7 @@ void Torus::draw()
 GLfloat ctrlpoints[4][3] = {
 	 { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 },
 	 { 0.0, 0.0, 1.0 }, { 1.0, 0.0, 1.0 },
+
 };
 
 GLfloat nrmlcompon[4][3] = { { 0.0, 0.0, 1.0 },
@@ -300,8 +301,6 @@ void Patch::draw()
 	glPopMatrix();
 }
 
-
-
 void drawFlyingVehicle()
 {
 	Patch p1(2, 10, 10, "fill");
@@ -358,52 +357,103 @@ void drawFlyingVehicle()
 }
 
 
-Shader::Shader()
+Waterline::Waterline()
 {
-	init("../data/appValues.vert", "../data/dualVaryingColor.frag");
-	//init("../data/textureDemo2.vert", "../data/textureDemo2.frag");
+	init("data//testevertex.vert", "data//textureDemo2.frag");
 
 	CGFshader::bind();
 
 	// Initialize parameter in memory
-	normScale = 0.0;
+	normScale = 0.6;
 
 	// Store Id for the uniform "normScale", new value will be stored on bind()
 	scaleLoc = glGetUniformLocation(id(), "normScale");
+	timeLoc = glGetUniformLocation(id(), "time");
 
-	baseTexture = new CGFtexture("../data/terrainmap2.jpg");
-	secTexture = new CGFtexture("../data/feup.jpg");
+	heightMapTexture = new CGFtexture("watermap.jpg");
+	//secTexture = new CGFtexture("water.jpg");
 
 	// get the uniform location for the sampler
-	baseImageLoc = glGetUniformLocation(id(), "baseImage");
-
+	heightMapLoc = glGetUniformLocation(id(), "hImage");
 	// set the texture id for that sampler to match the GL_TEXTUREn that you 
 	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
-	glUniform1i(baseImageLoc, 0);
+	glUniform1i(heightMapLoc, 0);
+	glUniform1f(scaleLoc, normScale);
+	//secImageLoc = glGetUniformLocation(id(), "water");
+	//glUniform1i(secImageLoc, 1);
 
-	// repeat if you use more textures in your shader(s)
-	secImageLoc = glGetUniformLocation(id(), "secondImage");
-	glUniform1i(secImageLoc, 1);
+	lastTimestamp = clock();
 }
 
-void Shader::bind(void)
+void Waterline::bind(float timestamp)
 {
 	CGFshader::bind();
 
 	// update uniforms
-	glUniform1f(scaleLoc, normScale);
+	float timeSinceLastUpdate = ((timestamp - lastTimestamp) / CLOCKS_PER_SEC);
+	
+	if (timeSinceLastUpdate > 0.2)
+	{
+		totalTime += timeSinceLastUpdate;
+		lastTimestamp = timestamp;
+	}
+	
+	glUniform1f(timeLoc, totalTime);
 
 	// make sure the correct texture unit is active
 	glActiveTexture(GL_TEXTURE0);
 
 	// apply/activate the texture you want, so that it is bound to GL_TEXTURE0
+	heightMapTexture->apply();
+
+	// do the same for other textures DESCOMENTAR PARA FRAGMENTSHADER
+	/*glActiveTexture(GL_TEXTURE1);
+
 	baseTexture->apply();
 
-	// do the same for other textures
-	glActiveTexture(GL_TEXTURE1);
+	glActiveTexture(GL_TEXTURE0);*/
+}
 
-	secTexture->apply();
+Waterline::Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader)
+{
+	init(vertexshader.c_str(), fragmentshader.c_str());
 
-	glActiveTexture(GL_TEXTURE0);
+	CGFshader::bind();
+
+	// Initialize parameter in memory
+	normScale = 0.6;
+
+	// Store Id for the uniform "normScale", new value will be stored on bind()
+	scaleLoc = glGetUniformLocation(id(), "normScale");
+	timeLoc = glGetUniformLocation(id(), "time");
+
+	heightMapTexture = new CGFtexture(heightmap.c_str());
+	texture = new CGFtexture(texturemap.c_str());
+
+	// get the uniform location for the sampler
+	heightMapLoc = glGetUniformLocation(id(), "hImage");
+	textureLoc = glGetUniformLocation(id(), "texture");
+
+	// set the texture id for that sampler to match the GL_TEXTUREn that you 
+	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
+	glUniform1i(heightMapLoc, 0);
+	glUniform1i(textureLoc, 1);
+	glUniform1f(scaleLoc, normScale);
+
+	lastTimestamp = clock();
+}
+
+void Waterline::draw()
+{
+	this->bind();
+
+	glScalef(2, 1, 3);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+
+	this->unbind();
 
 }

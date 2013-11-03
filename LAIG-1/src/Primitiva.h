@@ -9,7 +9,7 @@
 #include "CGFtexture.h"
 #include "CGFshader.h"
 #include "GL/glut.h"
-
+#include <ctime>
 using std::string;
 using std::vector;
 
@@ -98,23 +98,51 @@ public:
 	
 };
 
-class Shader : public CGFshader
+/*class Shader : public CGFshader
 {
 public:
 	Shader();
-	virtual void bind(void);
+	void bind(float timestamp = clock());
 	void setScale(float s);
 	float normScale;
 
 protected:
-	CGFtexture * baseTexture;
+	CGFtexture * heightMapTexture;
 	CGFtexture * secTexture;
 
 	GLint baseImageLoc;
-	GLint secImageLoc;
-
 	GLint scaleLoc;
+	GLint heightMapLoc;
+	GLint timeLoc;
+	float lastTimestamp, totalTime = 0;
+};*/
 
+class Waterline : public CGFshader
+{
+public:
+	Waterline();
+	Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader);
+	void bind(float timestamp = clock());
+	void setScale(float s);
+	float normScale;
+	void draw();
+protected:
+	CGFtexture * heightMapTexture;
+	CGFtexture * texture;
+
+	GLint textureLoc, scaleLoc, heightMapLoc, timeLoc;
+	float lastTimestamp, totalTime = 0;
+	Plane plane = Plane(40);
 };
 
 void drawFlyingVehicle();
+/*
+class Waterline 
+{
+private:
+	string heightmap, texturemap, fragmentshader, vertexshader;
+	Shader shader;
+public:
+	Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader);
+	void draw();
+};*/
