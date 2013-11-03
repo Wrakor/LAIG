@@ -25,6 +25,8 @@ void LinearAnimation::init(float timestamp)
 	Animation::init(timestamp);
 	this->currentPos = controlPoints[0];
 	this->lastTimestamp = timestamp;
+	this->timePerControlPoint = span / (controlPoints.size() - 1);
+	this->timeInThisControlPoint = 0;
 }
 
 void LinearAnimation::addControlPoint(array<float, 3> controlPoint)
@@ -36,14 +38,21 @@ void LinearAnimation::update(float timestamp)
 {
 	float animationTime = (timestamp - startTime)/CLOCKS_PER_SEC;
 	float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC;
-	if (currentControlPoint != controlPoints.size()-1)
+	this->timeInThisControlPoint += timeSinceLastUpdate;
+	if (animationTime<span) //if animation isn't done
 	{
-		currentPos[0] += (controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0]) * (timeSinceLastUpdate / span * (controlPoints.size() - 1));
-		currentPos[1] += (controlPoints[currentControlPoint + 1][1] - controlPoints[currentControlPoint][1]) * (timeSinceLastUpdate / span * (controlPoints.size() - 1));
-		currentPos[2] += (controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2]) * (timeSinceLastUpdate / span * (controlPoints.size() - 1));
-		//if ((floorf(animationTime*1000) == floorf((span / (controlPoints.size() - 1))*1000)) && currentControlPoint < (controlPoints.size() - 2)) //NÃO ESTÁ BEM, arranjar arredondamento
-		if ((floorf(currentPos[0]*100) == floorf(controlPoints[currentControlPoint + 1][0]*100)) && (floorf(currentPos[1]*100) == floorf(controlPoints[currentControlPoint + 1][1]*100)) && (floorf(currentPos[2]*100) == floorf(controlPoints[currentControlPoint + 1][2]*100)))
+		if (timeInThisControlPoint>timePerControlPoint) //if this control point is done, go to the next
+		{
 			currentControlPoint++;
+			this->timeInThisControlPoint = 0;
+		}
+		else
+		{
+			//increment current position: distance to cover for this control point * percentage of time elapsed 
+			currentPos[0] += (controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0]) * (timeSinceLastUpdate / timePerControlPoint); //x
+			currentPos[1] += (controlPoints[currentControlPoint + 1][1] - controlPoints[currentControlPoint][1]) * (timeSinceLastUpdate / timePerControlPoint); //y
+			currentPos[2] += (controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2]) * (timeSinceLastUpdate / timePerControlPoint); //z
+		}
 	}
 	else //reset
 	{

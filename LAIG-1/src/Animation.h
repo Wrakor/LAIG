@@ -13,7 +13,9 @@ protected:
 public:
 	string nodeID;
 	Animation(string nodeID);
-	void init(float timestamp = clock());
+	virtual void init(float timestamp);
+	virtual void update(float timestamp) = 0;
+	virtual void draw() = 0;
 };
 
 class LinearAnimation : public Animation
@@ -21,7 +23,7 @@ class LinearAnimation : public Animation
 	vector<array<float, 3>> controlPoints;
 	unsigned int currentControlPoint;
 	array<float, 3> currentPos;
-	float span, lastTimestamp;
+	float span, lastTimestamp, timePerControlPoint, timeInThisControlPoint;
 public:
 	LinearAnimation(string nodeID, float span);
 	void addControlPoint(array<float, 3>);

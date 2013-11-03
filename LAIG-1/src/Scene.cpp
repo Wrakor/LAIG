@@ -216,10 +216,9 @@ void Scene::processGraph(string nodeID, Appearance *app)
 		glCallList(node->displayListID);
 	else //se não, percorre normalmente
 	{
+		glMultMatrixf(node->T);
 		if (node->animation != NULL)
-			((LinearAnimation*)node->animation)->draw();
-		else
-			glMultMatrixf(node->T);
+			node->animation->draw();
 		for (vector<Primitiva *>::iterator it = node->primitivas.begin(); it != node->primitivas.end(); it++)
 			(*it)->draw();
 

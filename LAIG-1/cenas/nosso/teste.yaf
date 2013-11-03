@@ -88,12 +88,12 @@
  </appearances>
 
 <animations>
-	<animation id="cubo" span="10" type="linear">
+	<animation id="anim1" span="5" type="linear">
 		<controlpoint xx="0" yy="0" zz="0" />
-		<controlpoint xx="0" yy="5" zz="0" />
-		<controlpoint xx="0" yy="5" zz="5" />
-		<controlpoint xx="0" yy="5" zz="0" />
-		<controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="-5" />
+        <controlpoint xx="-5" yy="0" zz="-5" />
+        <controlpoint xx="-5" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="0" />
 	</animation>
 </animations>
  
@@ -132,9 +132,9 @@
             <scale factor="0.5 0.5 0.5" />
         </transforms>
         
+        <animationref id="anim1" />
+        
         <appearanceref id="caixa" />
-		
-		<animationref id="cubo" />
         
         <children>
             <noderef id="cuboUnitario" />
