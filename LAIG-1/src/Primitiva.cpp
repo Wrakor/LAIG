@@ -370,7 +370,7 @@ Waterline::Waterline()
 	scaleLoc = glGetUniformLocation(id(), "normScale");
 	timeLoc = glGetUniformLocation(id(), "time");
 
-	heightMapTexture = new CGFtexture("watermap.jpg");
+	heightMapTexture = new CGFtexture("data//watermap.jpg");
 	//secTexture = new CGFtexture("water.jpg");
 
 	// get the uniform location for the sampler
