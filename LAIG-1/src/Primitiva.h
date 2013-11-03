@@ -118,17 +118,5 @@ protected:
 
 	GLint textureLoc, scaleLoc, heightMapLoc, timeLoc;
 	float lastTimestamp, totalTime = 0;
-	Plane plane = Plane(50);
+	Plane plane = Plane(80);
 };
-
-void drawFlyingVehicle();
-/*
-class Waterline 
-{
-private:
-	string heightmap, texturemap, fragmentshader, vertexshader;
-	Shader shader;
-public:
-	Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader);
-	void draw();
-};*/

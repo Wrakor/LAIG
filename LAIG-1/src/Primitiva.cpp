@@ -356,10 +356,9 @@ void Vehicle::draw()
 	glPopMatrix();
 }
 
-
 Waterline::Waterline()
 {
-	init("data//testevertex.vert", "data//textureDemo2.frag");
+	init("data//vertexShaderWaterline.vert", "data//fragmentShaderWaterline.frag");
 
 	CGFshader::bind();
 
@@ -371,47 +370,21 @@ Waterline::Waterline()
 	timeLoc = glGetUniformLocation(id(), "time");
 
 	heightMapTexture = new CGFtexture("data//watermap.jpg");
-	//secTexture = new CGFtexture("water.jpg");
+	texture = new CGFtexture("data//water.jpg");
 
 	// get the uniform location for the sampler
 	heightMapLoc = glGetUniformLocation(id(), "hImage");
+	textureLoc = glGetUniformLocation(id(), "texture");
+
 	// set the texture id for that sampler to match the GL_TEXTUREn that you 
 	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
 	glUniform1i(heightMapLoc, 0);
+	glUniform1i(textureLoc, 1);
 	glUniform1f(scaleLoc, normScale);
 	//secImageLoc = glGetUniformLocation(id(), "water");
 	//glUniform1i(secImageLoc, 1);
 
 	lastTimestamp = clock();
-}
-
-void Waterline::bind(float timestamp)
-{
-	CGFshader::bind();
-
-	// update uniforms
-	float timeSinceLastUpdate = ((timestamp - lastTimestamp) / CLOCKS_PER_SEC);
-	
-	if (timeSinceLastUpdate > 0.2)
-	{
-		totalTime += timeSinceLastUpdate;
-		lastTimestamp = timestamp;
-	}
-	
-	glUniform1f(timeLoc, totalTime);
-
-	// make sure the correct texture unit is active
-	glActiveTexture(GL_TEXTURE0);
-
-	// apply/activate the texture you want, so that it is bound to GL_TEXTURE0
-	heightMapTexture->apply();
-
-	// do the same for other textures DESCOMENTAR PARA FRAGMENTSHADER
-	/*glActiveTexture(GL_TEXTURE1);
-
-	baseTexture->apply();
-
-	glActiveTexture(GL_TEXTURE0);*/
 }
 
 Waterline::Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader)
@@ -443,6 +416,35 @@ Waterline::Waterline(string heightmap, string texturemap, string fragmentshader,
 	lastTimestamp = clock();
 }
 
+void Waterline::bind(float timestamp)
+{
+	CGFshader::bind();
+
+	// update uniforms
+	float timeSinceLastUpdate = ((timestamp - lastTimestamp) / CLOCKS_PER_SEC);
+
+	if (timeSinceLastUpdate > 0.2)
+	{
+		totalTime += timeSinceLastUpdate;
+		lastTimestamp = timestamp;
+	}
+
+	glUniform1f(timeLoc, totalTime);
+
+	// make sure the correct texture unit is active
+	glActiveTexture(GL_TEXTURE0);
+
+	// apply/activate the texture you want, so that it is bound to GL_TEXTURE0
+	heightMapTexture->apply();
+
+	// do the same for other textures DESCOMENTAR PARA FRAGMENTSHADER
+	glActiveTexture(GL_TEXTURE1);
+
+	texture->apply();
+
+	glActiveTexture(GL_TEXTURE0);
+}
+
 void Waterline::draw()
 {
 	this->bind();
@@ -455,5 +457,4 @@ void Waterline::draw()
 	plane.draw();
 
 	this->unbind();
-
 }
