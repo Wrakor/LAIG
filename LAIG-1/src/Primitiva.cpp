@@ -1,3 +1,6 @@
+
+#include <GL/glew.h>
+
 #include "Primitiva.h"
 using namespace std;
 
@@ -238,6 +241,21 @@ void Patch::addControlPoint(float x, float y, float z)
 {
 	controlpoints.push_back(controlpoint(x, y, z));
 }
+GLfloat ctrlpoints_flyingVehicle[9][3] = {
+	/*{ 0, 0.0, 2.0 }, { 0.5, 1.5, 2.0 },
+	{ 0.5, 1.5, 2.0 }, { 1.5, 0, 1.5 }*/
+	/*{ 0, 0, 0 }, { 0.5, 0, 0 }, { 1, 0, 0 },
+	{ 0, 0, 0.5 }, { 0.5, 1, 0.5 }, { 1, 0, 0.5 }, 
+	{ 0, 0, 1 }, { 0.5, 0, 1 }, { 1, 0, 1 }*/
+
+	{ 0.25, 0, 0.25 }, { 0.5, 0, 0 }, { 0.75, 0, 0.25 },
+	{ 0, 0, 0.5 }, { 0.5, 1, 0.5 }, { 1, 0, 0.5 },
+	{ 0.25, 0, 0.75 }, { 0.5, 0, 1 }, { 0.75, 0,0.75 }
+
+	/*{ 0.25, 0.25, 0.25 }, { 0.5, 0, 0 }, {0.75, 0.25, 0.25},
+	{ 0, 0, 0.5 }, { 0.5, 0.5, 0.5 }, {1, 0, 0.5},
+	{ 0, 0.25, 0.75}, { 0.5, 0, 1 }, {0.75, 0.25, 0.75},*/
+};
 
 void Patch::draw()
 {
@@ -254,7 +272,21 @@ void Patch::draw()
 
 	glPushMatrix();
 	glEnable(GL_MAP2_VERTEX_3);
-	glEnable(GL_AUTO_NORMAL);
+
+	GLint currentFrontFace;
+	glGetIntegerv(GL_FRONT_FACE, &currentFrontFace);
+
+	if ( currentFrontFace == GL_CW)
+	{
+		glEnable(GL_AUTO_NORMAL);
+	}
+	else if (currentFrontFace == GL_CCW)
+	{
+		glFrontFace(GL_CW);
+		glEnable(GL_AUTO_NORMAL);
+		glFrontFace(GL_CCW);
+	}
+
 	glEnable(GL_MAP2_TEXTURE_COORD_2);
 
 	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, order + 1, 0.0, 1.0, 3 * (order + 1), order + 1, &ctrl_points[0]);
@@ -268,46 +300,110 @@ void Patch::draw()
 	glPopMatrix();
 }
 
-GLfloat ctrlpoints_flyingVehicle[4][3] = {
-	{ 0, 0.0, 2.0 }, { 0.5, 1.5, 2.0 },
-	{ 0.5, 1.5, 2.0 }, { 1.5, 0, 1.5 }
-};
 
 
 void drawFlyingVehicle()
 {
-	/*Patch a(3, 10, 10, "fill");*/
-	Triangle b(0, 0, 1.5, 0, 0, 0, 0, 2, 1.5);
-	Rectangle c(1.5, 3, 0.5, 0);
-	Rectangle d(1.5, 3, 0.5, 0);
+	Patch p1(2, 10, 10, "fill");
+	p1.addControlPoint(0.25, 0, 0.25);
+	p1.addControlPoint(0.5, 0, 0);
+	p1.addControlPoint(0.75, 0, 0.25);
+	p1.addControlPoint(0, 0, 0.5);
+	p1.addControlPoint(0.5, 1, 0.5);
+	p1.addControlPoint(1, 0, 0.5);
+	p1.addControlPoint(0.25, 0, 0.75);
+	p1.addControlPoint(0.5, 0, 1);
+	p1.addControlPoint(0.75, 0, 0.75);
 
-	b.draw();
+	Rectangle asa(-0.25, 0.25, -2, 2);
+	Triangle miniAsa(2.25, 1.75, 2, 0, 0, -0.5, 0, 0, 0);
+
+	glTranslatef(3, 3, 3); //so para nao começar na origem
 
 	glPushMatrix();
-	glRotatef(20, 0, 1, 0);
-	glTranslated(-1.75, 0.5, 1.5);
+	glRotatef(-90, 1, 0, 0);
+	miniAsa.draw();
+	glPopMatrix();
+
+	glPushMatrix();
 	glRotatef(90, 1, 0, 0);
-	c.draw();
+	miniAsa.draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(20, 0, 1, 0);
-	glTranslated(-2.75, 0.5, 1.5);
+	glTranslatef(0, -0.25, 0);
 	glRotatef(90, 1, 0, 0);
-	d.draw();
+	glTranslatef(-0.5, 0, -0.5);
+	asa.draw();
 	glPopMatrix();
 
-	//a.draw();
 	glPushMatrix();
-	glEnable(GL_MAP2_VERTEX_3);
-	glEnable(GL_AUTO_NORMAL);
-
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 3 + 1, 0.0, 1.0, 3 * (3 + 1), 3 + 1, &ctrlpoints_flyingVehicle[0][0]);
-
-	glMapGrid2f(10, 0.0, 1.0, 10, 0.0, 1.0);
-	glEvalMesh2(GL_FILL, 0, 10, 0, 10);
-
-	glDisable(GL_MAP2_VERTEX_3);
-	glDisable(GL_AUTO_NORMAL);
+	glTranslatef(0, 0.25, 0);
+	glRotatef(-90, 1, 0, 0);
+	glTranslatef(-0.5, 0, -0.5);
+	asa.draw();
 	glPopMatrix();
+
+	glScalef(7, 1, 1);
+	glPushMatrix();
+	glTranslatef(-0.5, 0, -0.5);
+	p1.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(180, 1, 0, 0);
+	glTranslatef(-0.5, 0, -0.5);
+	p1.draw();
+	glPopMatrix();
+}
+
+
+Shader::Shader()
+{
+	init("../data/appValues.vert", "../data/dualVaryingColor.frag");
+	//init("../data/textureDemo2.vert", "../data/textureDemo2.frag");
+
+	CGFshader::bind();
+
+	// Initialize parameter in memory
+	normScale = 0.0;
+
+	// Store Id for the uniform "normScale", new value will be stored on bind()
+	scaleLoc = glGetUniformLocation(id(), "normScale");
+
+	baseTexture = new CGFtexture("../data/terrainmap2.jpg");
+	secTexture = new CGFtexture("../data/feup.jpg");
+
+	// get the uniform location for the sampler
+	baseImageLoc = glGetUniformLocation(id(), "baseImage");
+
+	// set the texture id for that sampler to match the GL_TEXTUREn that you 
+	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
+	glUniform1i(baseImageLoc, 0);
+
+	// repeat if you use more textures in your shader(s)
+	secImageLoc = glGetUniformLocation(id(), "secondImage");
+	glUniform1i(secImageLoc, 1);
+}
+
+void Shader::bind(void)
+{
+	CGFshader::bind();
+
+	// update uniforms
+	glUniform1f(scaleLoc, normScale);
+
+	// make sure the correct texture unit is active
+	glActiveTexture(GL_TEXTURE0);
+
+	// apply/activate the texture you want, so that it is bound to GL_TEXTURE0
+	baseTexture->apply();
+
+	// do the same for other textures
+	glActiveTexture(GL_TEXTURE1);
+
+	secTexture->apply();
+
+	glActiveTexture(GL_TEXTURE0);
+
 }

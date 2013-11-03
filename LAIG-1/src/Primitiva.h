@@ -3,6 +3,11 @@
 #include <cmath>
 #include <string>
 #include <vector>
+
+
+
+#include "CGFtexture.h"
+#include "CGFshader.h"
 #include "GL/glut.h"
 
 using std::string;
@@ -91,6 +96,25 @@ public:
 	void addControlPoint(float, float, float);
 	void draw();
 	
+};
+
+class Shader : public CGFshader
+{
+public:
+	Shader();
+	virtual void bind(void);
+	void setScale(float s);
+	float normScale;
+
+protected:
+	CGFtexture * baseTexture;
+	CGFtexture * secTexture;
+
+	GLint baseImageLoc;
+	GLint secImageLoc;
+
+	GLint scaleLoc;
+
 };
 
 void drawFlyingVehicle();
