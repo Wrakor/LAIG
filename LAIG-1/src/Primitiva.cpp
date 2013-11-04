@@ -370,46 +370,18 @@ void Vehicle::draw()
 	glPopMatrix();
 }
 
-Waterline::Waterline()
-{
-	init("data//vertexShaderWaterline.vert", "data//fragmentShaderWaterline.frag");
-	CGFshader::bind();
-	// Initialize parameter in memory
-	normScale = 0.6;
-
-	// Store Id for the uniform "normScale", new value will be stored on bind()
-	scaleLoc = glGetUniformLocation(id(), "normScale");
-	timeLoc = glGetUniformLocation(id(), "time");
-
-	heightMapTexture = new CGFtexture("data//watermap.jpg");
-	texture = new CGFtexture("data//water.jpg");
-
-	// get the uniform location for the sampler
-	heightMapLoc = glGetUniformLocation(id(), "hImage");
-	textureLoc = glGetUniformLocation(id(), "texture");
-
-	// set the texture id for that sampler to match the GL_TEXTUREn that you 
-	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
-	glUniform1i(heightMapLoc, 0);
-	glUniform1i(textureLoc, 1);
-	glUniform1f(scaleLoc, normScale);
-	//secImageLoc = glGetUniformLocation(id(), "water");
-	//glUniform1i(secImageLoc, 1);
-
-	lastTimestamp = clock();
-	CGFshader::unbind();
-}
-
 Waterline::Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader)
 {
 	init(vertexshader.c_str(), fragmentshader.c_str());
 	CGFshader::bind();
 
 	// Initialize parameter in memory
-	normScale = 0.6;
+	float yScale = 0.6;
+	float zScale = 0.2;
 
 	// Store Id for the uniform "normScale", new value will be stored on bind()
-	scaleLoc = glGetUniformLocation(id(), "normScale");
+	yScaleLoc = glGetUniformLocation(id(), "yScale");
+	zScaleLoc = glGetUniformLocation(id(), "zScale");
 	timeLoc = glGetUniformLocation(id(), "time");
 
 	heightMapTexture = new CGFtexture(heightmap.c_str());
@@ -423,7 +395,8 @@ Waterline::Waterline(string heightmap, string texturemap, string fragmentshader,
 	// will use later e.g. if using GL_TEXTURE0, set the uniform to 0
 	glUniform1i(heightMapLoc, 0);
 	glUniform1i(textureLoc, 1);
-	glUniform1f(scaleLoc, normScale);
+	glUniform1f(yScaleLoc, yScale);
+	glUniform1f(zScaleLoc, zScale);
 
 	lastTimestamp = clock();
 	CGFshader::unbind();

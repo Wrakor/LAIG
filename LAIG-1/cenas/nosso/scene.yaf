@@ -1,12 +1,8 @@
 <yaf>
- <globals background="0 0 0 0" drawmode="line" shading="gouraud" cullface="none" cullorder="CCW" /> 
+ <globals background="0 0 0 0" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW" /> 
 
- <cameras initial="mesa">
- 	<perspective id="mesa" near="0.1" far="500" angle="45" pos="0.1 10 0" target="0 0 0" />
-    <perspective id="close" near="0.1" far="500" angle="45" pos="5 4 8" target="5 0.75 5" />
-    <perspective id="lanca" near="0.1" far="500" angle="45" pos="8 4 4" target="6 0.75 5" />
-    <perspective id="topo" near="0.1" far="500" angle="45" pos="10 18 0" target="5 0 5" />
-    <ortho id="ortho" near="-100" far="100" left="-2" right="10" top="10" bottom="-2" />
+ <cameras initial="default">
+ 	<perspective id="default" near="0.1" far="500" angle="45" pos="15 10 15" target="0 3 8" />
  </cameras>
 
  <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
@@ -31,6 +27,7 @@
  <textures>
  <texture id="chao" file="chao.png" />
  <texture id="areia" file="areia.jpg" />
+ <texture id="skydome" file="skydome.jpg" />
  </textures>
 
  <appearances>
@@ -38,7 +35,7 @@
     emissive="0 0 0 1"
     ambient="0.4 0.4 0.4 1" 
     diffuse="0.5 0.5 0.5 1" 
-    specular="1 1 1 1" 
+    specular="0.1 0.1 0.1 1" 
     shininess="0"
     textureref="chao" 
     texlength_s="1" 
@@ -50,6 +47,15 @@
     specular="1 1 1 1" 
     shininess="0"
     textureref="areia" 
+    texlength_s="1" 
+    texlength_t="1"/>
+   <appearance id="skydome"
+	emissive="1 1 1 1"
+    ambient="0 0 0 0" 
+    diffuse="0 0 0 0" 
+    specular="0 0 0 0" 
+    shininess="128"
+    textureref="skydome" 
     texlength_s="1" 
     texlength_t="1"/>
  </appearances>
@@ -74,6 +80,7 @@
   	<noderef id="waterline"/>
   	<noderef id="vehicle"/>
   	<noderef id="areia"/>
+	<noderef id="skydome"/>
   </children>
   </node>
 
@@ -94,25 +101,25 @@
   <children>
   	<waterline heightmap="data/watermap.jpg" texturemap="data/water.jpg" fragmentshader="data/fragmentShaderWaterline.frag" vertexshader="data/vertexShaderWaterline.vert"/>
   </children>
-  </node> 
-  <node id="rect">
-      <transforms>
-      </transforms>      
-      <children>
-        <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
-      </children>
-    </node>
-
+  </node>
   <node id="areia" displaylist="true">
       <transforms>
-        <translate to="1.5 0 10" />
-        <scale factor="3 1 20" />
-        <rotate axis="x" angle="-90" />
+		<rotate axis="x" angle="-90" />
       </transforms>
       <appearanceref id="areia" />
       <children>
-       <noderef id="rect" />
+       <rectangle xy1="-50 -50" xy2="50 50" />
       </children>
-    </node> 
+  </node>
+  <node id="skydome" displaylist="true">
+	  <transforms>
+		<scale factor="-50 -50 -50" />
+		<rotate axis="x" angle="90" />
+	  </transforms>
+	  <appearanceref id="skydome" />
+	  <children>
+		<sphere radius="1" slices="100" stacks="100" />
+	  </children>
+  </node>
   </graph>
 </yaf>

@@ -107,17 +107,14 @@ public:
 class Waterline : public CGFshader, public Primitiva
 {
 public:
-	Waterline();
 	Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader);
 	void bind(float timestamp = clock());
 	void setScale(float s);
-	float normScale;
 	void draw();
 protected:
 	CGFtexture * heightMapTexture;
 	CGFtexture * texture;
-
-	GLint textureLoc, scaleLoc, heightMapLoc, timeLoc;
+	GLint textureLoc, yScaleLoc, zScaleLoc, heightMapLoc, timeLoc;
 	float lastTimestamp, totalTime = 0;
 	Plane plane = Plane(80);
 };
