@@ -7,20 +7,11 @@
 
  <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
    <omni id="omni" enabled="true"
-                location="0 5 0"
+                location="0 100 0"
                 ambient="1 1 1 1"
                 diffuse="1 1 1 1"
                 specular="1 1 1 1"
             />
-   <spot id="spot" enabled="true" 
-                location="0 20 0" 
-                ambient="1 1 1 1" 
-                diffuse="0 0 0 0" 
-                specular="0 0 0 0"
-                angle="45" 
-                exponent="10"
-                direction="0 -1 0" 
-            /> 
  
  </lighting>
 
