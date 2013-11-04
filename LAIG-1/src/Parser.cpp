@@ -466,6 +466,9 @@ void Parser::parseAnimations()
 					controlpoint = controlpoint->NextSiblingElement();
 				}
 
+				if (readAnimation->getNumControlPoints() < 2)
+					throw "Error parsing animation: you must define at least 2 control points";
+
 				this->scene.addAnimation(readAnimation);
 
 				animation = animation->NextSiblingElement();

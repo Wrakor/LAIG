@@ -82,3 +82,8 @@ void LinearAnimation::calculateAngle()
 	deltaZ = controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2];
 	angle = atan2(deltaX, deltaZ) * 180 / M_PI;
 }
+
+unsigned int LinearAnimation::getNumControlPoints()
+{
+	return this->controlPoints.size();
+}
