@@ -1,5 +1,7 @@
 #include "Animation.h"
 #include <GL/glut.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace std;
 
@@ -27,6 +29,7 @@ void LinearAnimation::init(float timestamp)
 	this->lastTimestamp = timestamp;
 	this->timePerControlPoint = span / (controlPoints.size() - 1);
 	this->timeInThisControlPoint = 0;
+	calculateAngle();
 }
 
 void LinearAnimation::addControlPoint(array<float, 3> controlPoint)
@@ -44,6 +47,7 @@ void LinearAnimation::update(float timestamp)
 		if (timeInThisControlPoint>timePerControlPoint) //if this control point is done, go to the next
 		{
 			currentControlPoint++;
+			calculateAngle();
 			this->timeInThisControlPoint = 0;
 		}
 		else
@@ -57,6 +61,7 @@ void LinearAnimation::update(float timestamp)
 	else //reset
 	{
 		currentControlPoint = 0;
+		calculateAngle();
 		init();
 	}
 	lastTimestamp = timestamp;
@@ -66,4 +71,14 @@ void LinearAnimation::draw()
 {
 	update();
 	glTranslatef(currentPos[0], currentPos[1], currentPos[2]);
+	glRotatef(angle, 0, 1, 0);
+}
+
+void LinearAnimation::calculateAngle()
+{
+	//calculate rotation angle
+	float deltaX, deltaZ;
+	deltaX = controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0];
+	deltaZ = controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2];
+	angle = atan2(deltaX, deltaZ) * 180 / M_PI;
 }
