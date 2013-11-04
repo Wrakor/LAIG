@@ -90,9 +90,9 @@
 <animations>
 	<animation id="anim1" span="5" type="linear">
 		<controlpoint xx="0" yy="0" zz="0" />
-        <controlpoint xx="0" yy="0" zz="-5" />
-        <controlpoint xx="-5" yy="0" zz="-5" />
-        <controlpoint xx="-5" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="-2" />
+        <controlpoint xx="-2" yy="0" zz="-2" />
+        <controlpoint xx="-2" yy="0" zz="0" />
         <controlpoint xx="0" yy="0" zz="0" />
 	</animation>
 </animations>
@@ -131,8 +131,6 @@
             <rotate axis="y" angle="15" />
             <scale factor="0.5 0.5 0.5" />
         </transforms>
-        
-        <animationref id="anim1" />
         
         <appearanceref id="caixa" />
         
@@ -310,11 +308,12 @@
       
       <node id="lanca">
         <transforms>
-            <translate to="4.5 1.55 4" />
-            <rotate axis="y" angle="75" />
-            <rotate axis="x" angle="-1.5" />
+            <translate to="5 1.55 4" />
+            <rotate axis="y" angle="90" />
         </transforms>
         
+		<animationref id="anim1" />
+		
         <children>
             <noderef id="cabo" />
             <noderef id="ponta" />
@@ -334,7 +333,7 @@
       
       <node id="ponta">
         <transforms>
-            <translate to="0 0 3" />
+            <translate to="0 0 1.5" />
         </transforms>
         
         <appearanceref id="ponta" />

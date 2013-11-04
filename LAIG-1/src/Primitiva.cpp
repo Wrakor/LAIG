@@ -114,6 +114,7 @@ void Cylinder::draw()
 	GLUquadric *quadric = gluNewQuadric();
 	gluQuadricNormals(quadric, GLU_SMOOTH);
 	gluQuadricTexture(quadric, true);
+	glTranslatef(0, 0, -height / 2); //center in origin
 	gluCylinder(quadric, base, top, height, slices, stacks);
 	glRotatef(180, 1, 0, 0);
 	gluDisk(quadric, 0, base, slices, 1);
