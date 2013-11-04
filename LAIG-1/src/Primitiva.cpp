@@ -322,7 +322,7 @@ void Vehicle::draw()
 	
 	//glTranslatef(-5, 5, -5);
 	glRotatef(90, 0, 1, 0);
-	glScalef(0.7, 0.7, 0.7);
+	glScalef(0.7, 0.8, 0.7);
 	glPushMatrix();
 	glTranslatef(-0.5, -0.25, 1);
 	asaLigacao.draw();
