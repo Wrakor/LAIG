@@ -100,6 +100,7 @@ public:
 
 class Vehicle : public Primitiva
 {
+public:
 	void draw();
 };
 

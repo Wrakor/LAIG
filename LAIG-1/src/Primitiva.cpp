@@ -317,8 +317,21 @@ void Vehicle::draw()
 
 	Rectangle asa(-0.25, 0.25, -2, 2);
 	Triangle miniAsa(2.25, 1.75, 2, 0, 0, -0.5, 0, 0, 0);
+	Rectangle asaLigacao(0, 0.15, 0, 0.5);
+	//glTranslatef(3, 3, 3); //so para nao começar na origem
+	
+	//glTranslatef(-5, 5, -5);
+	glRotatef(90, 0, 1, 0);
+	glScalef(0.7, 0.8, 0.7);
+	glPushMatrix();
+	glTranslatef(-0.5, -0.25, 1);
+	asaLigacao.draw();
+	glPopMatrix();
 
-	glTranslatef(3, 3, 3); //so para nao começar na origem
+	glPushMatrix();
+	glTranslatef(-0.5, -0.25, -1);
+	asaLigacao.draw();
+	glPopMatrix();
 
 	glPushMatrix();
 	glRotatef(-90, 1, 0, 0);
@@ -360,9 +373,7 @@ void Vehicle::draw()
 Waterline::Waterline()
 {
 	init("data//vertexShaderWaterline.vert", "data//fragmentShaderWaterline.frag");
-
 	CGFshader::bind();
-
 	// Initialize parameter in memory
 	normScale = 0.6;
 
@@ -386,12 +397,12 @@ Waterline::Waterline()
 	//glUniform1i(secImageLoc, 1);
 
 	lastTimestamp = clock();
+	CGFshader::unbind();
 }
 
 Waterline::Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader)
 {
 	init(vertexshader.c_str(), fragmentshader.c_str());
-
 	CGFshader::bind();
 
 	// Initialize parameter in memory
@@ -415,6 +426,7 @@ Waterline::Waterline(string heightmap, string texturemap, string fragmentshader,
 	glUniform1f(scaleLoc, normScale);
 
 	lastTimestamp = clock();
+	CGFshader::unbind();
 }
 
 void Waterline::bind(float timestamp)
@@ -450,7 +462,7 @@ void Waterline::draw()
 {
 	this->bind();
 
-	glScalef(2, 1, 3);
+	glScalef(3, 1, 3);
 	plane.draw();
 	glTranslatef(0, 0, 1);
 	plane.draw();
