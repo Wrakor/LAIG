@@ -116,5 +116,12 @@ protected:
 	CGFtexture * texture;
 	GLint textureLoc, yScaleLoc, zScaleLoc, heightMapLoc, timeLoc;
 	float lastTimestamp, totalTime = 0;
-	Plane plane = Plane(80);
+	Plane plane = Plane(40);
+};
+
+class Mountain : public Waterline
+{
+public:
+	Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader) : Waterline(heightmap, texturemap, fragmentshader, vertexshader){ plane = Plane(150); }
+	void draw();
 };

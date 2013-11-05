@@ -409,7 +409,7 @@ void Waterline::bind(float timestamp)
 	// update uniforms
 	float timeSinceLastUpdate = ((timestamp - lastTimestamp) / CLOCKS_PER_SEC);
 
-	if (timeSinceLastUpdate > 0.2)
+	if (timeSinceLastUpdate > 0.15)
 	{
 		totalTime += timeSinceLastUpdate;
 		lastTimestamp = timestamp;
@@ -441,6 +441,44 @@ void Waterline::draw()
 	plane.draw();
 	glTranslatef(0, 0, 1);
 	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+	glTranslatef(0, 0, 1);
+	plane.draw();
+
+	this->unbind();
+}
+
+void Mountain::draw()
+{
+	this->bind();
+
+	glScalef(35, 1, 50);
+	plane.draw();
+	/*glTranslatef(0, 0, 1);
+	plane.draw();*/
 
 	this->unbind();
 }

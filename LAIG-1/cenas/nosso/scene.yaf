@@ -2,7 +2,7 @@
  <globals background="0 0 0 0" drawmode="fill" shading="gouraud" cullface="none" cullorder="CCW" /> 
 
  <cameras initial="default">
- 	<perspective id="default" near="0.1" far="500" angle="45" pos="15 10 15" target="0 3 8" />
+ 	<perspective id="default" near="0.1" far="500" angle="45" pos="15 15 15" target="0 5 0" />
  </cameras>
 
  <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
@@ -25,28 +25,19 @@
  </lighting>
 
  <textures>
- <texture id="chao" file="chao.png" />
+ <texture id="madeira" file="madeira_aviao.jpg" />
  <texture id="areia" file="areia.jpg" />
  <texture id="skydome" file="skydome.jpg" />
  </textures>
 
  <appearances>
-  <appearance id="chao"
+  <appearance id="aviao"
     emissive="0 0 0 1"
     ambient="0.4 0.4 0.4 1" 
     diffuse="0.5 0.5 0.5 1" 
     specular="0.1 0.1 0.1 1" 
     shininess="0"
-    textureref="chao" 
-    texlength_s="1" 
-    texlength_t="1"/>
-   <appearance id="areia"
-    emissive="0 0 0 1"
-    ambient="0.4 0.4 0.4 1" 
-    diffuse="0.5 0.5 0.5 1" 
-    specular="1 1 1 1" 
-    shininess="0"
-    textureref="areia" 
+    textureref="madeira" 
     texlength_s="1" 
     texlength_t="1"/>
    <appearance id="skydome"
@@ -64,9 +55,18 @@
 	<animation id="anim1" span="15" type="linear">
 		<controlpoint xx="0" yy="0" zz="0" />
 		<controlpoint xx="0" yy="-4" zz="5" />
-		<controlpoint xx="0" yy="-4" zz="20" />
-		<controlpoint xx="5" yy="-4" zz="20" />
-		<controlpoint xx="5" yy="0" zz="0" />
+		<controlpoint xx="0" yy="-8" zz="10" />
+		<controlpoint xx="0" yy="-8" zz="15" />
+		<controlpoint xx="0" yy="-8" zz="25" />
+		<controlpoint xx="0" yy="-8" zz="35" />
+		<controlpoint xx="0" yy="-8" zz="43" />
+		<controlpoint xx="-9" yy="-8" zz="43" />
+		<controlpoint xx="-18" yy="-8" zz="43" />
+		<controlpoint xx="-27" yy="-5" zz="35" />
+		<controlpoint xx="-27" yy="-2" zz="25" />
+		<controlpoint xx="-27" yy="0" zz="15" />
+		<controlpoint xx="-18" yy="0" zz="0" />
+		<controlpoint xx="-9" yy="0" zz="0" />
 		<controlpoint xx="0" yy="0" zz="0" />
 	</animation>
  </animations>
@@ -76,44 +76,55 @@
   <transforms>
   </transforms>
   <children>
-  	<!-- <noderef id="waterline"/> -->
   	<noderef id="waterline"/>
+ 	<noderef id="mountain"/>
+ 	<noderef id="mountain2"/> 
   	<noderef id="vehicle"/>
-  	<noderef id="areia"/>
 	<noderef id="skydome"/>
   </children>
   </node>
 
   <node id="vehicle">
   <transforms>
-   <translate to="1 5 -5"/>
+   <translate to="7 10 -20"/>
   </transforms>
-  <appearanceref id="chao" />
+  <appearanceref id="aviao" />
   <animationref id="anim1" />
   <children>
   	<vehicle />
+  </children>
+  </node> 
+
+  <node id="mountain">
+  <transforms>
+  <translate to="-30 -0.5 -25" />
+  </transforms>
+  <children>
+  	<mountain heightmap="data/mountainmap.jpg" texturemap="data/mountain.jpg" fragmentshader="data/fragmentShaderWaterline.frag" vertexshader="data/vertexShaderMountain.vert"/>
+  </children>
+  </node>
+
+   <node id="mountain2">
+  <transforms>
+  <translate to="7.95 0.25 -25" />
+  </transforms>
+  <children>
+  	<mountain heightmap="data/mountainmap.jpg" texturemap="data/mountain.jpg" fragmentshader="data/fragmentShaderWaterline.frag" vertexshader="data/vertexShaderMountain.vert"/>
   </children>
   </node>
 
   <node id="waterline">
   <transforms>
+  <translate to="5 0 -24" />
   </transforms>
   <children>
   	<waterline heightmap="data/watermap.jpg" texturemap="data/water.jpg" fragmentshader="data/fragmentShaderWaterline.frag" vertexshader="data/vertexShaderWaterline.vert"/>
   </children>
   </node>
-  <node id="areia" displaylist="true">
-      <transforms>
-		<rotate axis="x" angle="-90" />
-      </transforms>
-      <appearanceref id="areia" />
-      <children>
-       <rectangle xy1="-50 -50" xy2="50 50" />
-      </children>
-  </node>
+
   <node id="skydome" displaylist="true">
 	  <transforms>
-		<scale factor="-50 -50 -50" />
+		<scale factor="-30 -30 -25" />
 		<rotate axis="x" angle="90" />
 	  </transforms>
 	  <appearanceref id="skydome" />
