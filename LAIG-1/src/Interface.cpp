@@ -53,6 +53,14 @@ void Interface::initGUI()
 		polygonModeRadioGroup->set_int_val(2);
 		break;
 	}
+	addColumn();
+	///////////////////////////////// Animations /////////////////////////////////	
+
+	GLUI_Panel* animationsPanel = addPanel("Animations", GLUI_PANEL_NONE);
+
+	GLUI_Checkbox * animations = addCheckboxToPanel(animationsPanel, "Animations", NULL, 3);
+	if (scene->runAnimations)
+		animations->set_int_val(1);
 }
 
 void Interface::processGUI(GLUI_Control *ctrl)
@@ -76,6 +84,10 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	{		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT+ctrl->get_int_val()); //GL_POINT < GL_LINE < GL_FILL
 		scene->setDrawMode(GL_POINT+ctrl->get_int_val());
+	}
+	else if (ctrl->user_id == 3)
+	{
+		scene->runAnimations = !scene->runAnimations;
 	}
 }
 
