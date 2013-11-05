@@ -8,6 +8,7 @@
 
 Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
+	this->runAnimations = true;
 }
 
 void Scene::init() 
@@ -217,7 +218,7 @@ void Scene::processGraph(string nodeID, Appearance *app)
 	else //se não, percorre normalmente
 	{
 		glMultMatrixf(node->T);
-		if (node->animation != NULL)
+		if (node->animation != NULL && runAnimations)
 			node->animation->draw();
 		for (vector<Primitiva *>::iterator it = node->primitivas.begin(); it != node->primitivas.end(); it++)
 			(*it)->draw();

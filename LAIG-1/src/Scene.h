@@ -42,6 +42,7 @@ public:
 	void createDisplayLists(string nodeID, Appearance *app=NULL, bool onDisplayList=false);
 	string rootNode; //id do primeiro nó
 	void initAnimations();
+	bool runAnimations;
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;

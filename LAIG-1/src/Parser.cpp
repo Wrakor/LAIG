@@ -758,6 +758,15 @@ void Parser::parseGraph()
 
 						readNode->primitivas.push_back(new Waterline(heightmap, texturemap, fragmentshader, vertexshader));
 					}
+					else if (value == "mountain")
+					{
+						string heightmap = childrenElement->Attribute("heightmap"), texturemap = childrenElement->Attribute("texturemap"), fragmentshader = childrenElement->Attribute("fragmentshader"), vertexshader = childrenElement->Attribute("vertexshader");
+
+						if (heightmap.empty() || texturemap.empty() || fragmentshader.empty() || vertexshader.empty())
+							throw "Error parsing waterline attributes";
+
+						readNode->primitivas.push_back(new Mountain(heightmap, texturemap, fragmentshader, vertexshader));
+					}
 
 					childrenElement = childrenElement->NextSiblingElement();
 				}			
