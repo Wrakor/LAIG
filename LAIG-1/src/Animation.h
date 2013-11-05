@@ -23,7 +23,7 @@ class LinearAnimation : public Animation
 	vector<array<float, 3>> controlPoints;
 	unsigned int currentControlPoint;
 	array<float, 3> currentPos;
-	float span, lastTimestamp, timePerControlPoint, timeInThisControlPoint, angle;
+	float span, lastTimestamp, timePerControlPoint, timeInThisControlPoint, angle, deltaX, deltaY, deltaZ;
 	void calculateAngle();
 	void update(float timestamp = clock());
 public:
@@ -32,4 +32,5 @@ public:
 	void init(float timestamp = clock());
 	void draw();
 	unsigned int getNumControlPoints();
+	void changeControlPoint(unsigned int cp);
 };

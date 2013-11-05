@@ -11,6 +11,7 @@ Animation::Animation(string nodeID)
 	this->startTime = 0;
 }
 
+//inicializa o startTime com o valor de tempo actual
 void Animation::init(float timestamp)
 {
 	this->startTime = timestamp;
@@ -19,71 +20,76 @@ void Animation::init(float timestamp)
 LinearAnimation::LinearAnimation(string nodeID, float span) : Animation(nodeID)
 {
 	this->span = span;
-	this->currentControlPoint = 0;
 }
 
 void LinearAnimation::init(float timestamp)
 {
-	Animation::init(timestamp);
-	this->currentPos = controlPoints[0];
-	this->lastTimestamp = timestamp;
-	this->timePerControlPoint = span / (controlPoints.size() - 1);
-	this->timeInThisControlPoint = 0;
-	calculateAngle();
+	Animation::init(timestamp); //contrutor classe pai
+	this->currentPos = controlPoints[0]; //posição actual é a posição no primeiro control point
+	this->lastTimestamp = timestamp; //último timestamp é inicializado com o tempo actual
+	this->timePerControlPoint = span / (controlPoints.size() - 1); //tempo por ponto de controlo é o tempo total a divid pelo número de pontos de controlo -1 (ex: 5 control points dão 4 sequências de animação)
+	changeControlPoint(0); //primeiro control point
 }
 
+//adiciona um ponto de controlo ao vector
 void LinearAnimation::addControlPoint(array<float, 3> controlPoint)
 {
 	this->controlPoints.push_back(controlPoint);
 }
 
+//actualiza a animação
 void LinearAnimation::update(float timestamp)
 {
-	float animationTime = (timestamp - startTime)/CLOCKS_PER_SEC;
-	float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC;
-	this->timeInThisControlPoint += timeSinceLastUpdate;
-	if (animationTime<span) //if animation isn't done
+	float animationTime = (timestamp - startTime)/CLOCKS_PER_SEC; //tempo na animação em segundos = tempo actual menos tempo quando iniciou
+	float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC; //tempo desde o ultimo update = tempo actual menos tempo da ultima chamada à função update
+	this->timeInThisControlPoint += timeSinceLastUpdate; //actualiza acumulador de tempo neste control point
+	if (animationTime<span) //se animação ainda não acabou
 	{
-		if (timeInThisControlPoint>timePerControlPoint) //if this control point is done, go to the next
+		if (timeInThisControlPoint>timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
 		{
-			currentControlPoint++;
-			calculateAngle();
-			this->timeInThisControlPoint = 0;
+			changeControlPoint(currentControlPoint + 1); //passamos ao próximo
 		}
-		else
+		else //se não, fazemos o movimento da animação
 		{
-			//increment current position: distance to cover for this control point * percentage of time elapsed 
-			currentPos[0] += (controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0]) * (timeSinceLastUpdate / timePerControlPoint); //x
-			currentPos[1] += (controlPoints[currentControlPoint + 1][1] - controlPoints[currentControlPoint][1]) * (timeSinceLastUpdate / timePerControlPoint); //y
-			currentPos[2] += (controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2]) * (timeSinceLastUpdate / timePerControlPoint); //z
+			//incrementa posição actual: percentagem do total da distância a percorrer pelo tempo percorrido neste ponto de controlo
+			currentPos[0] += deltaX * (timeSinceLastUpdate / timePerControlPoint); //x
+			currentPos[1] += deltaY * (timeSinceLastUpdate / timePerControlPoint); //y
+			currentPos[2] += deltaZ * (timeSinceLastUpdate / timePerControlPoint); //z
 		}
 	}
 	else //reset
 	{
-		currentControlPoint = 0;
-		calculateAngle();
-		init();
+		init(); //reinicia tudo
 	}
-	lastTimestamp = timestamp;
+	lastTimestamp = timestamp; //actualiza último timestamp
 }
 
 void LinearAnimation::draw()
 {
-	update();
-	glTranslatef(currentPos[0], currentPos[1], currentPos[2]);
-	glRotatef(angle, 0, 1, 0);
+	update(); //actualiza
+	glTranslatef(currentPos[0], currentPos[1], currentPos[2]); //efectua a translação
+	glRotatef(angle, 0, 1, 0); //roda conforme o ângulo calculado
 }
 
+//calcula ângulo de rotação para cada movimento
 void LinearAnimation::calculateAngle()
 {
-	//calculate rotation angle
-	float deltaX, deltaZ;
-	deltaX = controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0];
-	deltaZ = controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2];
+	//usa deltaX e deltaZ para calcular ângulo entre os dois pontos
 	angle = atan2(deltaX, deltaZ) * 180 / M_PI;
 }
 
 unsigned int LinearAnimation::getNumControlPoints()
 {
 	return this->controlPoints.size();
+}
+
+void LinearAnimation::changeControlPoint(unsigned int cp)
+{
+	currentControlPoint = cp; //passamos ao próximo
+	//calcula distância a percorrer para este movimento
+	deltaX = controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0];
+	deltaY = controlPoints[currentControlPoint + 1][1] - controlPoints[currentControlPoint][1];
+	deltaZ = controlPoints[currentControlPoint + 1][2] - controlPoints[currentControlPoint][2];
+	calculateAngle(); //recalcula angulo para próximo movimento
+	this->timeInThisControlPoint = 0; //reinicia acumulador
 }

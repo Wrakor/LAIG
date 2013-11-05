@@ -283,6 +283,6 @@ void Scene::addAnimation(Animation* animation)
 
 void Scene::initAnimations()
 {
-	for (int i = 0; i < animations.size(); i++)
+	for (unsigned int i = 0; i < animations.size(); i++)
 		((LinearAnimation*)animations[i])->init();
 }
