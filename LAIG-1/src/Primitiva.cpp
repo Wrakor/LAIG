@@ -337,6 +337,8 @@ void Vehicle::draw()
 
 Waterline::Waterline(string heightmap, string texturemap, string fragmentshader, string vertexshader)
 {
+	totalTime = 0;
+	plane = new Plane(40);
 	init(vertexshader.c_str(), fragmentshader.c_str());
 	CGFshader::bind();
 
@@ -401,37 +403,37 @@ void Waterline::draw() //sucessivos planes em linha recta
 	this->bind();
 
 	glScalef(3, 1, 3);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 	glTranslatef(0, 0, 1);
-	plane.draw();
+	plane->draw();
 
 	this->unbind();
 }
@@ -441,7 +443,12 @@ void Mountain::draw()
 	this->bind();
 
 	glScalef(35, 1, 50);
-	plane.draw();
+	plane->draw();
 
 	this->unbind();
+}
+
+Mountain::Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader) : Waterline(heightmap, texturemap, fragmentshader, vertexshader)
+{
+	plane = new Plane(150); 
 }
