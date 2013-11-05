@@ -151,7 +151,6 @@ Torus::Torus(float inner, float outer, int slices, int loops)
 
 void Torus::draw()
 {
-
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glEnable(GL_TEXTURE_GEN_S);
@@ -161,17 +160,9 @@ void Torus::draw()
 	glDisable(GL_TEXTURE_GEN_T);
 }
 
-
-//coordenadas do quadrado 1x1
-/*GLfloat ctrlpoints[2][2][3] = {
-	{ { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 } },
-	{ { 0.0, 0.0, 1.0 }, { 1.0, 0.0, 1.0 } }
-};*/
-
 GLfloat ctrlpoints[4][3] = {
 	 { 0.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0 },
 	 { 0.0, 0.0, 1.0 }, { 1.0, 0.0, 1.0 },
-
 };
 
 GLfloat nrmlcompon[4][3] = { { 0.0, 0.0, 1.0 },
@@ -192,16 +183,6 @@ Plane::Plane(int parts)
 	this->parts = parts;
 }
 
-/*GLfloat ctrlpoints[10][3] = {
-	 { -1.5, -1.5, 4.0 }, { -0.5, -1.5, 2.0 },
-	 {0.5, -1.5, -1.0 }, { 1.5, -1.5, 2.0 } ,
-	 { -1.5, -0.5, 1.0 }, { -0.5, -0.5, 3.0 },
-	 {0.5, -0.5, 0.0 }, { 1.5, -0.5, -1.0 } ,
-	 { -1.5, 0.5, 4.0 }, { -0.5, 0.5, 0.0 }
-};*/
-
-
-
 void Plane::draw()
 {
 	glEnable(GL_MAP2_VERTEX_3);
@@ -211,18 +192,16 @@ void Plane::draw()
 	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, // U varia entre 0 e 1
 		3, 2, //cada coordenada tem 3 valores , 2 = de segunda ordem
 		0.0, 1.0, // V varia entre 0 e 1
-		6, 2,  // 6 = 2 coordenadas por coluna * 3 valores por coordenada, 2 = de segunda ordem
+		6, 2,  // 6 = 2 coordenadas por linha * 3 valores por coordenada, 2 = de segunda ordem
 		&ctrlpoints[0][0]); //pontos de controlo	
-	glMap2f(GL_MAP2_NORMAL, 0.0, 1.0, 3, 2, 0.0, 1.0, 6, 2, &nrmlcompon[0][0]);
+	glMap2f(GL_MAP2_NORMAL, 0.0, 1.0, 3, 2, 0.0, 1.0, 6, 2, &nrmlcompon[0][0]); //definir normais
 	glMap2f(GL_MAP2_TEXTURE_COORD_2, 0.0, 1.0, 2, 2, 0.0, 1.0, 4, 2, &textpoints[0][0]); //definir coordenadas de textura
 
-
-	glMapGrid2f(parts, 0.0, 1.0, parts, 0.0, 1.0);
-	glEvalMesh2(GL_FILL, 0, parts, 0, parts);
+	glMapGrid2f(parts, 0.0, 1.0, parts, 0.0, 1.0); //grelha com parts x parts
+	glEvalMesh2(GL_FILL, 0, parts, 0, parts); //desenha o evaluator
 
 	glDisable(GL_MAP2_VERTEX_3);
 	glDisable(GL_MAP2_TEXTURE_COORD_2);
-
 }
 
 Patch::Patch(int order, int partsU, int partsV, string compute)
@@ -243,26 +222,11 @@ void Patch::addControlPoint(float x, float y, float z)
 {
 	controlpoints.push_back(controlpoint(x, y, z));
 }
-GLfloat ctrlpoints_flyingVehicle[9][3] = {
-	/*{ 0, 0.0, 2.0 }, { 0.5, 1.5, 2.0 },
-	{ 0.5, 1.5, 2.0 }, { 1.5, 0, 1.5 }*/
-	/*{ 0, 0, 0 }, { 0.5, 0, 0 }, { 1, 0, 0 },
-	{ 0, 0, 0.5 }, { 0.5, 1, 0.5 }, { 1, 0, 0.5 }, 
-	{ 0, 0, 1 }, { 0.5, 0, 1 }, { 1, 0, 1 }*/
 
-	{ 0.25, 0, 0.25 }, { 0.5, 0, 0 }, { 0.75, 0, 0.25 },
-	{ 0, 0, 0.5 }, { 0.5, 1, 0.5 }, { 1, 0, 0.5 },
-	{ 0.25, 0, 0.75 }, { 0.5, 0, 1 }, { 0.75, 0,0.75 }
-
-	/*{ 0.25, 0.25, 0.25 }, { 0.5, 0, 0 }, {0.75, 0.25, 0.25},
-	{ 0, 0, 0.5 }, { 0.5, 0.5, 0.5 }, {1, 0, 0.5},
-	{ 0, 0.25, 0.75}, { 0.5, 0, 1 }, {0.75, 0.25, 0.75},*/
-};
 
 void Patch::draw()
 {
 	int size = controlpoints.size();
-
 	GLfloat *ctrl_points = new GLfloat[size*3];
 
 	for (int i = 0, j = 0; i < size*3; j++) //popular o array com os controlpoints
@@ -275,6 +239,8 @@ void Patch::draw()
 	glPushMatrix();
 	glEnable(GL_MAP2_VERTEX_3);
 
+
+	// Verificacao da cull order, é necessaria ser CW para calculo automatico das normais
 	GLint currentFrontFace;
 	glGetIntegerv(GL_FRONT_FACE, &currentFrontFace);
 
@@ -320,7 +286,6 @@ void Vehicle::draw()
 	Rectangle asaLigacao(0, 0.15, 0, 0.5);
 	//glTranslatef(3, 3, 3); //so para nao começar na origem
 	
-	//glTranslatef(-5, 5, -5);
 	glRotatef(90, 0, 1, 0);
 	glScalef(0.7, 0.8, 0.7);
 	glPushMatrix();
@@ -409,7 +374,7 @@ void Waterline::bind(float timestamp)
 	// update uniforms
 	float timeSinceLastUpdate = ((timestamp - lastTimestamp) / CLOCKS_PER_SEC);
 
-	if (timeSinceLastUpdate > 0.15)
+	if (timeSinceLastUpdate > 0.175)
 	{
 		totalTime += timeSinceLastUpdate;
 		lastTimestamp = timestamp;
@@ -431,7 +396,7 @@ void Waterline::bind(float timestamp)
 	glActiveTexture(GL_TEXTURE0);
 }
 
-void Waterline::draw()
+void Waterline::draw() //sucessivos planes em linha recta
 {
 	this->bind();
 
@@ -477,8 +442,6 @@ void Mountain::draw()
 
 	glScalef(35, 1, 50);
 	plane.draw();
-	/*glTranslatef(0, 0, 1);
-	plane.draw();*/
 
 	this->unbind();
 }

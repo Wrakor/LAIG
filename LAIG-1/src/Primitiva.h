@@ -78,7 +78,6 @@ public:
 	void draw();
 };
 
-
 struct controlpoint
 {
 	float x, y, z;
@@ -94,8 +93,7 @@ private:
 public:
 	Patch(int, int, int, string);
 	void addControlPoint(float, float, float);
-	void draw();
-	
+	void draw();	
 };
 
 class Vehicle : public Primitiva
@@ -119,7 +117,8 @@ protected:
 	Plane plane = Plane(40);
 };
 
-class Mountain : public Waterline
+//Primitiva semelhante à Waterline, em que apenas muda o tamanho da area à qual aplicar o shader
+class Mountain : public Waterline 
 {
 public:
 	Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader) : Waterline(heightmap, texturemap, fragmentshader, vertexshader){ plane = Plane(150); }
