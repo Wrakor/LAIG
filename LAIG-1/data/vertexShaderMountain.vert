@@ -1,4 +1,4 @@
-float yScale = 1.8;
+float yScale = 3.5;
 uniform sampler2D hImage;
 
 void main() {				
