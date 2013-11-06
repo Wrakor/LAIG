@@ -113,14 +113,14 @@ protected:
 	CGFtexture * heightMapTexture;
 	CGFtexture * texture;
 	GLint textureLoc, yScaleLoc, zScaleLoc, heightMapLoc, timeLoc;
-	float lastTimestamp, totalTime = 0;
-	Plane plane = Plane(40);
+	float lastTimestamp, totalTime;
+	Plane *plane;
 };
 
 //Primitiva semelhante à Waterline, em que apenas muda o tamanho da area à qual aplicar o shader
 class Mountain : public Waterline 
 {
 public:
-	Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader) : Waterline(heightmap, texturemap, fragmentshader, vertexshader){ plane = Plane(150); }
+	Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader);
 	void draw();
 };
