@@ -106,7 +106,7 @@
 
   <node id="waterline">
   <transforms>
-  <translate to="5 0 -24" />
+  <translate to="5 0.25 -24" />
   </transforms>
   <children>
   	<waterline heightmap="data/watermap.jpg" texturemap="data/water.jpg" fragmentshader="data/fragmentShaderWaterline.frag" vertexshader="data/vertexShaderWaterline.vert"/>
