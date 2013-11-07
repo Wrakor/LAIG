@@ -333,7 +333,7 @@
       
       <node id="ponta">
         <transforms>
-            <translate to="0 0 1.5" />
+            <translate to="0 0 1.65" />
         </transforms>
         
         <appearanceref id="ponta" />

@@ -44,7 +44,7 @@ void LinearAnimation::update(float timestamp)
 	this->timeInThisControlPoint += timeSinceLastUpdate; //actualiza acumulador de tempo neste control point
 	if (animationTime<span) //se animação ainda não acabou
 	{
-		if (timeInThisControlPoint>timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
+		if (timeInThisControlPoint>=timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
 		{
 			changeControlPoint(currentControlPoint + 1); //passamos ao próximo
 		}
