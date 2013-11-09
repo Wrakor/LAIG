@@ -25,7 +25,6 @@ LinearAnimation::LinearAnimation(string nodeID, float span) : Animation(nodeID)
 void LinearAnimation::init(float timestamp)
 {
 	Animation::init(timestamp); //contrutor classe pai
-	this->currentPos = controlPoints[0]; //posição actual é a posição no primeiro control point
 	this->lastTimestamp = timestamp; //último timestamp é inicializado com o tempo actual
 	this->timePerControlPoint = span / (controlPoints.size() - 1); //tempo por ponto de controlo é o tempo total a divid pelo número de pontos de controlo -1 (ex: 5 control points dão 4 sequências de animação)
 	changeControlPoint(0); //primeiro control point
@@ -45,7 +44,7 @@ void LinearAnimation::update(float timestamp)
 	this->timeInThisControlPoint += timeSinceLastUpdate; //actualiza acumulador de tempo neste control point
 	if (animationTime<span) //se animação ainda não acabou
 	{
-		if (timeInThisControlPoint>timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
+		if (timeInThisControlPoint>=timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
 		{
 			changeControlPoint(currentControlPoint + 1); //passamos ao próximo
 		}
@@ -86,6 +85,7 @@ unsigned int LinearAnimation::getNumControlPoints()
 void LinearAnimation::changeControlPoint(unsigned int cp)
 {
 	currentControlPoint = cp; //passamos ao próximo
+	this->currentPos = controlPoints[cp]; //posição actual é a posição no primeiro control point
 	//calcula distância a percorrer para este movimento
 	deltaX = controlPoints[currentControlPoint + 1][0] - controlPoints[currentControlPoint][0];
 	deltaY = controlPoints[currentControlPoint + 1][1] - controlPoints[currentControlPoint][1];
