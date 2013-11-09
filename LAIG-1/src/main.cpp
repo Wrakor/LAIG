@@ -15,10 +15,9 @@ int main(int argc, char* argv[]) {
 	try
 	{
 		app.init(&argc, argv);
-		/*if(argc<2 || argc>2)
+		if(argc<2 || argc>2)
 			throw "Usage: thisProgram scene.yaf";
-		Parser *parser = new Parser(argv[1]);*/
-		Parser *parser = new Parser("cenas/nosso/scene.yaf"); //for developing
+		Parser *parser = new Parser(argv[1]);
 		try {
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
