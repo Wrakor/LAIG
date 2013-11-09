@@ -17,7 +17,6 @@
 
  <textures>
  <texture id="madeira" file="madeira_aviao.jpg" />
- <texture id="areia" file="areia.jpg" />
  <texture id="skydome" file="skydome.jpg" />
  </textures>
 
