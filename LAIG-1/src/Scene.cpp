@@ -78,20 +78,31 @@ void Scene::display()
 	// Apply transformations corresponding to the camera position relative to the origin
 	CGFscene::activeCamera->applyView();
 
-	// Draw (and update) light
-	std::list<CGFlight *>::iterator it = scene_lights.begin();
-	for(;it!=scene_lights.end();++it)
-		((Light *)(*it))->draw();
+	GLint rMode;
+ 
+	glGetIntegerv(GL_RENDER_MODE, &rMode);
 
-	// Draw axis
-	//axis.draw();
+	if (rMode == GL_RENDER) //se em modo normal, desenha a cena
+	{
+		// Draw (and update) light
+		std::list<CGFlight *>::iterator it = scene_lights.begin();
+		for (; it != scene_lights.end(); ++it)
+			((Light *)(*it))->draw();
+
+		// Draw axis
+		axis.draw();
 
 
-	// ---- END Background, camera and axis setup
-	processGraph(rootNode); //temos de passar o id do nó inicial
-	// We have been drawing in a memory area that is not visible - the back buffer, 
-	// while the graphics card is showing the contents of another buffer - the front buffer
-	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
+		// ---- END Background, camera and axis setup
+		processGraph(rootNode); //temos de passar o id do nó inicial
+		board->draw();
+		// We have been drawing in a memory area that is not visible - the back buffer, 
+		// while the graphics card is showing the contents of another buffer - the front buffer
+		// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
+		//board->drawHotspots(); //Testing
+	}
+	else if(rMode == GL_SELECT) //se em modo de pick, desenha os hotspots
+		board->drawHotspots();
 	glutSwapBuffers();
 	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }

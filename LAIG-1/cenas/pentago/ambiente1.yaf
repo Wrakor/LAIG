@@ -1,0 +1,71 @@
+<yaf>
+ <globals background="0 0 0 0" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" /> 
+
+ <cameras initial="cam1">
+ 	<perspective id="cam1" near="0.1" far="500" angle="45" pos="15 30 40" target="15 0 15" />
+ </cameras>
+
+ <lighting doublesided="false" local="false" enabled="true" ambient="0 0 0 0" > 
+   <omni id="omni" enabled="true"
+                location="0 5 0"
+                ambient="1 1 1 1"
+                diffuse="1 1 1 1"
+                specular="1 1 1 1"
+            />
+   <spot id="spot" enabled="true" 
+                location="15 30 15" 
+                ambient="0 0 0 0" 
+                diffuse="0.2 0.2 0.2 1" 
+                specular="1 1 1 1"
+                angle="45" 
+                exponent="5"
+                direction="0 -1 0" 
+            /> 
+ 
+ </lighting>
+
+ <textures>
+  <!--<texture id="chao" file="chao.png" />-->
+  <texture id="tabuleiro" file="tabuleiro.png" />
+ </textures>
+
+ <appearances>
+ 
+  <appearance id="tabuleiro" 
+    emissive="0 0 0 1" 
+    ambient="0 0 0 0" 
+    diffuse="0.5 0.5 0.5 1" 
+    specular="1 1 1 1" 
+    shininess="64" 
+    textureref="tabuleiro" 
+    texlength_s="1" 
+    texlength_t="1"/>
+
+ </appearances>
+
+<animations>
+</animations>
+ 
+<graph rootid="cena">
+
+	<node id="cena">
+		<transforms>
+		</transforms>
+		<children>
+			<noderef id="tabuleiro" />
+		</children>
+	</node>
+
+	<node id="tabuleiro">
+		<transforms>
+		</transforms>
+
+		<appearanceref id="tabuleiro" />
+
+		<children>
+			<board size="30" />
+		</children>
+	</node>
+
+</graph>
+</yaf>

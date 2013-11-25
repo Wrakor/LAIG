@@ -8,6 +8,7 @@
 
 #include "CGFtexture.h"
 #include "CGFshader.h"
+#include "CGFappearance.h"
 #include "GL/glut.h"
 #include <ctime>
 using std::string;
@@ -123,4 +124,17 @@ class Mountain : public Waterline
 public:
 	Mountain(string heightmap, string texturemap, string fragmentshader, string vertexshader);
 	void draw();
+};
+
+class Tabuleiro : public Primitiva
+{
+private:
+	unsigned int size;
+	Rectangle *boardFace;
+	GLuint boardListID, hotspotsListID;
+public:
+	Tabuleiro(unsigned int size);
+	void createLists();
+	void draw();
+	void drawHotspots();
 };

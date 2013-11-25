@@ -43,6 +43,7 @@ public:
 	string rootNode; //id do primeiro nó
 	void initAnimations();
 	bool runAnimations;
+	Tabuleiro *board;
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;

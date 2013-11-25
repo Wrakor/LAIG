@@ -767,6 +767,15 @@ void Parser::parseGraph()
 
 						readNode->primitivas.push_back(new Mountain(heightmap, texturemap, fragmentshader, vertexshader));
 					}
+					else if (value == "board")
+					{
+						int size;
+
+						if (childrenElement->QueryIntAttribute("size", &size) != 0)
+							throw "Error parsing Board: no 'size' attribute";
+
+						scene.board = new Tabuleiro(size);
+					}
 
 					childrenElement = childrenElement->NextSiblingElement();
 				}			
