@@ -59,7 +59,7 @@ void Scene::init()
 	createDisplayLists(this->rootNode);
 	initAnimations();
 }
-	
+
 void Scene::display() 
 {
 
@@ -91,8 +91,7 @@ void Scene::display()
 
 		// Draw axis
 		axis.draw();
-
-
+		
 		// ---- END Background, camera and axis setup
 		processGraph(rootNode); //temos de passar o id do nó inicial
 		board->draw();

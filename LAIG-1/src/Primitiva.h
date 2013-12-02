@@ -9,6 +9,7 @@
 #include "CGFtexture.h"
 #include "CGFshader.h"
 #include "CGFappearance.h"
+#include "Animation.h"
 #include "GL/glut.h"
 #include <ctime>
 using std::string;
@@ -56,6 +57,7 @@ private:
 	float radius;
 	int slices, stacks;
 public:
+	Sphere();
 	Sphere(float radius, int slices, int stacks);
 	void draw();
 };
@@ -138,3 +140,16 @@ public:
 	void draw();
 	void drawHotspots();
 };
+
+class Piece 
+{
+private:
+	Sphere *piece;
+	char color;
+	LinearAnimation *animation;
+public:
+	Piece(char color, int x, int y);
+	void draw();
+};
+
+void placePiece(char color);
