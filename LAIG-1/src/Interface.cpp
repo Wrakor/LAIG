@@ -190,6 +190,7 @@ void Interface::processHits(GLint hits, GLuint buffer[])
 		for (int i = 0; i<nselected; i++)
 			printf("%d ", selected[i]);
 		printf("\n");
+		scene->placePiece(selected[0]);
 	}
 	else
 		printf("Nothing selected while picking \n");

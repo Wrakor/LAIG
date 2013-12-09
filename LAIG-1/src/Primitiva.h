@@ -129,6 +129,17 @@ public:
 	void draw();
 };
 
+class Piece : public Primitiva
+{
+private:
+	Sphere *piece;
+	char color;
+	LinearAnimation *animation;
+public:
+	Piece(char color, int x, int y);
+	void draw();
+};
+
 class Tabuleiro : public Primitiva
 {
 private:
@@ -140,18 +151,6 @@ public:
 	void createLists();
 	void draw();
 	void drawHotspots();
-	int boardRepresentation[36];
+	void drawPieces();
+	Piece* boardRepresentation[36];
 };
-
-class Piece 
-{
-private:
-	Sphere *piece;
-	char color;
-	LinearAnimation *animation;
-public:
-	Piece(char color, int x, int y);
-	void draw();
-};
-
-void placePiece(char color);

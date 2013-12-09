@@ -10,6 +10,7 @@ Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
 	this->runAnimations = true;
 	this->socket = new Socket("127.0.0.1", 60070);
+	this->player = WHITE; //first player is white
 }
 
 void Scene::init() 
@@ -300,4 +301,10 @@ void Scene::initAnimations()
 {
 	for (unsigned int i = 0; i < animations.size(); i++)
 		((LinearAnimation*)animations[i])->init();
+}
+
+void Scene::placePiece(unsigned int pos)
+{
+	board->boardRepresentation[pos] = new Piece(player==WHITE?'w':'b', pos % 6 + 1, pos / 6 + 1);
+	player = !player; //muda para o outro jogador
 }

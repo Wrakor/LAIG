@@ -514,6 +514,16 @@ void Tabuleiro::draw()
 	glRotatef(-90, 1, 0, 0);
 	boardFace->draw();
 	glPopMatrix();
+	drawPieces();
+}
+
+void Tabuleiro::drawPieces()
+{
+	for (int i = 0; i < 36; i++)
+	{
+		if (boardRepresentation[i] != NULL)
+			boardRepresentation[i]->draw();
+	}
 }
 
 void Tabuleiro::drawHotspots()
@@ -527,14 +537,18 @@ void Tabuleiro::drawHotspots()
 	{
 		for (unsigned int c = 0; c < 6; c++)
 		{
-			glPushMatrix();
-			glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
-			glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
-			glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
-			glRotatef(-90, 1, 0, 0); //roda para plano xz
-			glLoadName(r*6+c); //num da coluna * 6 + num da linha
-			boardFace->draw();
-			glPopMatrix();
+			int pos = r * 6 + c; //posição em lista única
+			if (boardRepresentation[pos] == NULL)
+			{
+				glPushMatrix();
+				glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
+				glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
+				glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
+				glRotatef(-90, 1, 0, 0); //roda para plano xz
+				glLoadName(pos); //num da coluna * 6 + num da linha
+				boardFace->draw();
+				glPopMatrix();
+			}
 		}
 	}
 }
