@@ -55,12 +55,12 @@ void LinearAnimation::update(float timestamp)
 			currentPos[1] += deltaY * (timeSinceLastUpdate / timePerControlPoint); //y
 			currentPos[2] += deltaZ * (timeSinceLastUpdate / timePerControlPoint); //z
 		}
+		lastTimestamp = timestamp; //actualiza último timestamp
 	}
-	else //reset
+	/*else //reset
 	{
 		init(); //reinicia tudo
-	}
-	lastTimestamp = timestamp; //actualiza último timestamp
+	}*/
 }
 
 void LinearAnimation::draw()

@@ -9,6 +9,8 @@
 Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
 	this->runAnimations = true;
+	this->socket = new Socket("127.0.0.1", 60070);
+	this->player = WHITE; //first player is white
 }
 
 void Scene::init() 
@@ -56,15 +58,18 @@ void Scene::init()
 
 	// Defines a default normal
 	glNormal3f(0,0,1);
-	createDisplayLists(this->rootNode);
+	//createDisplayLists(this->rootNode);
 	initAnimations();
+
+	//start socket
+	socket->socketConnect();
 }
 
 void Scene::display() 
 {
+	if (!socket->connected) //se não estiver ligado, não desenha nada
+		return;
 
-	// ---- BEGIN Background, camera and axis setup
-	
 	// Clear image and depth buffer everytime we update the scene
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
@@ -94,7 +99,7 @@ void Scene::display()
 		
 		// ---- END Background, camera and axis setup
 		processGraph(rootNode); //temos de passar o id do nó inicial
-		board->draw();
+		//board->draw();
 		// We have been drawing in a memory area that is not visible - the back buffer, 
 		// while the graphics card is showing the contents of another buffer - the front buffer
 		// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
@@ -298,4 +303,8 @@ void Scene::initAnimations()
 		((LinearAnimation*)animations[i])->init();
 }
 
-void Scene::moveCameraTo(float x, float y, float z);
+void Scene::placePiece(unsigned int pos)
+{
+	board->boardRepresentation[pos] = new Piece(player==WHITE?'w':'b', pos % 6 + 1, pos / 6 + 1);
+	player = !player; //muda para o outro jogador
+}

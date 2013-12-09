@@ -8,7 +8,11 @@
 #include "Node.h"
 #include "Camera.h"
 #include "Animation.h"
+#include "Socket.h"
 #include <map>
+
+#define WHITE 0
+#define BLACK 1
 
 class Scene : public CGFscene
 {
@@ -44,11 +48,12 @@ public:
 	void initAnimations();
 	bool runAnimations;
 	Tabuleiro *board;
-	bool start = false;
-	void moveCameraTo(float, float, float);
+	void placePiece(unsigned int pos);
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
 	vector<Animation*> animations;
 	map<string, Node*> nodes;
+	Socket *socket;
+	unsigned int player;
 };
