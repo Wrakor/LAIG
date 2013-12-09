@@ -8,6 +8,7 @@
 #include "Node.h"
 #include "Camera.h"
 #include "Animation.h"
+#include "Socket.h"
 #include <map>
 
 class Scene : public CGFscene
@@ -49,4 +50,5 @@ private:
 	vector<Appearance*> appearances;
 	vector<Animation*> animations;
 	map<string, Node*> nodes;
+	Socket *socket;
 };

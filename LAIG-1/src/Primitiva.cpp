@@ -458,7 +458,9 @@ Tabuleiro::Tabuleiro(unsigned int size)
 	this->size = size;
 	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
 
-	createLists();
+	//createLists();
+	for (int i = 0; i < 36; i++)
+			boardRepresentation[i] = 0;
 }
 
 void Tabuleiro::createLists()
@@ -505,10 +507,34 @@ void Tabuleiro::createLists()
 
 void Tabuleiro::draw()
 {
-	glCallList(boardListID);
+	//glCallList(boardListID);
+	glPushMatrix();
+	glScalef(size, 1, size);
+	glTranslatef(0.5, 0, 0.5);
+	glRotatef(-90, 1, 0, 0);
+	boardFace->draw();
+	glPopMatrix();
 }
 
 void Tabuleiro::drawHotspots()
 {
-	glCallList(hotspotsListID);
+	//glCallList(hotspotsListID);
+	glPushName(-1);		// Load a default name
+	CGFappearance* a = new CGFappearance();
+	a->apply();
+	unsigned int cellSize = size / 6;
+	for (unsigned int r = 0; r < 6; r++)
+	{
+		for (unsigned int c = 0; c < 6; c++)
+		{
+			glPushMatrix();
+			glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
+			glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
+			glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
+			glRotatef(-90, 1, 0, 0); //roda para plano xz
+			glLoadName(r*6+c); //num da coluna * 6 + num da linha
+			boardFace->draw();
+			glPopMatrix();
+		}
+	}
 }

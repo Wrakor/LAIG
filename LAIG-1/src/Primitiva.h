@@ -11,6 +11,7 @@
 #include "CGFappearance.h"
 #include "GL/glut.h"
 #include <ctime>
+#include <iostream>
 using std::string;
 using std::vector;
 
@@ -137,4 +138,5 @@ public:
 	void createLists();
 	void draw();
 	void drawHotspots();
+	int boardRepresentation[36];
 };
