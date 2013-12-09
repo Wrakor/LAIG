@@ -44,6 +44,8 @@ public:
 	void initAnimations();
 	bool runAnimations;
 	Tabuleiro *board;
+	bool start = false;
+	void moveCameraTo(float, float, float);
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;

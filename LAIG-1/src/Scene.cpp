@@ -297,3 +297,5 @@ void Scene::initAnimations()
 	for (unsigned int i = 0; i < animations.size(); i++)
 		((LinearAnimation*)animations[i])->init();
 }
+
+void Scene::moveCameraTo(float x, float y, float z);
