@@ -31,7 +31,7 @@ void LinearAnimation::init(float timestamp)
 }
 
 //adiciona um ponto de controlo ao vector
-void LinearAnimation::addControlPoint(array<float, 3> controlPoint)
+void LinearAnimation::addControlPoint(array<float, 3> controlPoint) 
 {
 	this->controlPoints.push_back(controlPoint);
 }

@@ -63,7 +63,7 @@ void Scene::init()
 	//start socket
 	socket->socketConnect();
 }
-	
+
 void Scene::display() 
 {
 	if (!socket->connected) //se não estiver ligado, não desenha nada
@@ -95,8 +95,7 @@ void Scene::display()
 
 		// Draw axis
 		axis.draw();
-
-
+		
 		// ---- END Background, camera and axis setup
 		processGraph(rootNode); //temos de passar o id do nó inicial
 		//board->draw();

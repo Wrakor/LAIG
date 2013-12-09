@@ -456,7 +456,7 @@ void Parser::parseAnimations()
 					if (controlpoint->QueryFloatAttribute("xx", &xx) != 0 || controlpoint->QueryFloatAttribute("yy", &yy) || controlpoint->QueryFloatAttribute("zz", &zz))
 						throw "Error parsing animation: no controlpoint attributes";
 
-					std::array<float, 3> readControlPoint;
+					std::array<float, 3> readControlPoint; 
 					readControlPoint[0] = xx;
 					readControlPoint[1] = yy;
 					readControlPoint[2] = zz;

@@ -9,6 +9,7 @@
 #include "CGFtexture.h"
 #include "CGFshader.h"
 #include "CGFappearance.h"
+#include "Animation.h"
 #include "GL/glut.h"
 #include <ctime>
 #include <iostream>
@@ -57,6 +58,7 @@ private:
 	float radius;
 	int slices, stacks;
 public:
+	Sphere();
 	Sphere(float radius, int slices, int stacks);
 	void draw();
 };
@@ -140,3 +142,16 @@ public:
 	void drawHotspots();
 	int boardRepresentation[36];
 };
+
+class Piece 
+{
+private:
+	Sphere *piece;
+	char color;
+	LinearAnimation *animation;
+public:
+	Piece(char color, int x, int y);
+	void draw();
+};
+
+void placePiece(char color);
