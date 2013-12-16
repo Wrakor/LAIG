@@ -11,6 +11,7 @@ Scene::Scene(){
 	this->runAnimations = true;
 	this->socket = new Socket("127.0.0.1", 60070);
 	this->player = WHITE; //first player is white
+	this->gameState = CONNECTING;
 }
 
 void Scene::init() 
@@ -62,7 +63,8 @@ void Scene::init()
 	initAnimations();
 
 	//start socket
-	socket->socketConnect();
+	if (socket->socketConnect())
+		this->gameState = PLACEPIECE;
 }
 
 void Scene::display() 
@@ -105,7 +107,7 @@ void Scene::display()
 		// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 		//board->drawHotspots(); //Testing
 	}
-	else if(rMode == GL_SELECT) //se em modo de pick, desenha os hotspots
+	else if(rMode == GL_SELECT && gameState == PLACEPIECE) //se em modo de pick, desenha os hotspots
 		board->drawHotspots();
 	glutSwapBuffers();
 	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
@@ -305,6 +307,21 @@ void Scene::initAnimations()
 
 void Scene::placePiece(unsigned int pos)
 {
-	board->boardRepresentation[pos] = new Piece(player==WHITE?'w':'b', pos % 6 + 1, pos / 6 + 1);
-	player = !player; //muda para o outro jogador
+	board->boardRepresentation[pos] = new Piece(player==WHITE?'W':'B', pos % 6 + 1, pos / 6 + 1);
+	string cmdString = "checkVictory(" + board->getBoardList() + ").\n";
+	//cout << cmdString << endl;
+	socket->envia(cmdString.c_str(), cmdString.length());
+	char answer[256];
+	socket->recebe(answer);
+	//cout << answer << endl;
+	if (answer[0] != '0')
+	{
+		gameState = GAMEOVER;
+		cout << "Jogador " << answer[0] << " ganhou!" << endl;
+	}
+	else
+	{
+		player = !player; //muda para o outro jogador
+		//gameState = ROTATE;
+	}
 }

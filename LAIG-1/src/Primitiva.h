@@ -132,10 +132,10 @@ public:
 class Piece : public Primitiva
 {
 private:
-	Sphere *piece;
-	char color;
+	Sphere *piece;	
 	LinearAnimation *animation;
 public:
+	char color;
 	Piece(char color, int x, int y);
 	void draw();
 };
@@ -153,4 +153,5 @@ public:
 	void drawHotspots();
 	void drawPieces();
 	Piece* boardRepresentation[36];
+	const string getBoardList();
 };

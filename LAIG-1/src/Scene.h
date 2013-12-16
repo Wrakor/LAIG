@@ -14,6 +14,11 @@
 #define WHITE 0
 #define BLACK 1
 
+#define CONNECTING 0
+#define PLACEPIECE 1
+#define ROTATE 2
+#define GAMEOVER 3
+
 class Scene : public CGFscene
 {
 public:
@@ -49,6 +54,7 @@ public:
 	bool runAnimations;
 	Tabuleiro *board;
 	void placePiece(unsigned int pos);
+	unsigned int gameState;
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;

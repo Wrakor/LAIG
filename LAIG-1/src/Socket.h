@@ -11,7 +11,7 @@ private:
 public:
 	Socket(std::string ipaddr, unsigned int port);
 	bool socketConnect();
-	void envia(char *s, int len);
+	void envia(const char *s, int len);
 	void recebe(char *ans);
 	void quit();
 	bool connected;

@@ -590,7 +590,7 @@ void Piece::draw()
 
 	glDisable(GL_LIGHTING);
 
-	if (color == 'w')
+	if (color == 'W')
 		glColor3f(1, 1, 1);
 	else
 		glColor3f(0, 0, 0);
@@ -599,4 +599,21 @@ void Piece::draw()
 	glEnable(GL_LIGHTING);
 
 	glPopMatrix();
+}
+
+const string Tabuleiro::getBoardList(){
+	string str;
+	str = "[";
+	for (unsigned int i = 0; i < 36;i++)
+	{
+		if (boardRepresentation[i] == NULL)
+			str += "' '";
+		else
+			str = str + "'" + boardRepresentation[i]->color + "'";
+		if (i != 35)
+			str += ",";
+		else
+			str += "]";
+	}
+	return str;
 }

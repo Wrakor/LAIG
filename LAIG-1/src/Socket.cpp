@@ -51,7 +51,7 @@ bool Socket::socketConnect() {// Initialize Winsock.
 	return true;
 }
 
-void Socket::envia(char *s, int len) {
+void Socket::envia(const char *s, int len) {
 	int bytesSent = send(m_socket, s, len, 0);
 	if (bytesSent == SOCKET_ERROR)
 		printf("Client: send() error %ld.\n", WSAGetLastError());
