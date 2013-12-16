@@ -22,7 +22,9 @@ int main(int argc, char* argv[]) {
 		try {
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
+//			app.setInterface(&parser->start_interface);
 			app.run();
+			
 		}
 		catch(GLexception& ex) {
 			throw "Error: " + *ex.what();

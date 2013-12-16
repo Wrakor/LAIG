@@ -16,6 +16,7 @@ public:
 	Scene scene;
 	Interface interface;
 	
+	
 private:
 
 	TiXmlDocument* doc;
