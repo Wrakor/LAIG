@@ -324,7 +324,7 @@ void Scene::placePiece(unsigned int pos)
 	if (answer[0] != '0')
 	{
 		gameState = GAMEOVER;
-		str += answer[0] ? "preto" : "branco";
+		str += answer[0] ? "branco" : "preto";
 		str += " ganhou!";
 		//cout << "Jogador " << answer[0] << " ganhou!" << endl;
 	}
