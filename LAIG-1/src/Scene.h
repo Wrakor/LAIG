@@ -25,7 +25,7 @@ public:
 	Scene();
 	void init();
 	void display();
-	//~Scene();
+	~Scene();
 	GLenum drawMode, shadeModel, cullfaceMode, cullorder;
 	bool cullface;
 	GLfloat backgroundR, backgroundG, backgroundB, backgroundA;
@@ -55,11 +55,12 @@ public:
 	Tabuleiro *board;
 	void placePiece(unsigned int pos);
 	unsigned int gameState;
+	Socket *socket;
+	void setGameMessage(string text);
 private:
 	vector<Texture*> textures;
 	vector<Appearance*> appearances;
 	vector<Animation*> animations;
 	map<string, Node*> nodes;
-	Socket *socket;
 	unsigned int player;
 };

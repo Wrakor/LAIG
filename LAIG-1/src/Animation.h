@@ -10,6 +10,7 @@ class Animation
 {
 protected:
 	unsigned long startTime;
+	bool ended;
 public:
 	string nodeID;
 	Animation(string nodeID);

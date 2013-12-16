@@ -560,26 +560,14 @@ Piece::Piece(char color, int x, int y)
 
 	animation = new LinearAnimation("", 3);
 
-	if (color == 'w')
-	{
-		std::array<array<float, 3>, 3> ctrlpts_array = { {
-			{ 15, 0, 45 },
-			{ x * 5 - 2.5, 2, (y + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
-			{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
+	std::array<array<float, 3>, 3> ctrlpts_array = { {
+		{ 15, 0, color=='W'?45:-15 },
+		{ x * 5 - 2.5, 2, (color=='W'?y:0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+		{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
-		for (int i = 0; i < 3; i++)
-			animation->addControlPoint(ctrlpts_array[i]);
-	}
-	else
-	{
-		std::array<array<float, 3>, 3> ctrlpts_array = { {
-			{ 15, 0, -15 },
-			{ x * 5 - 2.5, 2, (y / 2) * 5 - 2.5 }, //*5 (cell size) - 2.5 (para ficar no centro da casa)
-			{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
+	for (int i = 0; i < 3; i++)
+		animation->addControlPoint(ctrlpts_array[i]);
 
-		for (int i = 0; i < 3; i++)
-			animation->addControlPoint(ctrlpts_array[i]);
-	}	
 	animation->init();
 }
 

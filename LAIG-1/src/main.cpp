@@ -12,16 +12,18 @@ using std::exception;
 int main(int argc, char* argv[]) {
 	CGFapplication app = CGFapplication();
 
+	Parser *parser;
 	try
 	{
 		app.init(&argc, argv);
 		/*if(argc<2 || argc>2)
 			throw "Usage: thisProgram scene.yaf";
 		Parser *parser = new Parser(argv[1]);*/
-		Parser *parser = new Parser("cenas/pentago/ambiente1.yaf");
+		parser = new Parser("cenas/pentago/ambiente1.yaf");
 		try {
 			app.setScene(&parser->scene);
 			app.setInterface(&parser->interface);
+//			s = parser->scene.socket;
 //			app.setInterface(&parser->start_interface);
 			app.run();
 			
@@ -32,11 +34,14 @@ int main(int argc, char* argv[]) {
 		catch(exception& ex) {
 			throw "Unexpected error: " + *ex.what();
 		}
+		
 	}
 	catch (const char* msg) { //parse exception
-		cout << "EXCEPTION: " << msg;
-		exit(1);
+		if (msg != "exit")
+			cout << "EXCEPTION: " << msg;
 	}
+
+	delete(parser);
 
 	return 0;
 }

@@ -18,6 +18,7 @@ public:
 	GLUI_Panel* gameTypePanel, *gameDifficultyPanel, *gameStartPanel;
 	GLUI_Listbox *listBox, *listBox2;
 	GLUI_Button *start;
+	GLUI_StaticText *gameMessage;
 };
 
 class startInterface : public CGFinterface

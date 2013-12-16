@@ -10,6 +10,10 @@ Socket::Socket(string ipaddr, unsigned int port) {
 	this->connected = false;
 }
 
+Socket::~Socket(){
+	this->quit();
+}
+
 bool Socket::socketConnect() {// Initialize Winsock.
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);

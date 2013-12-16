@@ -23,6 +23,10 @@ void Interface::initGUI() {
 	gameStartPanel = addPanel("Game", GLUI_PANEL_EMBOSSED);
 	start = addButtonToPanel(gameStartPanel, "Start Game", 3);	
 	//start->set_alignment(GLUI_ALIGN_RIGHT);
+	addColumn();
+	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
+	gameMessage = addStaticTextToPanel(mainPanel, "Jogador branco");
+	GLUI_Button* exit = addButtonToPanel(mainPanel, "Exit Game", 99);
 }
 
 
@@ -52,23 +56,23 @@ void Interface::initGUI2()
 			//cameraRadioGroup->set_int_val(i);
 			cameraListbox->set_int_val(i);
 	}
-	}
-
-#include <iostream>
-using std::cout;
+}
 
 void Interface::processGUI(GLUI_Control *ctrl)
 {
-		if (ctrl->user_id == 0)
+	if (ctrl->user_id == 0)
 		scene->activateCamera(ctrl->get_int_val());	
-		else if (ctrl->user_id == 6)
+	else if (ctrl->user_id == 3)
 	{
-			initGUI2();
-			//glutHideWindow();
-			//glutCreateWindow("cenas");
+		initGUI2();
+		//glutHideWindow();
+		//glutCreateWindow("cenas");
 	}
-	cout << ctrl->user_id;
+	else if (ctrl->user_id == 99)
+	{
+		throw("exit"); //exit normally
 	}
+}
 
 void Interface::setScene(Scene *scene)
 {

@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "CGFaxis.h"
 #include "CGFapplication.h"
+#include "Interface.h"
 
 #include <math.h>
 #include <iostream>
@@ -65,6 +66,7 @@ void Scene::init()
 	//start socket
 	if (socket->socketConnect())
 		this->gameState = PLACEPIECE;
+	glutFullScreen();
 }
 
 void Scene::display() 
@@ -113,14 +115,10 @@ void Scene::display()
 	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
 
-/*Scene::~Scene()
+Scene::~Scene()
 {
-	delete(shader);
-	delete(textureAppearance);
-	delete(materialAppearance);
-	delete(obj);
-	delete(light0);
-} commented since values may not exist (parse failed)*/
+	delete(socket); //close socket
+}
 
 int Scene::addCamera(Camera *c){
 	int id = this->scene_cameras.size();
@@ -305,6 +303,13 @@ void Scene::initAnimations()
 		((LinearAnimation*)animations[i])->init();
 }
 
+void Scene::setGameMessage(string text)
+{
+	Interface *interface = (Interface *)iface;
+	interface->gameMessage->set_text(text.c_str());
+	interface->syncVars();
+}
+
 void Scene::placePiece(unsigned int pos)
 {
 	board->boardRepresentation[pos] = new Piece(player==WHITE?'W':'B', pos % 6 + 1, pos / 6 + 1);
@@ -314,14 +319,20 @@ void Scene::placePiece(unsigned int pos)
 	char answer[256];
 	socket->recebe(answer);
 	//cout << answer << endl;
+	string str;
+	str = "Jogador ";
 	if (answer[0] != '0')
 	{
 		gameState = GAMEOVER;
-		cout << "Jogador " << answer[0] << " ganhou!" << endl;
+		str += answer[0] ? "preto" : "branco";
+		str += " ganhou!";
+		//cout << "Jogador " << answer[0] << " ganhou!" << endl;
 	}
 	else
 	{
 		player = !player; //muda para o outro jogador
+		str += player ? "preto" : "branco";
 		//gameState = ROTATE;
 	}
+	setGameMessage(str);
 }

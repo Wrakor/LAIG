@@ -9,6 +9,7 @@ Animation::Animation(string nodeID)
 {
 	this->nodeID = nodeID;
 	this->startTime = 0;
+	this->ended = false;
 }
 
 //inicializa o startTime com o valor de tempo actual
@@ -39,28 +40,33 @@ void LinearAnimation::addControlPoint(array<float, 3> controlPoint)
 //actualiza a animação
 void LinearAnimation::update(float timestamp)
 {
-	float animationTime = (timestamp - startTime)/CLOCKS_PER_SEC; //tempo na animação em segundos = tempo actual menos tempo quando iniciou
-	float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC; //tempo desde o ultimo update = tempo actual menos tempo da ultima chamada à função update
-	this->timeInThisControlPoint += timeSinceLastUpdate; //actualiza acumulador de tempo neste control point
-	if (animationTime<span) //se animação ainda não acabou
+	if (!ended)
 	{
-		if (timeInThisControlPoint>=timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
+		float animationTime = (timestamp - startTime) / CLOCKS_PER_SEC; //tempo na animação em segundos = tempo actual menos tempo quando iniciou
+		float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC; //tempo desde o ultimo update = tempo actual menos tempo da ultima chamada à função update
+		this->timeInThisControlPoint += timeSinceLastUpdate; //actualiza acumulador de tempo neste control point
+		if (animationTime < span) //se animação ainda não acabou
 		{
-			changeControlPoint(currentControlPoint + 1); //passamos ao próximo
+			if (timeInThisControlPoint >= timePerControlPoint) //se esgotamos o tempo para este ponto de controlo
+			{
+				changeControlPoint(currentControlPoint + 1); //passamos ao próximo
+			}
+			else //se não, fazemos o movimento da animação
+			{
+				//incrementa posição actual: percentagem do total da distância a percorrer pelo tempo percorrido neste ponto de controlo
+				currentPos[0] += deltaX * (timeSinceLastUpdate / timePerControlPoint); //x
+				currentPos[1] += deltaY * (timeSinceLastUpdate / timePerControlPoint); //y
+				currentPos[2] += deltaZ * (timeSinceLastUpdate / timePerControlPoint); //z
+			}
+			lastTimestamp = timestamp; //actualiza último timestamp
 		}
-		else //se não, fazemos o movimento da animação
+		else
 		{
-			//incrementa posição actual: percentagem do total da distância a percorrer pelo tempo percorrido neste ponto de controlo
-			currentPos[0] += deltaX * (timeSinceLastUpdate / timePerControlPoint); //x
-			currentPos[1] += deltaY * (timeSinceLastUpdate / timePerControlPoint); //y
-			currentPos[2] += deltaZ * (timeSinceLastUpdate / timePerControlPoint); //z
+			ended = true;
+			currentPos = controlPoints[currentControlPoint + 1]; //set pos to last CP
+			//init();
 		}
-		lastTimestamp = timestamp; //actualiza último timestamp
 	}
-	/*else //reset
-	{
-		init(); //reinicia tudo
-	}*/
 }
 
 void LinearAnimation::draw()
