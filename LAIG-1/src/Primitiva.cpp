@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 
 #include "Primitiva.h"
+#include <sstream>
 using namespace std;
 
 Rectangle::Rectangle(float x1,float x2,float y1,float y2)
@@ -560,6 +561,9 @@ Piece::Piece(char color, int x, int y)
 
 	animation = new LinearAnimation("", 3);
 
+	this->x = x;
+	this->y = y;
+
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
 		{ 15, 0, color=='W'?45:-15 },
 		{ x * 5 - 2.5, 2, (color=='W'?y:0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
@@ -589,6 +593,24 @@ void Piece::draw()
 	glPopMatrix();
 }
 
+void Piece::moveTo(int x, int y)
+{
+	if (this->x != x || this->y != y)
+	{
+		animation = new LinearAnimation("", 3);
+
+		std::array<array<float, 3>, 3> ctrlpts_array = { {
+			{ this->x * 5 - 2.5, 0, this->y * 5 - 2.5 },
+			{ (x * 5 - 2.5) / 2, 2, (y * 5 - 2.5) / 2 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+			{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
+
+		for (int i = 0; i < 3; i++)
+			animation->addControlPoint(ctrlpts_array[i]);
+
+		animation->init();
+	}
+}
+
 const string Tabuleiro::getBoardList(){
 	string str;
 	str = "[";
@@ -604,4 +626,19 @@ const string Tabuleiro::getBoardList(){
 			str += "]";
 	}
 	return str;
+}
+
+void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
+	std::ostringstream oss;
+	oss << "rotateQuadrant(" << getBoardList() << ", " << quadrant << ", " << direction << ").\n";
+	socket->envia(oss.str().c_str(), oss.str().length());
+	char answer[256];
+	socket->recebe(answer);
+	/*char * pch;
+	pch = strtok(answer, " ,.-");
+	while (pch != NULL)
+	{
+		printf("%s\n", pch);
+		pch = strtok(NULL, " ,.-");
+	}*/
 }

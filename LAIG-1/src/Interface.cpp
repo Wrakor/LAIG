@@ -26,6 +26,8 @@ void Interface::initGUI() {
 	addColumn();
 	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
 	gameMessage = addStaticTextToPanel(mainPanel, "Jogador branco");
+	GLUI_Button* rotateLeft = addButtonToPanel(mainPanel, "<-", 97);
+	GLUI_Button* rotateRight = addButtonToPanel(mainPanel, "->", 98);
 	GLUI_Button* exit = addButtonToPanel(mainPanel, "Exit Game", 99);
 }
 
@@ -68,6 +70,10 @@ void Interface::processGUI(GLUI_Control *ctrl)
 		//glutHideWindow();
 		//glutCreateWindow("cenas");
 	}
+	else if (ctrl->user_id == 97)
+		scene->board->rotateQuadrant(scene->socket, 1, LEFT);
+	else if (ctrl->user_id == 98)
+		scene->board->rotateQuadrant(scene->socket, 1, RIGHT);
 	else if (ctrl->user_id == 99)
 	{
 		throw("exit"); //exit normally

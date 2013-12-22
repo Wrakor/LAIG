@@ -11,6 +11,7 @@
 #include "CGFappearance.h"
 #include "Animation.h"
 #include "GL/glut.h"
+#include "Socket.h"
 #include <ctime>
 #include <iostream>
 using std::string;
@@ -134,10 +135,12 @@ class Piece : public Primitiva
 private:
 	Sphere *piece;	
 	LinearAnimation *animation;
+	int x, y;
 public:
 	char color;
 	Piece(char color, int x, int y);
 	void draw();
+	void moveTo(int x, int y);
 };
 
 class Tabuleiro : public Primitiva
@@ -154,4 +157,5 @@ public:
 	void drawPieces();
 	Piece* boardRepresentation[36];
 	const string getBoardList();
+	void rotateQuadrant(Socket* socket, int quadrant, int direction);
 };

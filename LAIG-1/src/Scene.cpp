@@ -320,16 +320,22 @@ void Scene::placePiece(unsigned int pos)
 	socket->recebe(answer);
 	//cout << answer << endl;
 	string str;
-	str = "Jogador ";
 	if (answer[0] != '0')
 	{
 		gameState = GAMEOVER;
-		str += answer[0] ? "branco" : "preto";
-		str += " ganhou!";
-		//cout << "Jogador " << answer[0] << " ganhou!" << endl;
+		if (answer[0] == '3')
+			str = "Empate!";
+		else
+		{
+			str = "Jogador ";
+			str += answer[0] ? "branco" : "preto";
+			str += " ganhou!";
+			//cout << "Jogador " << answer[0] << " ganhou!" << endl;
+		}
 	}
 	else
 	{
+		str = "Jogador ";
 		player = !player; //muda para o outro jogador
 		str += player ? "preto" : "branco";
 		//gameState = ROTATE;

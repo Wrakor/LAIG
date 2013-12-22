@@ -15,7 +15,7 @@ playSP :-
 board([' ',' ',' ',' ', ' ', ' ', ' ',' ',' ',' ', ' ', ' ',' ',' ',' ',' ', ' ', ' ',' ',' ',' ',' ', ' ', ' ',' ',' ',' ',' ', ' ', ' ',' ',' ',' ',' ', ' ', ' ']).
 
 /** Verifica se alguem ganhou */
-checkVictory(Board, Winner) :-  (checkVictoryBlack(Board),Winner is 2,!);(checkVictoryWhite(Board),Winner is 1,!) ; Winner is 0.
+checkVictory(Board, Winner) :-  (checkDraw(Board), Winner is 3,!);(checkVictoryBlack(Board),Winner is 2,!);(checkVictoryWhite(Board),Winner is 1,!);Winner is 0.
 
 /** Imprime no ecrã o vencedor */
 writeWinner(Player) :- (Player =:= 1, write('Jogador 1 ganhou!'), !); write('Jogador 2 ganhou!'),!.
@@ -279,6 +279,9 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 
 parse_input(checkVictory(Board), Answer) :-
 	checkVictory(Board, Answer).
+	
+parse_input(rotateQuadrant(Board, Quadrant, Direction), Answer) :-
+	rotateQuadrant(Board, Quadrant, Direction, Answer).
 	
 /**parse_input().**/
 

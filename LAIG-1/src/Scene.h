@@ -14,6 +14,9 @@
 #define WHITE 0
 #define BLACK 1
 
+#define LEFT 1
+#define RIGHT 2
+
 #define CONNECTING 0
 #define PLACEPIECE 1
 #define ROTATE 2
