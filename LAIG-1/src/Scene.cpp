@@ -11,7 +11,7 @@ Scene::Scene(){
 	this->scene_cameras.clear(); //limpar vector de câmaras (estão a ser criadas no constructor do pai (init cameras)
 	this->runAnimations = true;
 	this->socket = new Socket("127.0.0.1", 60070);
-	this->player = WHITE; //first player is white
+	this->player = PLAYERONE; //first player is white
 	this->gameState = CONNECTING;
 	this->playerOneName = "branco";
 	this->playerTwoName = "preto";
@@ -323,11 +323,7 @@ void Scene::placePiece(unsigned int pos)
 {
 	if (gameState == PLACEPIECE)
 	{
-		if (gameEnvironment == 1)
-			board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
-		else
-			board->boardRepresentation[pos].place(player == WHITE ? 'R' : 'W', pos % 6 + 1, pos / 6 + 1); //get X and Y
-
+		board->boardRepresentation[pos].place(player, pos % 6 + 1, pos / 6 + 1); //get X and Y
 		gameState = ROTATE;
 		checkVictory();
 	}
@@ -360,7 +356,7 @@ void Scene::checkVictory()
 		else
 		{
 			str = "Jogador ";
-			str += answer[0] ? playerTwoName : playerOneName;
+			str += answer[0]=='1' ? playerOneName : playerTwoName;
 			str += " ganhou!";
 			//cout << "Jogador " << answer[0] << " ganhou!" << endl;
 		}
@@ -385,15 +381,18 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 	{
 		playerOneName = "branco";
 		playerTwoName = "preto";
+		Piece::playerOnePiece = Piece::white;
+		Piece::playerTwoPiece = Piece::black;
 	}
 	else if (gameEnvironment == 2)
 	{
 		playerOneName = "vermelho";
 		playerTwoName = "branco";
+		Piece::playerOnePiece = Piece::red;
+		Piece::playerTwoPiece = Piece::white;
 	}
 	string str;
 	str = "Jogador ";
 	str += player ? playerTwoName : playerOneName;
 	setGameMessage(str);
-	board->changeGameEnvironment(gameEnvironment);
 }

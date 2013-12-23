@@ -11,8 +11,8 @@
 #include "Socket.h"
 #include <map>
 
-#define WHITE 0
-#define BLACK 1
+#define PLAYERONE 0
+#define PLAYERTWO 1
 
 #define RIGHT 1
 #define LEFT 2

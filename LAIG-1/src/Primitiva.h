@@ -133,17 +133,15 @@ class Piece : public Primitiva
 private:
 	Sphere *piece;	
 	LinearAnimation *animation;
-	static CGFappearance *white;
-	static CGFappearance *black;
-	static CGFappearance *red;
 public:
-	char color;
+	int player;
 	bool placed;
 	int x, y;
 	Piece();
 	void draw();
 	void moveTo(int x, int y);
-	void place(char color, int x, int y);
+	void place(int player, int x, int y);
+	static CGFappearance *white, *black, *red, *playerOnePiece, *playerTwoPiece;
 };
 
 class Tabuleiro : public Primitiva
@@ -161,5 +159,4 @@ public:
 	std::array<Piece, 36> boardRepresentation;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
-	void changeGameEnvironment(int);
 };

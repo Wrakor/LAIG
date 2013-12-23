@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 
 #include "Primitiva.h"
+#include "Scene.h"
 #include <sstream>
 using namespace std;
 
@@ -560,15 +561,18 @@ CGFappearance *Piece::white = new CGFappearance(whiteCol);
 CGFappearance *Piece::black = new CGFappearance(blackCol);
 CGFappearance *Piece::red = new CGFappearance(redCol);
 
+CGFappearance *Piece::playerOnePiece = white;
+CGFappearance *Piece::playerTwoPiece = black;
+
 Piece::Piece()
 {
 	placed = false;
 }
 
-void Piece::place(char color, int x, int y)
+void Piece::place(int player, int x, int y)
 {
 	piece = new Sphere(1, 25, 25);
-	this->color = color;
+	this->player = player;
 
 	placed = true;
 
@@ -578,8 +582,8 @@ void Piece::place(char color, int x, int y)
 	this->y = y;
 
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
-		{ 15, 0, color == 'W' || 'R' ? 45 : -15 },
-		{ x * 5 - 2.5, 2, (color == 'W' || 'R' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+		{ 15, 0, player == PLAYERONE ? 45 : -15 },
+		{ x * 5 - 2.5, 2, (player == PLAYERONE ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
 		{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
 	for (int i = 0; i < 3; i++)
@@ -595,12 +599,10 @@ void Piece::draw()
 
 	glDisable(GL_LIGHTING);
 
-	if (color == 'W')
-		Piece::white->apply();
-	else if (color == 'B')
-		Piece::black->apply();
-	else if (color == 'R')
-		Piece::red->apply();
+	if (player == PLAYERONE)
+		Piece::playerOnePiece->apply();
+	else
+		Piece::playerTwoPiece->apply();
 
 	piece->draw();
 	glEnable(GL_LIGHTING);
@@ -637,7 +639,7 @@ const string Tabuleiro::getBoardList(bool pieceIDs){
 		if (pieceIDs)
 			oss << i;
 		else if (boardRepresentation[i].placed)
-			oss << boardRepresentation[i].color;
+			oss << (boardRepresentation[i].player==PLAYERONE?'W':'B');
 		else
 			oss << " ";
 		oss << "'";
@@ -675,28 +677,4 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 		pch = strtok(NULL, "[],'.\r\n");
 	}
 	boardRepresentation = newBoard;
-}
-
-void Tabuleiro::changeGameEnvironment(int n)
-{	
-	for (int i = 0; i < 36; i++)
-	{
-		if (boardRepresentation[i].placed)
-		{
-			if (n == 2)
-			{
-				if (boardRepresentation[i].color == 'W')
-					boardRepresentation[i].color = 'R';
-				else if (boardRepresentation[i].color == 'B')
-					boardRepresentation[i].color = 'W';
-			}
-			else if (n == 1)
-			{
-				if (boardRepresentation[i].color == 'R')
-					boardRepresentation[i].color = 'W';
-				else
-					boardRepresentation[i].color = 'B';
-			}
-		}
-	}
 }
