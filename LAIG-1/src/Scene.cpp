@@ -66,7 +66,7 @@ void Scene::init()
 	//start socket
 	if (socket->socketConnect())
 		this->gameState = PLACEPIECE;
-	glutFullScreen();
+	//glutFullScreen();
 }
 
 void Scene::display() 
@@ -312,7 +312,20 @@ void Scene::setGameMessage(string text)
 
 void Scene::placePiece(unsigned int pos)
 {
-	board->boardRepresentation[pos] = new Piece(player==WHITE?'W':'B', pos % 6 + 1, pos / 6 + 1);
+	board->boardRepresentation[pos].place(player==WHITE?'W':'B', pos % 6 + 1, pos / 6 + 1);
+	gameState = ROTATE;
+	checkVictory();
+}
+
+void Scene::rotateQuadrant(int quadrant, int direction)
+{
+	board->rotateQuadrant(socket, quadrant, direction);
+	switchPlayer();
+	checkVictory();
+}
+
+void Scene::checkVictory()
+{
 	string cmdString = "checkVictory(" + board->getBoardList() + ").\n";
 	//cout << cmdString << endl;
 	socket->envia(cmdString.c_str(), cmdString.length());
@@ -332,13 +345,16 @@ void Scene::placePiece(unsigned int pos)
 			str += " ganhou!";
 			//cout << "Jogador " << answer[0] << " ganhou!" << endl;
 		}
+		setGameMessage(str);
 	}
-	else
-	{
-		str = "Jogador ";
-		player = !player; //muda para o outro jogador
-		str += player ? "preto" : "branco";
-		//gameState = ROTATE;
-	}
+}
+
+void Scene::switchPlayer()
+{
+	string str;
+	str = "Jogador ";
+	player = !player; //muda para o outro jogador
+	str += player ? "preto" : "branco";
 	setGameMessage(str);
+	gameState = PLACEPIECE;
 }

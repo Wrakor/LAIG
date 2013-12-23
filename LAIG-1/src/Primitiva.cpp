@@ -460,8 +460,6 @@ Tabuleiro::Tabuleiro(unsigned int size)
 	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
 
 	//createLists();
-	for (int i = 0; i < 36; i++)
-			boardRepresentation[i] = 0;
 }
 
 void Tabuleiro::createLists()
@@ -522,8 +520,8 @@ void Tabuleiro::drawPieces()
 {
 	for (int i = 0; i < 36; i++)
 	{
-		if (boardRepresentation[i] != NULL)
-			boardRepresentation[i]->draw();
+		if (boardRepresentation[i].placed)
+			boardRepresentation[i].draw();
 	}
 }
 
@@ -539,7 +537,7 @@ void Tabuleiro::drawHotspots()
 		for (unsigned int c = 0; c < 6; c++)
 		{
 			int pos = r * 6 + c; //posição em lista única
-			if (boardRepresentation[pos] == NULL)
+			if (!boardRepresentation[pos].placed)
 			{
 				glPushMatrix();
 				glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
@@ -554,10 +552,17 @@ void Tabuleiro::drawHotspots()
 	}
 }
 
-Piece::Piece(char color, int x, int y)
+Piece::Piece()
+{
+	placed = false;
+}
+
+void Piece::place(char color, int x, int y)
 {
 	piece = new Sphere(1, 25, 25);
-	this->color = color;	
+	this->color = color;
+
+	placed = true;
 
 	animation = new LinearAnimation("", 3);
 
@@ -565,8 +570,8 @@ Piece::Piece(char color, int x, int y)
 	this->y = y;
 
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
-		{ 15, 0, color=='W'?45:-15 },
-		{ x * 5 - 2.5, 2, (color=='W'?y:0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+		{ 15, 0, color == 'W' ? 45 : -15 },
+		{ x * 5 - 2.5, 2, (color == 'W' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
 		{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
 	for (int i = 0; i < 3; i++)
@@ -597,48 +602,67 @@ void Piece::moveTo(int x, int y)
 {
 	if (this->x != x || this->y != y)
 	{
-		animation = new LinearAnimation("", 3);
+		animation = new LinearAnimation("", 1);
 
-		std::array<array<float, 3>, 3> ctrlpts_array = { {
+		std::array<array<float, 3>, 4> ctrlpts_array = { {
 			{ this->x * 5 - 2.5, 0, this->y * 5 - 2.5 },
-			{ (x * 5 - 2.5) / 2, 2, (y * 5 - 2.5) / 2 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
 			{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 2; i++)
 			animation->addControlPoint(ctrlpts_array[i]);
+
+		this->x = x;
+		this->y = y;
 
 		animation->init();
 	}
 }
 
-const string Tabuleiro::getBoardList(){
-	string str;
-	str = "[";
+const string Tabuleiro::getBoardList(bool pieceIDs){
+	std::ostringstream oss;
+	oss << "[";
 	for (unsigned int i = 0; i < 36;i++)
 	{
-		if (boardRepresentation[i] == NULL)
-			str += "' '";
+		oss << "'";
+		if (pieceIDs)
+			oss << i;
+		else if (boardRepresentation[i].placed)
+			oss << boardRepresentation[i].color;
 		else
-			str = str + "'" + boardRepresentation[i]->color + "'";
+			oss << " ";
+		oss << "'";
 		if (i != 35)
-			str += ",";
+			oss << ",";
 		else
-			str += "]";
+			oss << "]";
 	}
-	return str;
+	return oss.str();
 }
 
 void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 	std::ostringstream oss;
-	oss << "rotateQuadrant(" << getBoardList() << ", " << quadrant << ", " << direction << ").\n";
+	oss << "rotateQuadrant(" << getBoardList(true) << ", " << quadrant << ", " << direction << ").\n";
 	socket->envia(oss.str().c_str(), oss.str().length());
 	char answer[256];
 	socket->recebe(answer);
-	/*char * pch;
-	pch = strtok(answer, " ,.-");
-	while (pch != NULL)
+	std::array<Piece, 36> newBoard;
+	char * pch = strtok(answer, "[],'.\r\n"); //divide response in tokens
+	for (int i = 0; i < 36;i++)
 	{
-		printf("%s\n", pch);
-		pch = strtok(NULL, " ,.-");
-	}*/
+		int pos = atoi(pch); //new piece position
+		if (pos != i) //if it's different than previous position
+		{
+			newBoard[i] = boardRepresentation[pos]; //piece that was in POS is moved to current position
+			if (newBoard[i].placed)
+			{
+				int x = i % 6 + 1;
+				int y = i / 6 + 1;
+				newBoard[i].moveTo(x, y); //actually move the piece in the board
+			}
+		}
+		else
+			newBoard[i] = boardRepresentation[i]; //if piece wasn't moved, save old position
+		pch = strtok(NULL, "[],'.\r\n");
+	}
+	boardRepresentation = newBoard;
 }

@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-
-
 #include "CGFtexture.h"
 #include "CGFshader.h"
 #include "CGFappearance.h"
@@ -135,12 +133,14 @@ class Piece : public Primitiva
 private:
 	Sphere *piece;	
 	LinearAnimation *animation;
-	int x, y;
 public:
 	char color;
-	Piece(char color, int x, int y);
+	bool placed;
+	int x, y;
+	Piece();
 	void draw();
 	void moveTo(int x, int y);
+	void place(char color, int x, int y);
 };
 
 class Tabuleiro : public Primitiva
@@ -155,7 +155,7 @@ public:
 	void draw();
 	void drawHotspots();
 	void drawPieces();
-	Piece* boardRepresentation[36];
-	const string getBoardList();
+	std::array<Piece, 36> boardRepresentation;
+	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
 };

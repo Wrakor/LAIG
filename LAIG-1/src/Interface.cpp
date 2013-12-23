@@ -24,10 +24,18 @@ void Interface::initGUI() {
 	start = addButtonToPanel(gameStartPanel, "Start Game", 3);	
 	//start->set_alignment(GLUI_ALIGN_RIGHT);
 	addColumn();
+	GLUI_Panel* quadrantPanel = addPanel("main", GLUI_PANEL_NONE);
+	GLUI_Button* rotateLeft1 = addButtonToPanel(quadrantPanel, "<-(1)", 90);
+	GLUI_Button* rotateRight1 = addButtonToPanel(quadrantPanel, "->(1)", 91);
+	GLUI_Button* rotateLeft2 = addButtonToPanel(quadrantPanel, "<-(2)", 92);
+	GLUI_Button* rotateRight2 = addButtonToPanel(quadrantPanel, "->(2)", 93);
+	GLUI_Button* rotateLeft3 = addButtonToPanel(quadrantPanel, "<-(3)", 94);
+	GLUI_Button* rotateRight3 = addButtonToPanel(quadrantPanel, "->(3)", 95);
+	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel, "<-(4)", 96);
+	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel, "->(4)", 97);
+	addColumn();
 	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
 	gameMessage = addStaticTextToPanel(mainPanel, "Jogador branco");
-	GLUI_Button* rotateLeft = addButtonToPanel(mainPanel, "<-", 97);
-	GLUI_Button* rotateRight = addButtonToPanel(mainPanel, "->", 98);
 	GLUI_Button* exit = addButtonToPanel(mainPanel, "Exit Game", 99);
 }
 
@@ -70,10 +78,22 @@ void Interface::processGUI(GLUI_Control *ctrl)
 		//glutHideWindow();
 		//glutCreateWindow("cenas");
 	}
+	else if (ctrl->user_id == 90)
+		scene->rotateQuadrant(1, LEFT);
+	else if (ctrl->user_id == 91)
+		scene->rotateQuadrant(1, RIGHT);
+	else if (ctrl->user_id == 92)
+		scene->rotateQuadrant(2, LEFT);
+	else if (ctrl->user_id == 93)
+		scene->rotateQuadrant(2, RIGHT);
+	else if (ctrl->user_id == 94)
+		scene->rotateQuadrant(3, LEFT);
+	else if (ctrl->user_id == 95)
+		scene->rotateQuadrant(3, RIGHT);
+	else if (ctrl->user_id == 96)
+		scene->rotateQuadrant(4, LEFT);
 	else if (ctrl->user_id == 97)
-		scene->board->rotateQuadrant(scene->socket, 1, LEFT);
-	else if (ctrl->user_id == 98)
-		scene->board->rotateQuadrant(scene->socket, 1, RIGHT);
+		scene->rotateQuadrant(4, RIGHT);
 	else if (ctrl->user_id == 99)
 	{
 		throw("exit"); //exit normally
