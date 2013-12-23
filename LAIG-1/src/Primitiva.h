@@ -133,6 +133,8 @@ class Piece : public Primitiva
 private:
 	Sphere *piece;	
 	LinearAnimation *animation;
+	static CGFappearance *white;
+	static CGFappearance *black;
 public:
 	char color;
 	bool placed;

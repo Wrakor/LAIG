@@ -552,6 +552,12 @@ void Tabuleiro::drawHotspots()
 	}
 }
 
+float whiteCol[4] = { 1, 1, 1, 1 };
+float blackCol[4] = { 0, 0, 0, 0 };
+
+CGFappearance *Piece::white = new CGFappearance(whiteCol);
+CGFappearance *Piece::black = new CGFappearance(blackCol);
+
 Piece::Piece()
 {
 	placed = false;
@@ -588,9 +594,9 @@ void Piece::draw()
 	glDisable(GL_LIGHTING);
 
 	if (color == 'W')
-		glColor3f(1, 1, 1);
+		Piece::white->apply();
 	else
-		glColor3f(0, 0, 0);
+		Piece::black->apply();
 
 	piece->draw();
 	glEnable(GL_LIGHTING);
