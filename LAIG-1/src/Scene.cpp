@@ -312,16 +312,22 @@ void Scene::setGameMessage(string text)
 
 void Scene::placePiece(unsigned int pos)
 {
-	board->boardRepresentation[pos].place(player==WHITE?'W':'B', pos % 6 + 1, pos / 6 + 1);
-	gameState = ROTATE;
-	checkVictory();
+	if (gameState == PLACEPIECE)
+	{
+		board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
+		gameState = ROTATE;
+		checkVictory();
+	}
 }
 
 void Scene::rotateQuadrant(int quadrant, int direction)
 {
-	board->rotateQuadrant(socket, quadrant, direction);
-	switchPlayer();
-	checkVictory();
+	if (gameState == ROTATE)
+	{
+		board->rotateQuadrant(socket, quadrant, direction);
+		switchPlayer();
+		checkVictory();
+	}
 }
 
 void Scene::checkVictory()
