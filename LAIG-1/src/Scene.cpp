@@ -314,7 +314,11 @@ void Scene::placePiece(unsigned int pos)
 {
 	if (gameState == PLACEPIECE)
 	{
-		board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
+		if (gameEnvironment == 1)
+			board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
+		else
+			board->boardRepresentation[pos].place(player == WHITE ? 'R' : 'W', pos % 6 + 1, pos / 6 + 1); //get X and Y
+
 		gameState = ROTATE;
 		checkVictory();
 	}

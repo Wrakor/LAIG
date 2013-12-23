@@ -570,8 +570,8 @@ void Piece::place(char color, int x, int y)
 	this->y = y;
 
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
-		{ 15, 0, color == 'W' ? 45 : -15 },
-		{ x * 5 - 2.5, 2, (color == 'W' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+		{ 15, 0, color == 'W' || 'R' ? 45 : -15 },
+		{ x * 5 - 2.5, 2, (color == 'W' || 'R' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
 		{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
 	for (int i = 0; i < 3; i++)
@@ -589,8 +589,10 @@ void Piece::draw()
 
 	if (color == 'W')
 		glColor3f(1, 1, 1);
-	else
+	else if (color == 'B')
 		glColor3f(0, 0, 0);
+	else if (color == 'R')
+		glColor3f(1, 0, 0);
 
 	piece->draw();
 	glEnable(GL_LIGHTING);
@@ -665,4 +667,28 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 		pch = strtok(NULL, "[],'.\r\n");
 	}
 	boardRepresentation = newBoard;
+}
+
+void Tabuleiro::changeGameEnvironment(int n)
+{	
+	for (int i = 0; i < 36; i++)
+	{
+		if (boardRepresentation[i].placed)
+		{
+			if (n == 2)
+			{
+				if (boardRepresentation[i].color == 'W')
+					boardRepresentation[i].color = 'R';
+				else if (boardRepresentation[i].color == 'B')
+					boardRepresentation[i].color = 'W';
+			}
+			else if (n == 1)
+			{
+				if (boardRepresentation[i].color == 'R')
+					boardRepresentation[i].color = 'W';
+				else
+					boardRepresentation[i].color = 'B';
+			}
+		}
+	}
 }

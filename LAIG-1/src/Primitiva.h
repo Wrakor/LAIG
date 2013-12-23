@@ -158,4 +158,5 @@ public:
 	std::array<Piece, 36> boardRepresentation;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
+	void changeGameEnvironment(int);
 };
