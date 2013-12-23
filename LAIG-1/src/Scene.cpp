@@ -15,13 +15,14 @@ Scene::Scene(){
 	this->gameState = CONNECTING;
 	this->playerOneName = "branco";
 	this->playerTwoName = "preto";
+	backgroundR2 = 0.8;
+	backgroundG2 = 0.2;
+	backgroundB2 = 0.2;
+	backgroundA2 = 1;
 }
 
 void Scene::init() 
 {
-	//limpa a cor activa debackground e define nova cor RGBA
-	glClearColor(backgroundR,backgroundG,backgroundB,backgroundA);
-
 	// Enables lighting computations
 	if(this->lightingEnabled)
 		glEnable(GL_LIGHTING);
@@ -75,6 +76,12 @@ void Scene::display()
 {
 	if (!socket->connected) //se não estiver ligado, não desenha nada
 		return;
+
+	//limpa a cor activa debackground e define nova cor RGBA
+	if (gameEnvironment==1)
+		glClearColor(backgroundR, backgroundG, backgroundB, backgroundA);
+	else if (gameEnvironment==2)
+		glClearColor(backgroundR2, backgroundG2, backgroundB2, backgroundA2);
 
 	// Clear image and depth buffer everytime we update the scene
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);

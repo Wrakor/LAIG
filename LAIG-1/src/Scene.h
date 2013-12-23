@@ -32,6 +32,7 @@ public:
 	GLenum drawMode, shadeModel, cullfaceMode, cullorder;
 	bool cullface;
 	GLfloat backgroundR, backgroundG, backgroundB, backgroundA;
+	GLfloat backgroundR2, backgroundG2, backgroundB2, backgroundA2;
 	int addCamera(Camera *c);
 	void initCameras();
 	bool lightingDoubleSided, lightingLocal, lightingEnabled;
