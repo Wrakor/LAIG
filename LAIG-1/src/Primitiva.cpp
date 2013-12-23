@@ -604,7 +604,7 @@ void Piece::moveTo(int x, int y)
 	{
 		animation = new LinearAnimation("", 1);
 
-		std::array<array<float, 3>, 4> ctrlpts_array = { {
+		std::array<array<float, 3>, 2> ctrlpts_array = { {
 			{ this->x * 5 - 2.5, 0, this->y * 5 - 2.5 },
 			{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
