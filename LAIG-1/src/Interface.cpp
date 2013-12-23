@@ -24,18 +24,33 @@ void Interface::initGUI() {
 	start = addButtonToPanel(gameStartPanel, "Start Game", 3);	
 	//start->set_alignment(GLUI_ALIGN_RIGHT);
 	addColumn();
-	GLUI_Panel* quadrantPanel = addPanel("main", GLUI_PANEL_NONE);
-	GLUI_Button* rotateLeft1 = addButtonToPanel(quadrantPanel, "<-(1)", 90);
-	GLUI_Button* rotateRight1 = addButtonToPanel(quadrantPanel, "->(1)", 91);
-	GLUI_Button* rotateLeft2 = addButtonToPanel(quadrantPanel, "<-(2)", 92);
-	GLUI_Button* rotateRight2 = addButtonToPanel(quadrantPanel, "->(2)", 93);
-	GLUI_Button* rotateLeft3 = addButtonToPanel(quadrantPanel, "<-(3)", 94);
-	GLUI_Button* rotateRight3 = addButtonToPanel(quadrantPanel, "->(3)", 95);
-	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel, "<-(4)", 96);
-	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel, "->(4)", 97);
+	GLUI_Panel *gameEnvironment = addPanel("Game Environment", GLUI_PANEL_EMBOSSED);
+	GLUI_Listbox *gameEnvironmentL = addListboxToPanel(gameEnvironment, "", 0, 4);
+	gameEnvironmentL->add_item(0, "Environment 1");
+	gameEnvironmentL->add_item(1, "Environment 2");
+
+	addColumn();
+	GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
+	GLUI_Button* rotateLeft1 = addButtonToPanel(quadrantPanel1, "<-(1)", 90);
+	GLUI_Button* rotateRight1 = addButtonToPanel(quadrantPanel1, "->(1)", 91);
+	addColumn();
+	GLUI_Panel* quadrantPanel2 = addPanel("main", GLUI_PANEL_NONE);
+	GLUI_Button* rotateLeft2 = addButtonToPanel(quadrantPanel2, "<-(2)", 92);
+	GLUI_Button* rotateRight2 = addButtonToPanel(quadrantPanel2, "->(2)", 93);
+	addColumn();
+	GLUI_Panel* quadrantPanel3 = addPanel("main", GLUI_PANEL_NONE);
+	GLUI_Button* rotateLeft3 = addButtonToPanel(quadrantPanel3, "<-(3)", 94);
+	GLUI_Button* rotateRight3 = addButtonToPanel(quadrantPanel3, "->(3)", 95);
+	addColumn();
+	GLUI_Panel* quadrantPanel4 = addPanel("main", GLUI_PANEL_NONE);
+	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel4, "<-(4)", 96);
+	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel4, "->(4)", 97);
 	addColumn();
 	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
-	gameMessage = addStaticTextToPanel(mainPanel, "Jogador branco");
+	string playerName = "Jogador " + scene->playerOneName;
+	char tmpPlayerName[100];
+	strcpy(tmpPlayerName, playerName.c_str());
+	gameMessage = addStaticTextToPanel(mainPanel, tmpPlayerName);
 	GLUI_Button* exit = addButtonToPanel(mainPanel, "Exit Game", 99);
 }
 
@@ -74,9 +89,20 @@ void Interface::processGUI(GLUI_Control *ctrl)
 		scene->activateCamera(ctrl->get_int_val());	
 	else if (ctrl->user_id == 3)
 	{
-		initGUI2();
-		//glutHideWindow();
-		//glutCreateWindow("cenas");
+		//initGUI2();
+	}
+	else if (ctrl->user_id == 4)
+	{
+		if (ctrl->get_int_val() == 1)
+		{
+			scene->getNodes()["tabuleiro"]->appearance = scene->getAppearances()[1];
+			scene->changeGameEnvironment(2);
+		}
+		else
+		{
+			scene->getNodes()["tabuleiro"]->appearance = scene->getAppearances()[0];
+			scene->changeGameEnvironment(1);
+		}
 	}
 	else if (ctrl->user_id == 90)
 		scene->rotateQuadrant(1, LEFT);

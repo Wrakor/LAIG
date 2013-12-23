@@ -135,6 +135,7 @@ private:
 	LinearAnimation *animation;
 	static CGFappearance *white;
 	static CGFappearance *black;
+	static CGFappearance *red;
 public:
 	char color;
 	bool placed;
@@ -160,4 +161,5 @@ public:
 	std::array<Piece, 36> boardRepresentation;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
+	void changeGameEnvironment(int);
 };

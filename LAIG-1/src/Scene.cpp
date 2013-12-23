@@ -13,6 +13,8 @@ Scene::Scene(){
 	this->socket = new Socket("127.0.0.1", 60070);
 	this->player = WHITE; //first player is white
 	this->gameState = CONNECTING;
+	this->playerOneName = "branco";
+	this->playerTwoName = "preto";
 }
 
 void Scene::init() 
@@ -314,7 +316,11 @@ void Scene::placePiece(unsigned int pos)
 {
 	if (gameState == PLACEPIECE)
 	{
-		board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
+		if (gameEnvironment == 1)
+			board->boardRepresentation[pos].place(player == WHITE ? 'W' : 'B', pos % 6 + 1, pos / 6 + 1); //get X and Y
+		else
+			board->boardRepresentation[pos].place(player == WHITE ? 'R' : 'W', pos % 6 + 1, pos / 6 + 1); //get X and Y
+
 		gameState = ROTATE;
 		checkVictory();
 	}
@@ -347,7 +353,7 @@ void Scene::checkVictory()
 		else
 		{
 			str = "Jogador ";
-			str += answer[0] ? "branco" : "preto";
+			str += answer[0] ? playerTwoName : playerOneName;
 			str += " ganhou!";
 			//cout << "Jogador " << answer[0] << " ganhou!" << endl;
 		}
@@ -360,7 +366,27 @@ void Scene::switchPlayer()
 	string str;
 	str = "Jogador ";
 	player = !player; //muda para o outro jogador
-	str += player ? "preto" : "branco";
+	str += player ? playerTwoName : playerOneName;
 	setGameMessage(str);
 	gameState = PLACEPIECE;
+}
+
+void Scene::changeGameEnvironment(int gameEnvironment)
+{
+	this->gameEnvironment = gameEnvironment;
+	if (gameEnvironment == 1)
+	{
+		playerOneName = "branco";
+		playerTwoName = "preto";
+	}
+	else if (gameEnvironment == 2)
+	{
+		playerOneName = "vermelho";
+		playerTwoName = "branco";
+	}
+	string str;
+	str = "Jogador ";
+	str += player ? playerTwoName : playerOneName;
+	setGameMessage(str);
+	board->changeGameEnvironment(gameEnvironment);
 }

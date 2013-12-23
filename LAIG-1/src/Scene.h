@@ -63,10 +63,15 @@ public:
 	void checkVictory();
 	void switchPlayer();
 	void rotateQuadrant(int quadrant, int direction);
+	int gameEnvironment = 1;
+	map<string, Node*> getNodes() {	return nodes; }
+	vector<Appearance*> getAppearances() { return appearances; }
+	void changeGameEnvironment(int gameEnvironment);
+	string playerOneName, playerTwoName;
 private:
-	vector<Texture*> textures;
-	vector<Appearance*> appearances;
-	vector<Animation*> animations;
+	vector<Texture*> textures;	
+	vector<Animation*> animations;	
 	map<string, Node*> nodes;
+	vector<Appearance*> appearances;
 	unsigned int player;
 };

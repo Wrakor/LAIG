@@ -553,10 +553,12 @@ void Tabuleiro::drawHotspots()
 }
 
 float whiteCol[4] = { 1, 1, 1, 1 };
-float blackCol[4] = { 0, 0, 0, 0 };
+float blackCol[4] = { 0, 0, 0, 1 };
+float redCol[4] = { 1, 0, 0, 1 };
 
 CGFappearance *Piece::white = new CGFappearance(whiteCol);
 CGFappearance *Piece::black = new CGFappearance(blackCol);
+CGFappearance *Piece::red = new CGFappearance(redCol);
 
 Piece::Piece()
 {
@@ -576,8 +578,8 @@ void Piece::place(char color, int x, int y)
 	this->y = y;
 
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
-		{ 15, 0, color == 'W' ? 45 : -15 },
-		{ x * 5 - 2.5, 2, (color == 'W' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
+		{ 15, 0, color == 'W' || 'R' ? 45 : -15 },
+		{ x * 5 - 2.5, 2, (color == 'W' || 'R' ? y : 0 + y / 2) * 5 - 2.5 }, // *5 (cell size) - 2.5 (para ficar no centro da casa)
 		{ x * 5 - 2.5, 0, y * 5 - 2.5 } } };
 
 	for (int i = 0; i < 3; i++)
@@ -595,8 +597,10 @@ void Piece::draw()
 
 	if (color == 'W')
 		Piece::white->apply();
-	else
+	else if (color == 'B')
 		Piece::black->apply();
+	else if (color == 'R')
+		Piece::red->apply();
 
 	piece->draw();
 	glEnable(GL_LIGHTING);
@@ -671,4 +675,28 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 		pch = strtok(NULL, "[],'.\r\n");
 	}
 	boardRepresentation = newBoard;
+}
+
+void Tabuleiro::changeGameEnvironment(int n)
+{	
+	for (int i = 0; i < 36; i++)
+	{
+		if (boardRepresentation[i].placed)
+		{
+			if (n == 2)
+			{
+				if (boardRepresentation[i].color == 'W')
+					boardRepresentation[i].color = 'R';
+				else if (boardRepresentation[i].color == 'B')
+					boardRepresentation[i].color = 'W';
+			}
+			else if (n == 1)
+			{
+				if (boardRepresentation[i].color == 'R')
+					boardRepresentation[i].color = 'W';
+				else
+					boardRepresentation[i].color = 'B';
+			}
+		}
+	}
 }

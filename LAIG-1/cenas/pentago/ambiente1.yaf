@@ -1,5 +1,5 @@
 <yaf>
- <globals background="0 0 0 0" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" /> 
+ <globals background="0.8 0.8 0.8 0" drawmode="fill" shading="gouraud" cullface="back" cullorder="CCW" /> 
 
  <cameras initial="cam1">
  	<perspective id="cam1" near="0.1" far="500" angle="45" pos="15 30 40" target="15 0 15" />
@@ -27,6 +27,7 @@
  <textures>
   <!--<texture id="chao" file="chao.png" />-->
   <texture id="tabuleiro" file="tabuleiro.png" />
+  <texture id="tabuleiro2" file="tabuleiro3.png" />
  </textures>
 
  <appearances>
@@ -38,6 +39,16 @@
     specular="1 1 1 1" 
     shininess="64" 
     textureref="tabuleiro" 
+    texlength_s="1" 
+    texlength_t="1"/>
+
+    <appearance id="tabuleiro2" 
+    emissive="0 0 0 1" 
+    ambient="0 0 0 0" 
+    diffuse="0.5 0.5 0.5 1" 
+    specular="1 1 1 1" 
+    shininess="64" 
+    textureref="tabuleiro2" 
     texlength_s="1" 
     texlength_t="1"/>
 
