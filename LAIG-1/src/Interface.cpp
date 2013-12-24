@@ -30,7 +30,7 @@ void Interface::initGUI() {
 	gameEnvironmentL->add_item(1, "Environment 2");
 
 	addColumn();
-	GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
+	/*GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
 	GLUI_Button* rotateLeft1 = addButtonToPanel(quadrantPanel1, "<-(1)", 90);
 	GLUI_Button* rotateRight1 = addButtonToPanel(quadrantPanel1, "->(1)", 91);
 	addColumn();
@@ -45,7 +45,7 @@ void Interface::initGUI() {
 	GLUI_Panel* quadrantPanel4 = addPanel("main", GLUI_PANEL_NONE);
 	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel4, "<-(4)", 96);
 	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel4, "->(4)", 97);
-	addColumn();
+	addColumn();*/
 	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
 	string playerName = "Jogador " + scene->playerOneName;
 	char tmpPlayerName[100];
@@ -108,7 +108,7 @@ void Interface::processGUI(GLUI_Control *ctrl)
 			scene->changeGameEnvironment(1);
 		}
 	}
-	else if (ctrl->user_id == 90)
+	/*else if (ctrl->user_id == 90)
 		scene->rotateQuadrant(1, LEFT);
 	else if (ctrl->user_id == 91)
 		scene->rotateQuadrant(1, RIGHT);
@@ -123,7 +123,7 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	else if (ctrl->user_id == 96)
 		scene->rotateQuadrant(4, LEFT);
 	else if (ctrl->user_id == 97)
-		scene->rotateQuadrant(4, RIGHT);
+		scene->rotateQuadrant(4, RIGHT);*/
 	else if (ctrl->user_id == 99)
 	{
 		throw("exit"); //exit normally
@@ -229,7 +229,38 @@ void Interface::processHits(GLint hits, GLuint buffer[])
 		for (unsigned int i = 0; i<nselected; i++)
 			printf("%d ", selected[i]);
 		printf("\n");
-		scene->placePiece(selected[0]);
+		if (selected[0]<100)
+			scene->placePiece(selected[0]);
+		else
+		{
+			switch (selected[0])
+			{
+			case 100:
+				scene->rotateQuadrant(1, LEFT);
+				break;
+			case 101:
+				scene->rotateQuadrant(1, RIGHT);
+				break;
+			case 102:
+				scene->rotateQuadrant(2, LEFT);
+				break;
+			case 103:
+				scene->rotateQuadrant(2, RIGHT);
+				break;
+			case 104:
+				scene->rotateQuadrant(3, LEFT);
+				break;
+			case 105:
+				scene->rotateQuadrant(3, RIGHT);
+				break;
+			case 106:
+				scene->rotateQuadrant(4, LEFT);
+				break;
+			case 107:
+				scene->rotateQuadrant(4, RIGHT);
+				break;
+			}
+		}
 	}
 	//else
 		//printf("Nothing selected while picking \n");

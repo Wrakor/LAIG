@@ -149,13 +149,14 @@ class Tabuleiro : public Primitiva
 private:
 	unsigned int size;
 	Rectangle *boardFace;
+	Cylinder *arrow;
 	GLuint boardListID, hotspotsListID;
 public:
 	Tabuleiro(unsigned int size);
-	void createLists();
 	void draw();
 	void drawHotspots();
 	void drawPieces();
+	void drawArrows(int player);
 	std::array<Piece, 36> boardRepresentation;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);

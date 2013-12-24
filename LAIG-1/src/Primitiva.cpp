@@ -455,107 +455,9 @@ Mountain::Mountain(string heightmap, string texturemap, string fragmentshader, s
 	plane = new Plane(150); 
 }
 
-Tabuleiro::Tabuleiro(unsigned int size)
-{
-	this->size = size;
-	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
-
-	//createLists();
-}
-
-void Tabuleiro::createLists()
-{
-	//init board list
-	boardListID = glGenLists(1);
-	glNewList(boardListID, GL_COMPILE);
-
-	glPushMatrix();
-	glScalef(size, 1, size);
-	glTranslatef(0.5, 0, 0.5);
-	glRotatef(-90, 1, 0, 0);
-	boardFace->draw();
-	glPopMatrix();
-
-	glEndList();
-
-	//init hotspots list
-	hotspotsListID = glGenLists(1);
-	glNewList(hotspotsListID, GL_COMPILE);
-
-	glPushName(-1);		// Load a default name
-	CGFappearance* a = new CGFappearance();
-	a->apply();
-	unsigned int cellSize = size / 6;
-	for (unsigned int r = 0; r < 6; r++)
-	{
-		glLoadName(r); //nome da linha
-		for (unsigned int c = 0; c < 6; c++)
-		{
-			glPushMatrix();
-			glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
-			glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
-			glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
-			glRotatef(-90, 1, 0, 0); //roda para plano xz
-			glPushName(c); //nome da coluna
-			boardFace->draw();
-			glPopName();
-			glPopMatrix();
-		}
-	}
-	glEndList();
-}
-
-void Tabuleiro::draw()
-{
-	//glCallList(boardListID);
-	glPushMatrix();
-	glScalef(size, 1, size);
-	glTranslatef(0.5, 0, 0.5);
-	glRotatef(-90, 1, 0, 0);
-	boardFace->draw();
-	glPopMatrix();
-	drawPieces();
-}
-
-void Tabuleiro::drawPieces()
-{
-	for (int i = 0; i < 36; i++)
-	{
-		if (boardRepresentation[i].placed)
-			boardRepresentation[i].draw();
-	}
-}
-
-void Tabuleiro::drawHotspots()
-{
-	//glCallList(hotspotsListID);
-	glPushName(-1);		// Load a default name
-	CGFappearance* a = new CGFappearance();
-	a->apply();
-	unsigned int cellSize = size / 6;
-	for (unsigned int r = 0; r < 6; r++)
-	{
-		for (unsigned int c = 0; c < 6; c++)
-		{
-			int pos = r * 6 + c; //posição em lista única
-			if (!boardRepresentation[pos].placed)
-			{
-				glPushMatrix();
-				glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
-				glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
-				glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
-				glRotatef(-90, 1, 0, 0); //roda para plano xz
-				glLoadName(pos); //num da coluna * 6 + num da linha
-				boardFace->draw();
-				glPopMatrix();
-			}
-		}
-	}
-}
-
 float whiteCol[4] = { 1, 1, 1, 1 };
 float blackCol[4] = { 0, 0, 0, 1 };
-float redCol[4] = { 1, 0, 0, 1 };
+float redCol[4] = { 0.6, 0.2, 0.2, 1 };
 
 CGFappearance *Piece::white = new CGFappearance(whiteCol);
 CGFappearance *Piece::black = new CGFappearance(blackCol);
@@ -630,6 +532,60 @@ void Piece::moveTo(int x, int y)
 	}
 }
 
+Tabuleiro::Tabuleiro(unsigned int size)
+{
+	this->size = size;
+	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
+	this->arrow = new Cylinder(1, 0.1, 4, 10, 5);
+}
+
+void Tabuleiro::draw()
+{
+	glPushMatrix();
+	glScalef(size, 1, size);
+	glTranslatef(0.5, 0, 0.5);
+	glRotatef(-90, 1, 0, 0);
+	boardFace->draw();
+	glPopMatrix();
+	drawPieces();
+}
+
+void Tabuleiro::drawPieces()
+{
+	for (int i = 0; i < 36; i++)
+	{
+		if (boardRepresentation[i].placed)
+			boardRepresentation[i].draw();
+	}
+}
+
+void Tabuleiro::drawHotspots()
+{
+	//glCallList(hotspotsListID);
+	glPushName(-1);		// Load a default name
+	CGFappearance* a = new CGFappearance();
+	a->apply();
+	unsigned int cellSize = size / 6;
+	for (unsigned int r = 0; r < 6; r++)
+	{
+		for (unsigned int c = 0; c < 6; c++)
+		{
+			int pos = r * 6 + c; //posição em lista única
+			if (!boardRepresentation[pos].placed)
+			{
+				glPushMatrix();
+				glTranslatef(c*cellSize, 0, r*cellSize); //passa para a coordenada certa
+				glScalef(cellSize, 1, cellSize); //aumenta para tamanho de cada célula
+				glTranslatef(0.5, 0, 0.5); //passa vértice para a origem
+				glRotatef(-90, 1, 0, 0); //roda para plano xz
+				glLoadName(pos); //num da coluna * 6 + num da linha
+				boardFace->draw();
+				glPopMatrix();
+			}
+		}
+	}
+}
+
 const string Tabuleiro::getBoardList(bool pieceIDs){
 	std::ostringstream oss;
 	oss << "[";
@@ -677,4 +633,59 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 		pch = strtok(NULL, "[],'.\r\n");
 	}
 	boardRepresentation = newBoard;
+}
+
+void Tabuleiro::drawArrows(int player)
+{
+	if (player == PLAYERONE)
+		Piece::playerOnePiece->apply();
+	else
+		Piece::playerTwoPiece->apply();
+	glPushName(-1); //default name
+	glPushMatrix();
+	glTranslated(-1, 0, 2);
+	glLoadName(100); //quadrant 1 - left
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(2, 0, -1);
+	glRotated(90, 0, 1, 0);
+	glLoadName(101); //quadrant 1 - right
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(size-2, 0, -1);
+	glRotated(-90, 0, 1, 0);
+	glLoadName(102); //quadrant 2 - left
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(size+1, 0, 2);
+	glLoadName(103); //quadrant 2 - right
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(2, 0, size + 1);
+	glRotated(90, 0, 1, 0);
+	glLoadName(104); //quadrant 3 - left
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(-1, 0, size-2);
+	glRotated(180, 0, 1, 0);
+	glLoadName(105); //quadrant 3 - right
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(size + 1, 0, size - 2);
+	glRotated(180, 0, 1, 0);
+	glLoadName(106); //quadrant 4 - left
+	arrow->draw();
+	glPopMatrix();
+	glPushMatrix();
+	glTranslated(size - 2, 0, size+1);
+	glRotated(-90, 0, 1, 0);
+	glLoadName(107); //quadrant 4 - right
+	arrow->draw();
+	glPopMatrix();
 }

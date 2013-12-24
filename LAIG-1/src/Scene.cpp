@@ -15,9 +15,9 @@ Scene::Scene(){
 	this->gameState = CONNECTING;
 	this->playerOneName = "branco";
 	this->playerTwoName = "preto";
-	backgroundR2 = 0.8;
-	backgroundG2 = 0.2;
-	backgroundB2 = 0.2;
+	backgroundR2 = 0.85;
+	backgroundG2 = 0.82;
+	backgroundB2 = 0.67;
 	backgroundA2 = 1;
 }
 
@@ -120,6 +120,10 @@ void Scene::display()
 	}
 	else if(rMode == GL_SELECT && gameState == PLACEPIECE) //se em modo de pick, desenha os hotspots
 		board->drawHotspots();
+
+	if (gameState == ROTATE) //in all render modes
+		board->drawArrows(player);
+
 	glutSwapBuffers();
 	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
