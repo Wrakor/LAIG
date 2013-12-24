@@ -86,10 +86,14 @@ void Interface::initGUI2()
 void Interface::processGUI(GLUI_Control *ctrl)
 {
 	if (ctrl->user_id == 0)
-		scene->activateCamera(ctrl->get_int_val());	
+	{
+		Camera *activeCamera = scene->getActiveCamera();
+		scene->getCamera(ctrl->get_int_val())->createCameraAnimation(activeCamera->getPosition());
+		scene->activateCamera(ctrl->get_int_val());	//switch camera
+	}
 	else if (ctrl->user_id == 3)
 	{
-		//initGUI2();
+		initGUI2();
 	}
 	else if (ctrl->user_id == 4)
 	{

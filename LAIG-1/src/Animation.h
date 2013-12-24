@@ -35,3 +35,15 @@ public:
 	unsigned int getNumControlPoints();
 	void changeControlPoint(unsigned int cp);
 };
+
+class CameraAnimation : public Animation
+{
+	array<float, 3> destination;
+	float span, lastTimestamp, deltaX, deltaY, deltaZ;
+public:
+	CameraAnimation(array<float, 3> source, array<float, 3> destination, float span);
+	void init(float timestamp = clock());
+	array<float, 3> currentPos;
+	void update(float timestamp = clock());
+	void draw();
+};

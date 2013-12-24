@@ -99,3 +99,47 @@ void LinearAnimation::changeControlPoint(unsigned int cp)
 	calculateAngle(); //recalcula angulo para próximo movimento
 	this->timeInThisControlPoint = 0; //reinicia acumulador
 }
+
+void CameraAnimation::update(float timestamp)
+{
+	if (!ended)
+	{
+		float animationTime = (timestamp - startTime) / CLOCKS_PER_SEC; //tempo na animação em segundos = tempo actual menos tempo quando iniciou
+		float timeSinceLastUpdate = (timestamp - lastTimestamp) / CLOCKS_PER_SEC; //tempo desde o ultimo update = tempo actual menos tempo da ultima chamada à função update
+		if (animationTime < span) //se animação ainda não acabou
+		{
+			//incrementa posição actual: percentagem do total da distância a percorrer pelo tempo percorrido neste ponto de controlo
+			currentPos[0] += deltaX * (timeSinceLastUpdate / span); //x
+			currentPos[1] += deltaY * (timeSinceLastUpdate / span); //y
+			currentPos[2] += deltaZ * (timeSinceLastUpdate / span); //z
+			lastTimestamp = timestamp; //actualiza último timestamp
+		}
+		else
+		{
+			ended = true;
+			currentPos = destination; //set pos to last CP
+			//init();
+		}
+	}
+}
+
+void CameraAnimation::draw()
+{
+	update();
+}
+
+CameraAnimation::CameraAnimation(array<float, 3> source, array<float, 3> destination, float span) :Animation("")
+{
+	this->currentPos = source;
+	this->destination = destination;
+	this->span = span;
+	deltaX = destination[0] - currentPos[0];
+	deltaY = destination[1] - currentPos[1];
+	deltaZ = destination[2] - currentPos[2];
+}
+
+void CameraAnimation::init(float timestamp)
+{
+	Animation::init(timestamp); //contrutor classe pai
+	this->lastTimestamp = timestamp; //último timestamp é inicializado com o tempo actual
+}

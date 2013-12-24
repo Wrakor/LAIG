@@ -2,6 +2,7 @@
 
 #include <GL/glut.h>
 #include "Camera.h"
+#include "Animation.h"
 
 using std::string;
 
@@ -16,5 +17,7 @@ public:
 	void setTargetY(float value);
 	void setTargetZ(float value);
 	void applyView();
+	void createCameraAnimation(array<float, 3> destination);
+	array<float, 3> getPosition();
 	string nodeID;
 };
