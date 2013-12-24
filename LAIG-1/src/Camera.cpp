@@ -34,3 +34,12 @@ void Camera::setZ(float value)
 	CGFcamera::setZ(value);
 	this->originalPosition[2] = value;
 }
+void Camera::createCameraAnimation(array<float, 3> destination)
+{
+
+}
+array<float, 3> Camera::getPosition()
+{
+	array<float, 3> position = { 0 };
+	return position;
+}

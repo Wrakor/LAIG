@@ -20,13 +20,3 @@ void OrthoCamera::updateProjectionMatrix(int width, int height)
 	glLoadIdentity();
 	glOrtho(this->left, this->right, this->bottom, this->top, this->near, this->far);
 }
-
-void OrthoCamera::createCameraAnimation(array<float, 3> destination)
-{
-
-}
-array<float, 3> OrthoCamera::getPosition()
-{
-	array<float, 3> position = { 0 };
-	return position;
-}

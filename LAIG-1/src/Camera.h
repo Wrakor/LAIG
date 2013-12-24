@@ -20,7 +20,7 @@ public:
 	void setX(float value);
 	void setY(float value);
 	void setZ(float value);
-	virtual void createCameraAnimation(array<float, 3> destination) = 0;
+	virtual void createCameraAnimation(array<float, 3> destination);
 	virtual void updateProjectionMatrix(int width, int height) = 0;
-	virtual array<float, 3> getPosition() = 0;
+	virtual array<float, 3> getPosition();
 };
