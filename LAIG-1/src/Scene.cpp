@@ -387,6 +387,7 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 		playerTwoName = "preto";
 		Piece::playerOnePiece = Piece::white;
 		Piece::playerTwoPiece = Piece::black;
+		nodes["tabuleiro"]->appearance = appearances[0];
 	}
 	else if (gameEnvironment == 2)
 	{
@@ -394,6 +395,7 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 		playerTwoName = "branco";
 		Piece::playerOnePiece = Piece::red;
 		Piece::playerTwoPiece = Piece::white;
+		nodes["tabuleiro"]->appearance = appearances[1];
 	}
 	string str;
 	str = "Jogador ";

@@ -99,12 +99,10 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	{
 		if (ctrl->get_int_val() == 1)
 		{
-			scene->getNodes()["tabuleiro"]->appearance = scene->getAppearances()[1];
 			scene->changeGameEnvironment(2);
 		}
 		else
 		{
-			scene->getNodes()["tabuleiro"]->appearance = scene->getAppearances()[0];
 			scene->changeGameEnvironment(1);
 		}
 	}

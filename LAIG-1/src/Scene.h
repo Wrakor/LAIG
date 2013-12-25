@@ -65,8 +65,6 @@ public:
 	void switchPlayer();
 	void rotateQuadrant(int quadrant, int direction);
 	int gameEnvironment = 1;
-	map<string, Node*> getNodes() {	return nodes; }
-	vector<Appearance*> getAppearances() { return appearances; }
 	void changeGameEnvironment(int gameEnvironment);
 	string playerOneName, playerTwoName;
 private:
