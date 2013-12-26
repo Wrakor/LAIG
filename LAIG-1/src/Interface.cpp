@@ -2,32 +2,37 @@
 
 void Interface::initGUI() {
 
-	gameTypePanel = addPanel("Game Type", GLUI_PANEL_EMBOSSED);
+	gameSettingsPanel = addPanel("Game Settings", GLUI_PANEL_EMBOSSED);
 	
-	listBox = addListboxToPanel(gameTypePanel, "", 0, 1);
+	listBox = addListboxToPanel(gameSettingsPanel, "", 0, 1);
 	listBox->add_item(0, "Player vs Player");
 	listBox->add_item(1, "Player vs Computer");
 	listBox->set_int_val(0);	
 
 	addColumn();
 
-	gameDifficultyPanel = addPanel("Game Difficulty", GLUI_PANEL_EMBOSSED);
-
-	listBox2 = addListboxToPanel(gameDifficultyPanel, "", 0, 2);
+	listBox2 = addListboxToPanel(gameSettingsPanel, "", 0, 2);
 	listBox2->add_item(0, "Normal");
 	listBox2->add_item(1, "Hard");
 	listBox2->set_int_val(0);
+	listBox2->set_alignment(GLUI_ALIGN_CENTER);
+	listBox2->disable();
 
 	addColumn();
 
 	gameStartPanel = addPanel("Game", GLUI_PANEL_EMBOSSED);
 	start = addButtonToPanel(gameStartPanel, "Start Game", 3);	
+	GLUI_Button* exit = addButtonToPanel(gameStartPanel, "Exit Game", 99);
 	//start->set_alignment(GLUI_ALIGN_RIGHT);
 	addColumn();
-	GLUI_Panel *gameEnvironment = addPanel("Game Environment", GLUI_PANEL_EMBOSSED);
-	GLUI_Listbox *gameEnvironmentL = addListboxToPanel(gameEnvironment, "", 0, 4);
+	GLUI_Panel *gameOptions = addPanel("Game Options", GLUI_PANEL_EMBOSSED);
+	GLUI_Listbox *gameEnvironmentL = addListboxToPanel(gameOptions, "", 0, 4);
 	gameEnvironmentL->add_item(0, "Environment 1");
 	gameEnvironmentL->add_item(1, "Environment 2");
+	gameOptions->set_w(400);
+	gameEnvironmentL->set_alignment(GLUI_ALIGN_CENTER);
+
+	GLUI_Button* undo = addButtonToPanel(gameOptions, "Undo Play", 5);
 
 	addColumn();
 	/*GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
@@ -46,20 +51,25 @@ void Interface::initGUI() {
 	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel4, "<-(4)", 96);
 	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel4, "->(4)", 97);
 	addColumn();*/
-	GLUI_Panel* mainPanel = addPanel("main", GLUI_PANEL_NONE);
-	string playerName = "Jogador " + scene->playerOneName;
-	char tmpPlayerName[100];
-	strcpy(tmpPlayerName, playerName.c_str());
-	gameMessage = addStaticTextToPanel(mainPanel, tmpPlayerName);
-	GLUI_Button* exit = addButtonToPanel(mainPanel, "Exit Game", 99);
+	GLUI_Panel* gameMessagePanel = addPanel("Game Messages", GLUI_PANEL_EMBOSSED);
+	//string playerName = scene->playerOneName + ", it's your turn!";
+	//char tmpPlayerName[100];
+	//strcpy(tmpPlayerName, "a tua mae");
+	gameMessage = addStaticTextToPanel(gameMessagePanel, "Click Start Game to Play!");
+	gameMessage->set_w(100);
+	gameMessage->set_alignment(GLUI_ALIGN_RIGHT);
+	addSeparatorToPanel(gameMessagePanel);
+	
+	
+	//addButton("Exit", 100);
+	
 }
 
 
 void Interface::initGUI2()
 {
-	gameTypePanel->disable();
-	gameDifficultyPanel->disable();
-	gameStartPanel->disable();
+	gameSettingsPanel->disable();
+	start->disable();
 	listBox->disable();
 	listBox2->disable();
 	start->disable();
@@ -91,9 +101,19 @@ void Interface::processGUI(GLUI_Control *ctrl)
 		scene->getCamera(ctrl->get_int_val())->createCameraAnimation(activeCamera->getPosition());
 		scene->activateCamera(ctrl->get_int_val());	//switch camera
 	}
+	else if (ctrl->user_id == 1)
+	{
+		if (ctrl->get_int_val() == 0)
+			listBox2->disable();
+		else
+			listBox2->enable();
+
+	}
 	else if (ctrl->user_id == 3)
 	{
 		initGUI2();
+		scene->startGame = 1;
+		scene->setGameMessage("   " + scene->playerOneName + ", you go first!");
 	}
 	else if (ctrl->user_id == 4)
 	{

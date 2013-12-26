@@ -58,7 +58,7 @@ public:
 	bool runAnimations;
 	Tabuleiro *board;
 	void placePiece(unsigned int pos);
-	unsigned int gameState;
+	unsigned int gameState, startGame;
 	Socket *socket;
 	void setGameMessage(string text);
 	void checkVictory();

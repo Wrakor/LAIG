@@ -13,8 +13,9 @@ Scene::Scene(){
 	this->socket = new Socket("127.0.0.1", 60070);
 	this->player = PLAYERONE; //first player is white
 	this->gameState = CONNECTING;
-	this->playerOneName = "branco";
-	this->playerTwoName = "preto";
+	this->startGame = 0;
+	this->playerOneName = "White";
+	this->playerTwoName = "Black";
 	backgroundR2 = 0.85;
 	backgroundG2 = 0.82;
 	backgroundB2 = 0.67;
@@ -118,7 +119,7 @@ void Scene::display()
 		// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 		//board->drawHotspots(); //Testing
 	}
-	else if(rMode == GL_SELECT && gameState == PLACEPIECE) //se em modo de pick, desenha os hotspots
+	else if(rMode == GL_SELECT && gameState == PLACEPIECE && startGame) //se em modo de pick, desenha os hotspots
 		board->drawHotspots();
 
 	if (gameState == ROTATE) //in all render modes
@@ -370,10 +371,11 @@ void Scene::checkVictory()
 
 void Scene::switchPlayer()
 {
-	string str;
-	str = "Jogador ";
+	string str;	
 	player = !player; //muda para o outro jogador
+	str = "   ";
 	str += player ? playerTwoName : playerOneName;
+	str += ", it's your turn!";
 	setGameMessage(str);
 	gameState = PLACEPIECE;
 }
@@ -383,22 +385,27 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 	this->gameEnvironment = gameEnvironment;
 	if (gameEnvironment == 1)
 	{
-		playerOneName = "branco";
-		playerTwoName = "preto";
+		playerOneName = "White";
+		playerTwoName = "Black";
 		Piece::playerOnePiece = Piece::white;
 		Piece::playerTwoPiece = Piece::black;
 		nodes["tabuleiro"]->appearance = appearances[0];
 	}
 	else if (gameEnvironment == 2)
 	{
-		playerOneName = "vermelho";
-		playerTwoName = "branco";
+		playerOneName = "Red";
+		playerTwoName = "White";
 		Piece::playerOnePiece = Piece::red;
 		Piece::playerTwoPiece = Piece::white;
 		nodes["tabuleiro"]->appearance = appearances[1];
 	}
-	string str;
-	str = "Jogador ";
-	str += player ? playerTwoName : playerOneName;
-	setGameMessage(str);
+
+	if (startGame)
+	{
+		string str = "   ";
+		str += player ? playerTwoName : playerOneName;
+		str += ", it's your turn!";
+
+		setGameMessage(str);
+	}
 }
