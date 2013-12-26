@@ -371,14 +371,7 @@ void Scene::checkVictory()
 void Scene::switchPlayer()
 {
 	player = !player; //muda para o outro jogador
-	if (gameMode == PVP)
-	{
-		string str = "   ";
-		str += player ? playerTwoName : playerOneName;
-		str += ", it's your turn!";
-		setGameMessage(str);
-	}
-	else //computer move
+	if (gameMode == PVC) //computer move
 	{
 		board->computerPlacePiece(socket);
 		checkVictory();
@@ -390,6 +383,10 @@ void Scene::switchPlayer()
 			return;
 		player = !player;
 	}
+	string str = "   ";
+	str += player ? playerTwoName : playerOneName;
+	str += ", it's your turn!";
+	setGameMessage(str);
 	gameState = PLACEPIECE;
 }
 
