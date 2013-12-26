@@ -471,7 +471,7 @@ Piece::Piece()
 	placed = false;
 }
 
-void Piece::place(int player, int x, int y)
+void Piece::place(int player, int pos)
 {
 	piece = new Sphere(1, 25, 25);
 	this->player = player;
@@ -480,8 +480,8 @@ void Piece::place(int player, int x, int y)
 
 	animation = new LinearAnimation("", 1);
 
-	this->x = x;
-	this->y = y;
+	this->x = pos % 6 + 1;
+	this->y = pos / 6 + 1;
 
 	std::array<array<float, 3>, 3> ctrlpts_array = { {
 		{ 15, 0, player == PLAYERONE ? 45 : -15 },
@@ -648,7 +648,7 @@ void Tabuleiro::computerPlacePiece(Socket* socket)
 	char answer[256];
 	socket->recebe(answer);
 	int pos = atoi(answer);
-	boardRepresentation[pos].place(PLAYERTWO, pos % 6 + 1, pos / 6 + 1);
+	boardRepresentation[pos].place(PLAYERTWO, pos);
 }
 
 void Tabuleiro::computerRotateQuadrant(Socket* socket)

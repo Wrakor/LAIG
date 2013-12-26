@@ -140,7 +140,7 @@ public:
 	Piece();
 	void draw();
 	void moveTo(int x, int y);
-	void place(int player, int x, int y);
+	void place(int player, int pos);
 	static CGFappearance *white, *black, *red, *playerOnePiece, *playerTwoPiece;
 };
 

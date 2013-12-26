@@ -328,7 +328,7 @@ void Scene::placePiece(unsigned int pos)
 {
 	if (gameState == PLACEPIECE)
 	{
-		board->boardRepresentation[pos].place(player, pos % 6 + 1, pos / 6 + 1); //get X and Y
+		board->boardRepresentation[pos].place(player, pos); //get X and Y
 		gameState = ROTATE;
 		checkVictory();
 	}
