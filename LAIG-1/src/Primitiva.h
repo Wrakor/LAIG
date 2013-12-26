@@ -160,4 +160,7 @@ public:
 	std::array<Piece, 36> boardRepresentation;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
+	void rotateQuadrantAux(char* plAnswer);
+	void computerPlacePiece(Socket* socket);
+	void computerRotateQuadrant(Socket* socket);
 };

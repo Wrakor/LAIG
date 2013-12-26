@@ -25,7 +25,7 @@ play(_, Result) :- ((checkVictory(Result),!);(checkDraw(Result), nl, write('Empa
 play(Player, Result):- readPiece(Player, Result).
 
 /** Para Single Player */
-playSP(Player, Result) :- (checkDraw(Result), nl, write('Empate!'),nl) ; (checkVictory(Result),!, writeWinner(Player), !). 
+playSP(Player, Result) :- (checkDraw(Result), nl, write('Empate!'),nl) ; (checkVictory(Result, _),!, writeWinner(Player), !). 
 playSP(Player, Result):- readPieceSP(Player, Result).
 
 /** 2 regras que verificam se o elemento de coordenadas X,Y no tabuleiro está livre */
@@ -53,9 +53,8 @@ readPieceSP(Player, Board) :-
         write('X: '), read(X),
 		write('Y: '), read(Y), nl,
 		verifyPieceSP(Player, Board, X,Y);
-	 Player = 2 -> generatePiece(Board, X, Y)),
-		
-placePieceSP(Player, X, Y, Board).
+	 Player = 2 -> generatePiece(Board, X, Y)),	
+	placePieceSP(Player, X, Y, Board).
 
 /** Gera uma posição para colocar a peça */
 generatePiece(Board, X, Y):-
@@ -83,10 +82,10 @@ readQuadrantSP(Player, Board) :-
 	rotateQuadrantAuxSP(Player, Board, Quadrant, Sentido).
     
 /** Gera um valor para o quadrante a rodar e o sentido **/
-generateQuadrant(Board) :-
+generateQuadrant(Board, NL) :-
     random(1,5,Quadrant),
     random(1,3,Sentido),
-    rotateQuadrantAuxSP(1, Board, Quadrant, Sentido).
+    rotateQuadrantAuxSP(1, Board, Quadrant, Sentido, NL).
 
 /** Tratam de efectuar as jogadas, colocar peça e rodar quadrante, respectivamente*/
 placePiece(Player, X, Y, L) :- 
@@ -99,8 +98,8 @@ rotateQuadrantAux(Player, Board, Quadrant, Sentido):-
 placePieceSP(Player, X, Y, L) :- 
 	 Player =:= 2 -> Z is ((Y-1)*6+X-1),  replace(L, Z, 'B', NL), ((checkVictory(NL), writeWinner(Player)) ; (nl, write('Jogada do computador'),nl, generateQuadrant(NL)));
 	 Player =:= 1 -> Z is ((Y-1)*6+X-1),  replace(L, Z, 'W', NL), show_board(NL), ((checkVictory(NL), writeWinner(Player)) ; readQuadrantSP(2, NL)).
-rotateQuadrantAuxSP(Player, Board, Quadrant, Sentido):-
-	rotateQuadrant(Board, Quadrant, Sentido, NL), show_board(NL), playSP(Player, NL).
+rotateQuadrantAuxSP(Player, Board, Quadrant, Sentido, NL):-
+	rotateQuadrant(Board, Quadrant, Sentido, NL).
 	 
 /** Substitui uma posicao de indice I da lista recebida pelo elemento X */
 replace([_|T], 0, X, [X|T]).
@@ -279,6 +278,13 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 
 parse_input(checkVictory(Board), Answer) :-
 	checkVictory(Board, Answer).
+	
+parse_input(computerPlacePiece(Board), Answer) :-
+	generatePiece(Board, X, Y), !,
+	Answer is ((Y-1)*6+X-1).
+	
+parse_input(computerRotateQuadrant(Board), Answer) :-
+	generateQuadrant(Board, Answer).
 	
 parse_input(rotateQuadrant(Board, Quadrant, Direction), Answer) :-
 	rotateQuadrant(Board, Quadrant, Direction, Answer).

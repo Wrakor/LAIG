@@ -22,6 +22,14 @@
 #define ROTATE 2
 #define GAMEOVER 3
 
+/*gameMode*/
+#define PVP 1 //player vs player
+#define PVC 2 //player vs computer
+
+/*gameDifficulty*/
+#define NORMAL 1
+#define HARD 2
+
 class Scene : public CGFscene
 {
 public:
@@ -58,7 +66,7 @@ public:
 	bool runAnimations;
 	Tabuleiro *board;
 	void placePiece(unsigned int pos);
-	unsigned int gameState, startGame;
+	unsigned int gameState, startGame, gameMode, gameDifficulty;
 	Socket *socket;
 	void setGameMessage(string text);
 	void checkVictory();

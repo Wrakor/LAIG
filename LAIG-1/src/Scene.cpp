@@ -339,8 +339,8 @@ void Scene::rotateQuadrant(int quadrant, int direction)
 	if (gameState == ROTATE)
 	{
 		board->rotateQuadrant(socket, quadrant, direction);
-		switchPlayer();
 		checkVictory();
+		switchPlayer();
 	}
 }
 
@@ -352,18 +352,16 @@ void Scene::checkVictory()
 	char answer[256];
 	socket->recebe(answer);
 	//cout << answer << endl;
-	string str;
+	string str = "   ";
 	if (answer[0] != '0')
 	{
 		gameState = GAMEOVER;
 		if (answer[0] == '3')
-			str = "Empate!";
+			str += "Draw!";
 		else
 		{
-			str = "Jogador ";
 			str += answer[0]=='1' ? playerOneName : playerTwoName;
-			str += " ganhou!";
-			//cout << "Jogador " << answer[0] << " ganhou!" << endl;
+			str += " has won!";
 		}
 		setGameMessage(str);
 	}
@@ -371,12 +369,22 @@ void Scene::checkVictory()
 
 void Scene::switchPlayer()
 {
-	string str;	
 	player = !player; //muda para o outro jogador
-	str = "   ";
-	str += player ? playerTwoName : playerOneName;
-	str += ", it's your turn!";
-	setGameMessage(str);
+	if (gameMode == PVP)
+	{
+		string str = "   ";
+		str += player ? playerTwoName : playerOneName;
+		str += ", it's your turn!";
+		setGameMessage(str);
+	}
+	else //computer move
+	{
+		board->computerPlacePiece(socket);
+		checkVictory();
+		board->computerRotateQuadrant(socket);
+		checkVictory();
+		player = !player;
+	}
 	gameState = PLACEPIECE;
 }
 

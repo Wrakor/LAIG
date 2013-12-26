@@ -71,7 +71,7 @@ void Socket::recebe(char *ans) {
 		pos++;
 	}
 	ans[pos] = 0;
-	cout << "prolog answered: " << ans << endl;
+	//cout << "prolog answered: " << ans << endl;
 }
 
 void Socket::quit() {

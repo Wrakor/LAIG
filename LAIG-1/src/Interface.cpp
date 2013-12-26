@@ -113,6 +113,16 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	{
 		initGUI2();
 		scene->startGame = 1;
+		if (listBox->get_int_val() == 0)
+			scene->gameMode = PVP;
+		else
+		{
+			scene->gameMode = PVC;
+			if (listBox2->get_int_val() == 0)
+				scene->gameDifficulty = NORMAL;
+			else
+				scene->gameDifficulty = HARD;
+		}
 		scene->setGameMessage("   " + scene->playerOneName + ", you go first!");
 	}
 	else if (ctrl->user_id == 4)
@@ -243,10 +253,10 @@ void Interface::processHits(GLint hits, GLuint buffer[])
 	{
 		// this should be replaced by code handling the picked object's ID's (stored in "selected"), 
 		// possibly invoking a method on the scene class and passing "selected" and "nselected"
-		printf("Picked ID's: ");
+		/*printf("Picked ID's: ");
 		for (unsigned int i = 0; i<nselected; i++)
 			printf("%d ", selected[i]);
-		printf("\n");
+		printf("\n");*/
 		if (selected[0]<100)
 			scene->placePiece(selected[0]);
 		else

@@ -478,7 +478,7 @@ void Piece::place(int player, int x, int y)
 
 	placed = true;
 
-	animation = new LinearAnimation("", 3);
+	animation = new LinearAnimation("", 1);
 
 	this->x = x;
 	this->y = y;
@@ -613,9 +613,14 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 	socket->envia(oss.str().c_str(), oss.str().length());
 	char answer[256];
 	socket->recebe(answer);
+	rotateQuadrantAux(answer);
+}
+
+void Tabuleiro::rotateQuadrantAux(char* plAnswer)
+{
 	std::array<Piece, 36> newBoard;
-	char * pch = strtok(answer, "[],'.\r\n"); //divide response in tokens
-	for (int i = 0; i < 36;i++)
+	char * pch = strtok(plAnswer, "[],'.\r\n"); //divide response in tokens
+	for (int i = 0; i < 36; i++)
 	{
 		int pos = atoi(pch); //new piece position
 		if (pos != i) //if it's different than previous position
@@ -633,6 +638,27 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 		pch = strtok(NULL, "[],'.\r\n");
 	}
 	boardRepresentation = newBoard;
+}
+
+void Tabuleiro::computerPlacePiece(Socket* socket)
+{
+	std::ostringstream oss;
+	oss << "computerPlacePiece(" << getBoardList() << ").\n";
+	socket->envia(oss.str().c_str(), oss.str().length());
+	char answer[256];
+	socket->recebe(answer);
+	int pos = atoi(answer);
+	boardRepresentation[pos].place(PLAYERTWO, pos % 6 + 1, pos / 6 + 1);
+}
+
+void Tabuleiro::computerRotateQuadrant(Socket* socket)
+{
+	std::ostringstream oss;
+	oss << "computerRotateQuadrant(" << getBoardList(true) << ").\n";
+	socket->envia(oss.str().c_str(), oss.str().length());
+	char answer[256];
+	socket->recebe(answer);
+	rotateQuadrantAux(answer);
 }
 
 void Tabuleiro::drawArrows(int player)
