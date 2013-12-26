@@ -340,7 +340,8 @@ void Scene::rotateQuadrant(int quadrant, int direction)
 	{
 		board->rotateQuadrant(socket, quadrant, direction);
 		checkVictory();
-		switchPlayer();
+		if(gameState != GAMEOVER)
+			switchPlayer();
 	}
 }
 
@@ -381,8 +382,12 @@ void Scene::switchPlayer()
 	{
 		board->computerPlacePiece(socket);
 		checkVictory();
+		if (gameState == GAMEOVER) //if someone won, dont do anything else
+			return;
 		board->computerRotateQuadrant(socket);
 		checkVictory();
+		if (gameState == GAMEOVER)
+			return;
 		player = !player;
 	}
 	gameState = PLACEPIECE;
