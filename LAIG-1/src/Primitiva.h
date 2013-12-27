@@ -3,6 +3,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <stack>
 
 #include "CGFtexture.h"
 #include "CGFshader.h"
@@ -158,6 +159,7 @@ public:
 	void drawPieces();
 	void drawArrows(int player);
 	std::array<Piece, 36> boardRepresentation;
+	std::array<Piece, 36> previousBoard;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
 	void rotateQuadrantAux(char* plAnswer);

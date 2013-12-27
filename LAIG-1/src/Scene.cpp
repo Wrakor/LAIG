@@ -109,7 +109,7 @@ void Scene::display()
 			((Light *)(*it))->draw();
 
 		// Draw axis
-		axis.draw();
+		//axis.draw();
 		
 		// ---- END Background, camera and axis setup
 		processGraph(rootNode); //temos de passar o id do nó inicial
@@ -328,10 +328,20 @@ void Scene::placePiece(unsigned int pos)
 {
 	if (gameState == PLACEPIECE)
 	{
+		board->previousBoard = board->boardRepresentation; //save previous board
 		board->boardRepresentation[pos].place(player, pos); //get X and Y
 		gameState = ROTATE;
 		checkVictory();
 	}
+}
+
+void Scene::undoMove()
+{
+	board->boardRepresentation = board->previousBoard;
+	if(gameMode == PVP)
+		switchPlayer(); //if in PVC, player is always the same
+	gameState = PLACEPIECE;
+	((Interface *)iface)->undo->disable();
 }
 
 void Scene::rotateQuadrant(int quadrant, int direction)
@@ -340,8 +350,12 @@ void Scene::rotateQuadrant(int quadrant, int direction)
 	{
 		board->rotateQuadrant(socket, quadrant, direction);
 		checkVictory();
-		if(gameState != GAMEOVER)
+		if (gameState != GAMEOVER)
+		{
+			if (gameMode == PVC)
+				computerPlay();
 			switchPlayer();
+		}
 	}
 }
 
@@ -368,26 +382,28 @@ void Scene::checkVictory()
 	}
 }
 
+void Scene::computerPlay()
+{
+	player = !player;
+	board->computerPlacePiece(socket);
+	checkVictory();
+	if (gameState == GAMEOVER) //if someone won, dont do anything else
+		return;
+	board->computerRotateQuadrant(socket);
+	checkVictory();
+	if (gameState == GAMEOVER)
+		return;
+}
+
 void Scene::switchPlayer()
 {
 	player = !player; //muda para o outro jogador
-	if (gameMode == PVC) //computer move
-	{
-		board->computerPlacePiece(socket);
-		checkVictory();
-		if (gameState == GAMEOVER) //if someone won, dont do anything else
-			return;
-		board->computerRotateQuadrant(socket);
-		checkVictory();
-		if (gameState == GAMEOVER)
-			return;
-		player = !player;
-	}
 	string str = "   ";
 	str += player ? playerTwoName : playerOneName;
 	str += ", it's your turn!";
 	setGameMessage(str);
 	gameState = PLACEPIECE;
+	((Interface *)iface)->undo->enable();
 }
 
 void Scene::changeGameEnvironment(int gameEnvironment)

@@ -74,6 +74,8 @@ public:
 	void rotateQuadrant(int quadrant, int direction);
 	int gameEnvironment = 1;
 	void changeGameEnvironment(int gameEnvironment);
+	void undoMove();
+	void computerPlay();
 	string playerOneName, playerTwoName;
 private:
 	vector<Texture*> textures;	

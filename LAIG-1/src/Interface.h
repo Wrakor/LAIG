@@ -19,6 +19,7 @@ public:
 	GLUI_Listbox *listBox, *listBox2;
 	GLUI_Button *start;
 	GLUI_StaticText *gameMessage;
+	GLUI_Button* undo;
 };
 
 class startInterface : public CGFinterface

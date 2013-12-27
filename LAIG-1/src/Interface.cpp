@@ -32,7 +32,8 @@ void Interface::initGUI() {
 	gameOptions->set_w(400);
 	gameEnvironmentL->set_alignment(GLUI_ALIGN_CENTER);
 
-	GLUI_Button* undo = addButtonToPanel(gameOptions, "Undo Play", 5);
+	undo = addButtonToPanel(gameOptions, "Undo Play", 5);
+	undo->disable();
 
 	addColumn();
 	/*GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
@@ -136,22 +137,8 @@ void Interface::processGUI(GLUI_Control *ctrl)
 			scene->changeGameEnvironment(1);
 		}
 	}
-	/*else if (ctrl->user_id == 90)
-		scene->rotateQuadrant(1, LEFT);
-	else if (ctrl->user_id == 91)
-		scene->rotateQuadrant(1, RIGHT);
-	else if (ctrl->user_id == 92)
-		scene->rotateQuadrant(2, LEFT);
-	else if (ctrl->user_id == 93)
-		scene->rotateQuadrant(2, RIGHT);
-	else if (ctrl->user_id == 94)
-		scene->rotateQuadrant(3, LEFT);
-	else if (ctrl->user_id == 95)
-		scene->rotateQuadrant(3, RIGHT);
-	else if (ctrl->user_id == 96)
-		scene->rotateQuadrant(4, LEFT);
-	else if (ctrl->user_id == 97)
-		scene->rotateQuadrant(4, RIGHT);*/
+	else if (ctrl->user_id == 5)
+		scene->undoMove();
 	else if (ctrl->user_id == 99)
 	{
 		throw("exit"); //exit normally
