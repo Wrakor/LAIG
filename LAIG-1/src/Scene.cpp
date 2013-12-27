@@ -144,10 +144,6 @@ void Scene::addLight(Light *l){
 	this->scene_lights.push_back(l);
 }
 
-void Scene::initCameras(){
-	cout << "INITIATING CAMERAS" << endl; //isto não é chamado porquê? porque não dei overload ao constructor
-}
-
 void Scene::addTexture(Texture* texture)
 {
 	textures.push_back(texture);
@@ -338,8 +334,10 @@ void Scene::placePiece(unsigned int pos)
 void Scene::undoMove()
 {
 	board->boardRepresentation = board->previousBoard;
-	if(gameMode == PVP)
+	if (gameMode == PVP)
 		switchPlayer(); //if in PVC, player is always the same
+	else
+		updateGameMessage();
 	gameState = PLACEPIECE;
 	((Interface *)iface)->undo->disable();
 }
@@ -371,6 +369,7 @@ void Scene::checkVictory()
 	if (answer[0] != '0')
 	{
 		gameState = GAMEOVER;
+		((Interface *)iface)->undo->disable(); //game over, can't undo
 		if (answer[0] == '3')
 			str += "Draw!";
 		else
@@ -398,12 +397,17 @@ void Scene::computerPlay()
 void Scene::switchPlayer()
 {
 	player = !player; //muda para o outro jogador
+	updateGameMessage();
+	gameState = PLACEPIECE;
+	((Interface *)iface)->undo->enable();
+}
+
+void Scene::updateGameMessage()
+{
 	string str = "   ";
 	str += player ? playerTwoName : playerOneName;
 	str += ", it's your turn!";
 	setGameMessage(str);
-	gameState = PLACEPIECE;
-	((Interface *)iface)->undo->enable();
 }
 
 void Scene::changeGameEnvironment(int gameEnvironment)
@@ -428,10 +432,7 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 
 	if (startGame)
 	{
-		string str = "   ";
-		str += player ? playerTwoName : playerOneName;
-		str += ", it's your turn!";
-
-		setGameMessage(str);
+		updateGameMessage();
+		checkVictory();
 	}
 }

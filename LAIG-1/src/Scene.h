@@ -42,7 +42,6 @@ public:
 	GLfloat backgroundR, backgroundG, backgroundB, backgroundA;
 	GLfloat backgroundR2, backgroundG2, backgroundB2, backgroundA2;
 	int addCamera(Camera *c);
-	void initCameras();
 	bool lightingDoubleSided, lightingLocal, lightingEnabled;
 	void addLight(Light *l);
 	void addTexture(Texture* texture);
@@ -76,6 +75,7 @@ public:
 	void changeGameEnvironment(int gameEnvironment);
 	void undoMove();
 	void computerPlay();
+	void updateGameMessage();
 	string playerOneName, playerTwoName;
 private:
 	vector<Texture*> textures;	
