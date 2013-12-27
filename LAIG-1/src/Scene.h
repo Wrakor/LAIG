@@ -64,7 +64,7 @@ public:
 	string rootNode; //id do primeiro nó
 	void initAnimations();
 	bool runAnimations;
-	Tabuleiro *board;
+	Board *board;
 	void placePiece(unsigned int pos);
 	unsigned int gameState, startGame, gameMode, gameDifficulty;
 	Socket *socket;

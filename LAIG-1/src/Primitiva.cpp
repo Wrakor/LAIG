@@ -532,14 +532,14 @@ void Piece::moveTo(int x, int y)
 	}
 }
 
-Tabuleiro::Tabuleiro(unsigned int size)
+Board::Board(unsigned int size)
 {
 	this->size = size;
 	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
 	this->arrow = new Cylinder(1, 0.1, 4, 10, 5);
 }
 
-void Tabuleiro::draw()
+void Board::draw()
 {
 	glPushMatrix();
 	glScalef(size, 1, size);
@@ -550,7 +550,7 @@ void Tabuleiro::draw()
 	drawPieces();
 }
 
-void Tabuleiro::drawPieces()
+void Board::drawPieces()
 {
 	for (int i = 0; i < 36; i++)
 	{
@@ -559,7 +559,7 @@ void Tabuleiro::drawPieces()
 	}
 }
 
-void Tabuleiro::drawHotspots()
+void Board::drawHotspots()
 {
 	//glCallList(hotspotsListID);
 	glPushName(-1);		// Load a default name
@@ -586,7 +586,7 @@ void Tabuleiro::drawHotspots()
 	}
 }
 
-const string Tabuleiro::getBoardList(bool pieceIDs){
+const string Board::getBoardList(bool pieceIDs){
 	std::ostringstream oss;
 	oss << "[";
 	for (unsigned int i = 0; i < 36;i++)
@@ -607,7 +607,7 @@ const string Tabuleiro::getBoardList(bool pieceIDs){
 	return oss.str();
 }
 
-void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
+void Board::rotateQuadrant(Socket* socket, int quadrant, int direction){
 	std::ostringstream oss;
 	oss << "rotateQuadrant(" << getBoardList(true) << ", " << quadrant << ", " << direction << ").\n";
 	socket->envia(oss.str().c_str(), oss.str().length());
@@ -616,7 +616,7 @@ void Tabuleiro::rotateQuadrant(Socket* socket, int quadrant, int direction){
 	rotateQuadrantAux(answer);
 }
 
-void Tabuleiro::rotateQuadrantAux(char* plAnswer)
+void Board::rotateQuadrantAux(char* plAnswer)
 {
 	std::array<Piece, 36> newBoard;
 	char * pch = strtok(plAnswer, "[],'.\r\n"); //divide response in tokens
@@ -640,7 +640,7 @@ void Tabuleiro::rotateQuadrantAux(char* plAnswer)
 	boardRepresentation = newBoard;
 }
 
-void Tabuleiro::computerPlacePiece(Socket* socket)
+void Board::computerPlacePiece(Socket* socket)
 {
 	std::ostringstream oss;
 	oss << "computerPlacePiece(" << getBoardList() << ").\n";
@@ -651,7 +651,7 @@ void Tabuleiro::computerPlacePiece(Socket* socket)
 	boardRepresentation[pos].place(PLAYERTWO, pos);
 }
 
-void Tabuleiro::computerRotateQuadrant(Socket* socket)
+void Board::computerRotateQuadrant(Socket* socket)
 {
 	std::ostringstream oss;
 	oss << "computerRotateQuadrant(" << getBoardList(true) << ").\n";
@@ -661,7 +661,7 @@ void Tabuleiro::computerRotateQuadrant(Socket* socket)
 	rotateQuadrantAux(answer);
 }
 
-void Tabuleiro::drawArrows(int player)
+void Board::drawArrows(int player)
 {
 	if (player == PLAYERONE)
 		Piece::playerOnePiece->apply();

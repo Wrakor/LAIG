@@ -329,7 +329,7 @@ void Scene::placePiece(unsigned int pos)
 	if (gameState == PLACEPIECE)
 	{
 		board->previousBoard = board->boardRepresentation; //save previous board
-		board->boardRepresentation[pos].place(player, pos); //get X and Y
+		board->boardRepresentation[pos].place(player, pos);
 		gameState = ROTATE;
 		checkVictory();
 	}

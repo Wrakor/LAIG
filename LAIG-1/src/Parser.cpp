@@ -774,7 +774,7 @@ void Parser::parseGraph()
 						if (childrenElement->QueryIntAttribute("size", &size) != 0)
 							throw "Error parsing Board: no 'size' attribute";
 
-						Tabuleiro *board = new Tabuleiro(size);
+						Board *board = new Board(size);
 						readNode->primitivas.push_back(board);
 						scene.board = board;
 					}

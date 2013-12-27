@@ -145,7 +145,7 @@ public:
 	static CGFappearance *white, *black, *red, *playerOnePiece, *playerTwoPiece;
 };
 
-class Tabuleiro : public Primitiva
+class Board : public Primitiva
 {
 private:
 	unsigned int size;
@@ -153,7 +153,7 @@ private:
 	Cylinder *arrow;
 	GLuint boardListID, hotspotsListID;
 public:
-	Tabuleiro(unsigned int size);
+	Board(unsigned int size);
 	void draw();
 	void drawHotspots();
 	void drawPieces();
