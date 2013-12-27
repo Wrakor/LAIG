@@ -5,6 +5,8 @@
 
 using namespace std;
 
+bool Animation::animationRunning = false;
+
 Animation::Animation(string nodeID)
 {
 	this->nodeID = nodeID;
@@ -29,6 +31,7 @@ void LinearAnimation::init(float timestamp)
 	this->lastTimestamp = timestamp; //último timestamp é inicializado com o tempo actual
 	this->timePerControlPoint = span / (controlPoints.size() - 1); //tempo por ponto de controlo é o tempo total a divid pelo número de pontos de controlo -1 (ex: 5 control points dão 4 sequências de animação)
 	changeControlPoint(0); //primeiro control point
+	Animation::animationRunning = true;
 }
 
 //adiciona um ponto de controlo ao vector
@@ -63,6 +66,7 @@ void LinearAnimation::update(float timestamp)
 		else
 		{
 			ended = true;
+			Animation::animationRunning = false;
 			currentPos = controlPoints[currentControlPoint + 1]; //set pos to last CP
 			//init();
 		}
@@ -118,6 +122,7 @@ void CameraAnimation::update(float timestamp)
 		{
 			ended = true;
 			currentPos = destination; //set pos to last CP
+			Animation::animationRunning = false;
 			//init();
 		}
 	}
@@ -142,4 +147,5 @@ void CameraAnimation::init(float timestamp)
 {
 	Animation::init(timestamp); //contrutor classe pai
 	this->lastTimestamp = timestamp; //último timestamp é inicializado com o tempo actual
+	Animation::animationRunning = true;
 }

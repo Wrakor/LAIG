@@ -160,9 +160,9 @@ public:
 	void drawArrows(int player);
 	std::array<Piece, 36> boardRepresentation;
 	std::array<Piece, 36> previousBoard;
+	vector<std::array<unsigned int, 3>> playHistory;
 	const string getBoardList(bool pieceIDs = false);
 	void rotateQuadrant(Socket* socket, int quadrant, int direction);
-	void rotateQuadrantAux(char* plAnswer);
 	void computerPlacePiece(Socket* socket);
 	void computerRotateQuadrant(Socket* socket);
 };

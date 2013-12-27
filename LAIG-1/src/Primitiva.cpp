@@ -537,6 +537,7 @@ Board::Board(unsigned int size)
 	this->size = size;
 	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
 	this->arrow = new Cylinder(1, 0.1, 4, 10, 5);
+	this->playHistory = vector<std::array<unsigned int, 3>>();
 }
 
 void Board::draw()
@@ -613,13 +614,9 @@ void Board::rotateQuadrant(Socket* socket, int quadrant, int direction){
 	socket->envia(oss.str().c_str(), oss.str().length());
 	char answer[256];
 	socket->recebe(answer);
-	rotateQuadrantAux(answer);
-}
 
-void Board::rotateQuadrantAux(char* plAnswer)
-{
 	std::array<Piece, 36> newBoard;
-	char * pch = strtok(plAnswer, "[],'.\r\n"); //divide response in tokens
+	char * pch = strtok(answer, "[],'.\r\n"); //divide response in tokens
 	for (int i = 0; i < 36; i++)
 	{
 		int pos = atoi(pch); //new piece position
@@ -649,16 +646,23 @@ void Board::computerPlacePiece(Socket* socket)
 	socket->recebe(answer);
 	int pos = atoi(answer);
 	boardRepresentation[pos].place(PLAYERTWO, pos);
+	playHistory.push_back({ { pos, 0, 0 } });
 }
 
 void Board::computerRotateQuadrant(Socket* socket)
 {
 	std::ostringstream oss;
-	oss << "computerRotateQuadrant(" << getBoardList(true) << ").\n";
+	oss << "computerRotateQuadrant.\n";
 	socket->envia(oss.str().c_str(), oss.str().length());
 	char answer[256];
 	socket->recebe(answer);
-	rotateQuadrantAux(answer);
+	char * pch = strtok(answer, "[],'.\r\n");
+	int quadrant = atoi(pch);
+	pch = strtok(NULL, "[],'.\r\n");
+	int direction = atoi(pch);
+	playHistory.back().at(1) = quadrant;
+	playHistory.back().at(2) = direction;
+	rotateQuadrant(socket, quadrant, direction);
 }
 
 void Board::drawArrows(int player)

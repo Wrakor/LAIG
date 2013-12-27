@@ -82,10 +82,9 @@ readQuadrantSP(Player, Board) :-
 	rotateQuadrantAuxSP(Player, Board, Quadrant, Sentido).
     
 /** Gera um valor para o quadrante a rodar e o sentido **/
-generateQuadrant(Board, NL) :-
+generateQuadrant(Quadrant, Sentido) :-
     random(1,5,Quadrant),
-    random(1,3,Sentido),
-    rotateQuadrantAuxSP(1, Board, Quadrant, Sentido, NL).
+    random(1,3,Sentido).
 
 /** Tratam de efectuar as jogadas, colocar peça e rodar quadrante, respectivamente*/
 placePiece(Player, X, Y, L) :- 
@@ -283,8 +282,8 @@ parse_input(computerPlacePiece(Board), Answer) :-
 	generatePiece(Board, X, Y), !,
 	Answer is ((Y-1)*6+X-1).
 	
-parse_input(computerRotateQuadrant(Board), Answer) :-
-	generateQuadrant(Board, Answer).
+parse_input(computerRotateQuadrant, [Quadrant, Direction]) :-
+	generateQuadrant(Quadrant, Direction).
 	
 parse_input(rotateQuadrant(Board, Quadrant, Direction), Answer) :-
 	rotateQuadrant(Board, Quadrant, Direction, Answer).

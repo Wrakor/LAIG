@@ -17,9 +17,8 @@ public:
 	void processHits(GLint hits, GLuint buffer[]);
 	GLUI_Panel* gameSettingsPanel, *gameStartPanel;
 	GLUI_Listbox *listBox, *listBox2;
-	GLUI_Button *start;
+	GLUI_Button *start, *undo, *replay;
 	GLUI_StaticText *gameMessage;
-	GLUI_Button* undo;
 };
 
 class startInterface : public CGFinterface

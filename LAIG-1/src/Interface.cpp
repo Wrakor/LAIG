@@ -23,7 +23,7 @@ void Interface::initGUI() {
 	gameStartPanel = addPanel("Game", GLUI_PANEL_EMBOSSED);
 	start = addButtonToPanel(gameStartPanel, "Start Game", 3);	
 	GLUI_Button* exit = addButtonToPanel(gameStartPanel, "Exit Game", 99);
-	//start->set_alignment(GLUI_ALIGN_RIGHT);
+
 	addColumn();
 	GLUI_Panel *gameOptions = addPanel("Game Options", GLUI_PANEL_EMBOSSED);
 	GLUI_Listbox *gameEnvironmentL = addListboxToPanel(gameOptions, "", 0, 4);
@@ -36,34 +36,14 @@ void Interface::initGUI() {
 	undo->disable();
 
 	addColumn();
-	/*GLUI_Panel* quadrantPanel1 = addPanel("main", GLUI_PANEL_NONE);
-	GLUI_Button* rotateLeft1 = addButtonToPanel(quadrantPanel1, "<-(1)", 90);
-	GLUI_Button* rotateRight1 = addButtonToPanel(quadrantPanel1, "->(1)", 91);
-	addColumn();
-	GLUI_Panel* quadrantPanel2 = addPanel("main", GLUI_PANEL_NONE);
-	GLUI_Button* rotateLeft2 = addButtonToPanel(quadrantPanel2, "<-(2)", 92);
-	GLUI_Button* rotateRight2 = addButtonToPanel(quadrantPanel2, "->(2)", 93);
-	addColumn();
-	GLUI_Panel* quadrantPanel3 = addPanel("main", GLUI_PANEL_NONE);
-	GLUI_Button* rotateLeft3 = addButtonToPanel(quadrantPanel3, "<-(3)", 94);
-	GLUI_Button* rotateRight3 = addButtonToPanel(quadrantPanel3, "->(3)", 95);
-	addColumn();
-	GLUI_Panel* quadrantPanel4 = addPanel("main", GLUI_PANEL_NONE);
-	GLUI_Button* rotateLeft4 = addButtonToPanel(quadrantPanel4, "<-(4)", 96);
-	GLUI_Button* rotateRight4 = addButtonToPanel(quadrantPanel4, "->(4)", 97);
-	addColumn();*/
 	GLUI_Panel* gameMessagePanel = addPanel("Game Messages", GLUI_PANEL_EMBOSSED);
-	//string playerName = scene->playerOneName + ", it's your turn!";
-	//char tmpPlayerName[100];
-	//strcpy(tmpPlayerName, "a tua mae");
+
 	gameMessage = addStaticTextToPanel(gameMessagePanel, "Click Start Game to Play!");
 	gameMessage->set_w(100);
 	gameMessage->set_alignment(GLUI_ALIGN_RIGHT);
 	addSeparatorToPanel(gameMessagePanel);
-	
-	
-	//addButton("Exit", 100);
-	
+	replay = addButtonToPanel(gameMessagePanel, "Replay", 6);
+	replay->disable();	
 }
 
 
@@ -139,6 +119,8 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	}
 	else if (ctrl->user_id == 5)
 		scene->undoMove();
+	else if (ctrl->user_id == 6)
+		scene->replay();
 	else if (ctrl->user_id == 99)
 	{
 		throw("exit"); //exit normally

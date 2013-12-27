@@ -76,7 +76,13 @@ public:
 	void undoMove();
 	void computerPlay();
 	void updateGameMessage();
+	void replay();
 	string playerOneName, playerTwoName;
+	bool waitForAnimations;
+	bool inReplay;
+	bool replayWaitToRotate;
+	int replayPos;
+	bool computerPlaying;
 private:
 	vector<Texture*> textures;	
 	vector<Animation*> animations;	

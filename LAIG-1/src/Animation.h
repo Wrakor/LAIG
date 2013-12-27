@@ -10,8 +10,9 @@ class Animation
 {
 protected:
 	unsigned long startTime;
-	bool ended;
+	bool begun, ended;
 public:
+	static bool animationRunning;
 	string nodeID;
 	Animation(string nodeID);
 	virtual void init(float timestamp);

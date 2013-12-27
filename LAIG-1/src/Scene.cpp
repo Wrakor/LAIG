@@ -20,6 +20,9 @@ Scene::Scene(){
 	backgroundG2 = 0.82;
 	backgroundB2 = 0.67;
 	backgroundA2 = 1;
+	this->waitForAnimations = true; //block while an animation is running
+	this->inReplay = false; //if currently in a replay
+	this->computerPlaying = false; //if this is a computer move
 }
 
 void Scene::init() 
@@ -119,12 +122,21 @@ void Scene::display()
 		// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 		//board->drawHotspots(); //Testing
 	}
-	else if(rMode == GL_SELECT && gameState == PLACEPIECE && startGame) //se em modo de pick, desenha os hotspots
-		board->drawHotspots();
+	if (!Animation::animationRunning || !waitForAnimations)
+	{
+		if (inReplay)
+			replay();
+		else if (!computerPlaying) //only draw arrows and hotspots if it's a human player's turn
+		{
+			if (rMode == GL_SELECT && gameState == PLACEPIECE && startGame) //se em modo de pick, desenha os hotspots
+				board->drawHotspots();
 
-	if (gameState == ROTATE) //in all render modes
-		board->drawArrows(player);
-
+			if (gameState == ROTATE) //in all render modes
+				board->drawArrows(player);
+		}
+		else //if the computer is playing, start the rotation
+			computerPlay();
+	}
 	glutSwapBuffers();
 	//std::this_thread::sleep_for(std::chrono::milliseconds(17));
 }
@@ -325,7 +337,9 @@ void Scene::placePiece(unsigned int pos)
 	if (gameState == PLACEPIECE)
 	{
 		board->previousBoard = board->boardRepresentation; //save previous board
+		((Interface *)iface)->undo->disable(); //only undo on the end of each play
 		board->boardRepresentation[pos].place(player, pos);
+		board->playHistory.push_back({ { pos, 0, 0 } });
 		gameState = ROTATE;
 		checkVictory();
 	}
@@ -333,6 +347,10 @@ void Scene::placePiece(unsigned int pos)
 
 void Scene::undoMove()
 {
+	board->playHistory.pop_back();
+	if (gameMode == PVC) //if in PVC, got to clear computer move as well
+		board->playHistory.pop_back();
+
 	board->boardRepresentation = board->previousBoard;
 	if (gameMode == PVP)
 		switchPlayer(); //if in PVC, player is always the same
@@ -342,17 +360,61 @@ void Scene::undoMove()
 	((Interface *)iface)->undo->disable();
 }
 
+void Scene::replay()
+{
+	if (!inReplay) //starting now
+	{
+		std::array<Piece, 36> cleanBoard;
+		int player = PLAYERONE;
+		board->boardRepresentation = cleanBoard;
+		replayPos = 0;
+		inReplay = true;
+		replayWaitToRotate = false;
+		((Interface *)iface)->replay->disable(); //disable replay button
+	}
+	if (replayPos == board->playHistory.size())
+	{
+		player = !player; //reset player
+		inReplay = false;
+		replayPos = 0;
+		((Interface *)iface)->replay->enable(); //re-enable replay button
+	}
+	else
+	{
+		if (!replayWaitToRotate)
+		{
+			int pos = board->playHistory[replayPos].at(0);
+			board->boardRepresentation[pos].place(player, pos);
+			replayWaitToRotate = true; //wait for this animation ending to start rotation
+			return;
+		}
+		else
+		{
+			replayWaitToRotate = false;
+			int quadrant = board->playHistory[replayPos].at(1);
+			int direction = board->playHistory[replayPos].at(2);
+			if (quadrant > 0) //game can end whithout a rotation
+				board->rotateQuadrant(socket, quadrant, direction);
+			replayPos++;
+			player = !player;
+		}
+	}
+}
+
 void Scene::rotateQuadrant(int quadrant, int direction)
 {
 	if (gameState == ROTATE)
 	{
+		board->playHistory.back().at(1) = quadrant;
+		board->playHistory.back().at(2) = direction;
 		board->rotateQuadrant(socket, quadrant, direction);
 		checkVictory();
 		if (gameState != GAMEOVER)
 		{
 			if (gameMode == PVC)
 				computerPlay();
-			switchPlayer();
+			else
+				switchPlayer();
 		}
 	}
 }
@@ -370,6 +432,7 @@ void Scene::checkVictory()
 	{
 		gameState = GAMEOVER;
 		((Interface *)iface)->undo->disable(); //game over, can't undo
+		((Interface *)iface)->replay->enable();
 		if (answer[0] == '3')
 			str += "Draw!";
 		else
@@ -383,15 +446,25 @@ void Scene::checkVictory()
 
 void Scene::computerPlay()
 {
-	player = !player;
-	board->computerPlacePiece(socket);
-	checkVictory();
-	if (gameState == GAMEOVER) //if someone won, dont do anything else
+	if (!computerPlaying)
+	{
+		player = !player;
+		updateGameMessage();
+		board->computerPlacePiece(socket);
+		checkVictory();
+		if (gameState == GAMEOVER) //if someone won, dont do anything else
+			return;
+		computerPlaying = true; //wait for animation to end to do rotation
 		return;
-	board->computerRotateQuadrant(socket);
-	checkVictory();
-	if (gameState == GAMEOVER)
-		return;
+	}
+	else
+	{
+		board->computerRotateQuadrant(socket);
+		computerPlaying = false;
+		checkVictory();
+		if (gameState != GAMEOVER)
+			switchPlayer();
+	}
 }
 
 void Scene::switchPlayer()
@@ -407,6 +480,8 @@ void Scene::updateGameMessage()
 	string str = "   ";
 	str += player ? playerTwoName : playerOneName;
 	str += ", it's your turn!";
+	if (gameMode == PVC && player == 1)
+		str = "   Computer is playing";
 	setGameMessage(str);
 }
 
