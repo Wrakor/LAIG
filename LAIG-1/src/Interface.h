@@ -30,5 +30,4 @@ public:
 	void initGUI();
 	void setScene(Scene *scene);
 	void processGUI(GLUI_Control *ctrl);
-	Interface *interface = new Interface;
 };

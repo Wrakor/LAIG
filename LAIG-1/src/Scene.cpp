@@ -23,6 +23,7 @@ Scene::Scene(){
 	this->waitForAnimations = true; //block while an animation is running
 	this->inReplay = false; //if currently in a replay
 	this->computerPlaying = false; //if this is a computer move
+	this->gameEnvironment = 1;
 }
 
 void Scene::init() 
@@ -338,7 +339,8 @@ void Scene::placePiece(unsigned int pos)
 		board->previousBoard = board->boardRepresentation; //save previous board
 		((Interface *)iface)->undo->disable(); //only undo on the end of each play
 		board->boardRepresentation[pos].place(player, pos);
-		board->playHistory.push_back({ { pos, 0, 0 , player} });
+		std::array<unsigned int, 4> play = {pos, 0, 0, player};
+		board->playHistory.push_back(play);
 		gameState = ROTATE;
 		checkVictory();
 	}

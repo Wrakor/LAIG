@@ -645,7 +645,8 @@ void Board::computerPlacePiece(Socket* socket)
 	socket->recebe(answer);
 	int pos = atoi(answer);
 	boardRepresentation[pos].place(PLAYERTWO, pos);
-	playHistory.push_back({ { pos, 0, 0 , PLAYERTWO} });
+	std::array<unsigned int, 4> play = {pos, 0, 0, PLAYERTWO};
+	playHistory.push_back(play);
 }
 
 void Board::computerRotateQuadrant(Socket* socket)

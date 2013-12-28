@@ -71,7 +71,7 @@ public:
 	void checkVictory();
 	void switchPlayer();
 	void rotateQuadrant(int quadrant, int direction);
-	int gameEnvironment = 1;
+	int gameEnvironment;
 	void changeGameEnvironment(int gameEnvironment);
 	void undoMove();
 	void computerPlay();
