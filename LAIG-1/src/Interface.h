@@ -20,14 +20,3 @@ public:
 	GLUI_Button *start, *undo, *replay;
 	GLUI_StaticText *gameMessage;
 };
-
-class startInterface : public CGFinterface
-{
-	Scene *scene;
-	GLUI_Listbox *cameraListbox;
-	
-public:
-	void initGUI();
-	void setScene(Scene *scene);
-	void processGUI(GLUI_Control *ctrl);
-};
