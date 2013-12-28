@@ -537,7 +537,7 @@ Board::Board(unsigned int size)
 	this->size = size;
 	this->boardFace = new Rectangle(-0.5, 0.5, -0.5, 0.5);
 	this->arrow = new Cylinder(1, 0.1, 4, 10, 5);
-	this->playHistory = vector<std::array<unsigned int, 3>>();
+	this->playHistory = vector<std::array<unsigned int, 4>>();
 }
 
 void Board::draw()
@@ -562,7 +562,6 @@ void Board::drawPieces()
 
 void Board::drawHotspots()
 {
-	//glCallList(hotspotsListID);
 	glPushName(-1);		// Load a default name
 	CGFappearance* a = new CGFappearance();
 	a->apply();
@@ -646,7 +645,7 @@ void Board::computerPlacePiece(Socket* socket)
 	socket->recebe(answer);
 	int pos = atoi(answer);
 	boardRepresentation[pos].place(PLAYERTWO, pos);
-	playHistory.push_back({ { pos, 0, 0 } });
+	playHistory.push_back({ { pos, 0, 0 , PLAYERTWO} });
 }
 
 void Board::computerRotateQuadrant(Socket* socket)

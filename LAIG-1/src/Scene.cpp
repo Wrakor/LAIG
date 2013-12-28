@@ -13,7 +13,7 @@ Scene::Scene(){
 	this->socket = new Socket("127.0.0.1", 60070);
 	this->player = PLAYERONE; //first player is white
 	this->gameState = CONNECTING;
-	this->startGame = 0;
+	this->gameStarted = false;
 	this->playerOneName = "White";
 	this->playerTwoName = "Black";
 	backgroundR2 = 0.85;
@@ -73,14 +73,13 @@ void Scene::init()
 	//start socket
 	if (socket->socketConnect())
 		this->gameState = PLACEPIECE;
+	else
+		throw "Prolog not running!";
 	//glutFullScreen();
 }
 
 void Scene::display() 
 {
-	if (!socket->connected) //se não estiver ligado, não desenha nada
-		return;
-
 	//limpa a cor activa debackground e define nova cor RGBA
 	if (gameEnvironment==1)
 		glClearColor(backgroundR, backgroundG, backgroundB, backgroundA);
@@ -128,7 +127,7 @@ void Scene::display()
 			replay();
 		else if (!computerPlaying) //only draw arrows and hotspots if it's a human player's turn
 		{
-			if (rMode == GL_SELECT && gameState == PLACEPIECE && startGame) //se em modo de pick, desenha os hotspots
+			if (rMode == GL_SELECT && gameState == PLACEPIECE && gameStarted) //se em modo de pick, desenha os hotspots
 				board->drawHotspots();
 
 			if (gameState == ROTATE) //in all render modes
@@ -339,7 +338,7 @@ void Scene::placePiece(unsigned int pos)
 		board->previousBoard = board->boardRepresentation; //save previous board
 		((Interface *)iface)->undo->disable(); //only undo on the end of each play
 		board->boardRepresentation[pos].place(player, pos);
-		board->playHistory.push_back({ { pos, 0, 0 } });
+		board->playHistory.push_back({ { pos, 0, 0 , player} });
 		gameState = ROTATE;
 		checkVictory();
 	}
@@ -365,22 +364,22 @@ void Scene::replay()
 	if (!inReplay) //starting now
 	{
 		std::array<Piece, 36> cleanBoard;
-		int player = PLAYERONE;
 		board->boardRepresentation = cleanBoard;
 		replayPos = 0;
 		inReplay = true;
 		replayWaitToRotate = false;
 		((Interface *)iface)->replay->disable(); //disable replay button
 	}
+
 	if (replayPos == board->playHistory.size())
 	{
-		player = !player; //reset player
 		inReplay = false;
 		replayPos = 0;
 		((Interface *)iface)->replay->enable(); //re-enable replay button
 	}
 	else
 	{
+		player = board->playHistory[replayPos].at(3);
 		if (!replayWaitToRotate)
 		{
 			int pos = board->playHistory[replayPos].at(0);
@@ -396,7 +395,6 @@ void Scene::replay()
 			if (quadrant > 0) //game can end whithout a rotation
 				board->rotateQuadrant(socket, quadrant, direction);
 			replayPos++;
-			player = !player;
 		}
 	}
 }
@@ -480,7 +478,7 @@ void Scene::updateGameMessage()
 	string str = "   ";
 	str += player ? playerTwoName : playerOneName;
 	str += ", it's your turn!";
-	if (gameMode == PVC && player == 1)
+	if (gameMode == PVC && player == PLAYERTWO)
 		str = "   Computer is playing";
 	setGameMessage(str);
 }
@@ -505,9 +503,20 @@ void Scene::changeGameEnvironment(int gameEnvironment)
 		nodes["tabuleiro"]->appearance = appearances[1];
 	}
 
-	if (startGame)
+	if (gameStarted)
 	{
 		updateGameMessage();
 		checkVictory();
 	}
+}
+
+void Scene::startNewGame()
+{
+	std::array<Piece, 36> cleanBoard;
+	board->boardRepresentation = cleanBoard;
+	board->playHistory.clear(); //clear history
+	Animation::animationRunning = false; //clear lock state
+	this->gameStarted = true;
+	this->player = PLAYERONE;
+	this->gameState = PLACEPIECE;
 }

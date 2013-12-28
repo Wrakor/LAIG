@@ -44,17 +44,7 @@ void Interface::initGUI() {
 	addSeparatorToPanel(gameMessagePanel);
 	replay = addButtonToPanel(gameMessagePanel, "Replay", 6);
 	replay->disable();	
-}
 
-
-void Interface::initGUI2()
-{
-	gameSettingsPanel->disable();
-	start->disable();
-	listBox->disable();
-	listBox2->disable();
-	start->disable();
-	//addSeparator();
 	addColumn();
 	///////////////////////////////// Cameras ///////////////////////////////// 
 
@@ -72,6 +62,16 @@ void Interface::initGUI2()
 			//cameraRadioGroup->set_int_val(i);
 			cameraListbox->set_int_val(i);
 	}
+}
+
+
+void Interface::startGame()
+{
+	gameSettingsPanel->disable();
+	start->set_name("Restart Game");
+	listBox->disable();
+	listBox2->disable();
+	syncVars();
 }
 
 void Interface::processGUI(GLUI_Control *ctrl)
@@ -92,8 +92,6 @@ void Interface::processGUI(GLUI_Control *ctrl)
 	}
 	else if (ctrl->user_id == 3)
 	{
-		initGUI2();
-		scene->startGame = 1;
 		if (listBox->get_int_val() == 0)
 			scene->gameMode = PVP;
 		else
@@ -104,6 +102,8 @@ void Interface::processGUI(GLUI_Control *ctrl)
 			else
 				scene->gameDifficulty = HARD;
 		}
+		this->startGame();
+		scene->startNewGame();
 		scene->setGameMessage("   " + scene->playerOneName + ", you go first!");
 	}
 	else if (ctrl->user_id == 4)

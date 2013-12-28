@@ -58,14 +58,14 @@ public:
 	Camera *getActiveCamera();
 	Light *getLightByGLFloat(GLfloat id);
 	void setDrawMode(GLenum drawMode);
-	void processGraph(string nodeID, Appearance *app=NULL);
-	void createDisplayLists(string nodeID, Appearance *app=NULL, bool onDisplayList=false);
+	void processGraph(string nodeID, Appearance *app = NULL);
+	void createDisplayLists(string nodeID, Appearance *app = NULL, bool onDisplayList = false);
 	string rootNode; //id do primeiro nó
 	void initAnimations();
 	bool runAnimations;
 	Board *board;
 	void placePiece(unsigned int pos);
-	unsigned int gameState, startGame, gameMode, gameDifficulty;
+	unsigned int gameState, gameMode, gameDifficulty, replayPos;
 	Socket *socket;
 	void setGameMessage(string text);
 	void checkVictory();
@@ -78,14 +78,11 @@ public:
 	void updateGameMessage();
 	void replay();
 	string playerOneName, playerTwoName;
-	bool waitForAnimations;
-	bool inReplay;
-	bool replayWaitToRotate;
-	int replayPos;
-	bool computerPlaying;
+	bool waitForAnimations, inReplay, replayWaitToRotate, computerPlaying, gameStarted;
+	void startNewGame();
 private:
-	vector<Texture*> textures;	
-	vector<Animation*> animations;	
+	vector<Texture*> textures;
+	vector<Animation*> animations;
 	map<string, Node*> nodes;
 	vector<Appearance*> appearances;
 	unsigned int player;

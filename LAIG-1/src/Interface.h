@@ -6,10 +6,10 @@ class Interface : public CGFinterface
 {
 	Scene *scene;
 	GLUI_Listbox *cameraListbox;
-	
+
 public:
 	void initGUI();
-	void initGUI2();
+	void startGame();
 	void setScene(Scene *scene);
 	void processGUI(GLUI_Control *ctrl);
 	virtual void processMouse(int button, int state, int x, int y);
